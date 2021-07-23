@@ -24,7 +24,7 @@
             </trans-unit>
             <trans-unit id="message_empty_list">
                 <source>message_empty_list</source>
-                <target>Empty list.</target>
+                <target>Empty list</target>
             </trans-unit>
             <trans-unit id="title_record_list">
                 <source>title_record_list</source>

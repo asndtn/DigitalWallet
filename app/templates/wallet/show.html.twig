@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title_wallet_details'|trans({'%id%': wallet.id|default('')}) }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ 'title_wallet_details'|trans({'%id%': wallet.id|default('')}) }}</h1>
+    {% if wallet is defined and wallet|length %}
+        <dl class="dl-horizontal">
+            <dt>{{ 'label_id'|trans }}</dt>
+            <dd>{{ wallet.id }}</dd>
+            <dt>{{ 'label_id_user'|trans }}</dt>
+            <dd>{{ wallet.idUser }}</dd>
+            <dt>{{ 'label_id_wallet_type'|trans }}</dt>
+            <dd>{{ wallet.idWallet_Type }}</dd>
+            <dt>{{ 'label_id_currency_type'|trans }}</dt>
+            <dd>{{  wallet.idCurrency_Type }}</dd>
+        </dl>
+        <p>
+            <a href="{{ url('wallet_index') }}" title="{{ 'action_back_to_list'|trans }}">
+                {{ 'action_back_to_list'|trans }}
+            </a>
+        </p>
+    {% else %}
+        <p>
+            {{ 'message_item_not_found'|trans }}
+        </p>
+    {% endif %}
+{% endblock %}
