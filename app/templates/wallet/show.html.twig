@@ -13,14 +13,12 @@
             <dt>{{ 'label_id_user'|trans }}</dt>
             <dd>{{ wallet.idUser }}</dd>
             <dt>{{ 'label_id_wallet_type'|trans }}</dt>
-            <dd>{{ wallet.idWallet_Type }}</dd>
-            <dt>{{ 'label_id_currency_type'|trans }}</dt>
-            <dd>{{  wallet.idCurrency_Type }}</dd>
+            <dd>{{ wallet.idwallettype }}</dd>
+            <dt>{{ 'label_id_wallet_currency'|trans }}</dt>
+            <dd>{{ wallet.idwalletcurrency }}</dd>
         </dl>
         <p>
-            <a href="{{ url('wallet_index') }}" title="{{ 'action_back_to_list'|trans }}">
-                {{ 'action_back_to_list'|trans }}
-            </a>
+            <a href="{{ url('wallet_index') }}" title="{{ 'action_back_to_list'|trans}}">{{ 'action_back_to_list'|trans }}</a>
         </p>
     {% else %}
         <p>

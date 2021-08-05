@@ -1,21 +1,18 @@
 <?php
-
 /**
  * Wallet entity.
  */
 
 namespace App\Entity;
 
-
 use App\Repository\WalletRepository;
-#use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Wallet.
  *
- * @ORM\Entity(repositoryClass="App\Repository\WalletRepository")
- * @ORM\Table(name="wallet")
+ * @ORM\Entity(repositoryClass=WalletRepository::class)
+ * @ORM\Table(name="wallets")
  */
 class Wallet
 {
@@ -31,7 +28,7 @@ class Wallet
     private $id;
 
     /**
-     * id User.
+     * idUser.
      *
      * @var int
      *
@@ -40,7 +37,7 @@ class Wallet
     private $idUser;
 
     /**
-     * id Wallet_Type.
+     * idWallet_Type.
      *
      * @var int
      *
@@ -49,7 +46,7 @@ class Wallet
     private $idWallet_Type;
 
     /**
-     * id Wallet_Currency.
+     * idWallet_Currency.
      *
      * @var int
      *
@@ -68,9 +65,9 @@ class Wallet
     }
 
     /**
-     * Getter for IdUser.
+     * Getter for idUser.
      *
-     * @return int|null IdUser
+     * @return int|null idUser
      */
     public function getIdUser(): ?int
     {
@@ -78,15 +75,13 @@ class Wallet
     }
 
     /**
-     * Setter for IdUser
+     * Setter for idUser.
      *
-     * @param int $idUser idUser
+     * @param int $idUser
      */
-    public function setIdUser(int $idUser): self
+    public function setIdUser(int $idUser): void
     {
         $this->idUser = $idUser;
-
-        return $this;
     }
 
     /**
@@ -102,36 +97,30 @@ class Wallet
     /**
      * Setter for idWallet_Type.
      *
-     * @param int $idWallet_Type idWallet_Type
+     * @param int $idWallet_Type
      */
-    public function setIdWalletType(int $idWallet_Type): self
+    public function setIdWalletType(int $idWallet_Type): void
     {
         $this->idWallet_Type = $idWallet_Type;
-
-        return $this;
     }
 
     /**
      * Getter for idWallet_Currency.
      *
-     * @return int|null idWallet_Currency
+     * @return int|null
      */
-
     public function getIdWalletCurrency(): ?int
     {
         return $this->idWallet_Currency;
     }
 
     /**
-     * Setter for id Wallet_Currency.
+     * Setter for idWallet_Currency.
      *
      * @param int $idWallet_Currency
      */
-
-    public function setIdWalletCurrency(int $idWallet_Currency): self
+    public function setIdWalletCurrency(int $idWallet_Currency): void
     {
         $this->idWallet_Currency = $idWallet_Currency;
-
-        return $this;
     }
 }

@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class HelloWorldController.
  *
- * @Route("/hello-world")
+ * @Route("/hello")
  */
 class HelloWorldController extends AbstractController
 {

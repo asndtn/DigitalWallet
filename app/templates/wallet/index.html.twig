@@ -1,40 +1,49 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ 'title_wallet_list'|trans }}
+    {{ 'title_record_list'|trans }}
 {% endblock %}
 
 {% block body %}
-    <h1>{{ 'title_wallet_list'|trans }}</h1>
-    {% if wallet is defined and wallets|length %}
+    <h1>{{ 'title_record_list'|trans }}</h1>
+    {% if pagination is defined and pagination.items|length %}
+
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>{{ 'label_id'|trans }}</th>
-                <th>{{ 'label_id_user'|trans }}</th>
-                <th>{{ 'label_id_wallet_type'|trans }}</th>
-                <th>{{ 'label_id_wallet_currency'|trans }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_id'|trans, 'wallet.id') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_id_user'|trans, 'wallet.idUser') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_id_wallet_type'|trans, 'wallet.idWallet_Type') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_id_wallet_currency'|trans, 'wallet.idWallet_Currency') }}</th>
+                <th>{{ 'label_actions'|trans }}</th>
             </tr>
             </thead>
             <tbody>
-            {% for wallet in wallet %}
+            {% for wallet in pagination.items %}
                 <tr>
                     <td>{{ wallet.id }}</td>
                     <td>{{ wallet.idUser }}</td>
-                    <td>{{ wallet.idWallet_Type }}</td>
-                    <td>{{ task.idCurrency_Type }}</td>
+                    <td>{{ wallet.idwallettype }}</td>
+                    <td>{{ wallet.idwalletcurrency }}</td>
                     <td>
-                        <a href="{{ url('wallet_show', {id: wallet.id}) }}" title="{{ 'action_view'|trans }}">
-                            {{ 'action_view'|trans }}
-                        </a>
+                        <a href="{{ url('wallet_show', {id: wallet.id}) }}" title="{{ 'action_view'|trans }}">{{ 'action_view'|trans }}</a>
                     </td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-    {% else %}
-        <p>
-            {{ 'message_empty_list'|trans }}
-        </p>
-    {% endif %}
+
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+        {% else %}
+            <p>
+                {{ 'message_empty_list'|trans }}
+            </p>
+        {% endif %}
 {% endblock %}
