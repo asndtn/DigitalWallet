@@ -6,12 +6,13 @@
 namespace App\DataFixtures;
 
 use App\Entity\Wallet;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
 /**
  * Class WalletFixtures.
  */
-class WalletFixtures extends AbstractBaseFixtures
+class WalletFixtures extends AbstractBaseFixtures implements DependentFixtureInterface
 {
     /**
      * Load data.
@@ -20,16 +21,26 @@ class WalletFixtures extends AbstractBaseFixtures
      */
     public function loadData(ObjectManager $manager): void
     {
-        $this->faker = Factory::create();
-        $this->manager = $manager;
-
-        for ($i = 0; $i < 10; ++$i) {
+        $this->createMany(50, 'wallets', function ($i) {
             $wallet = new Wallet();
             $wallet->setIdUser($this->faker->randomDigitNotNull);
             $wallet->setIdWalletType($this->faker->randomDigitNotNull);
             $wallet->setIdWalletCurrency($this->faker->randomDigitNotNull);
-            $this->manager->persist($wallet);
-        }
+
+            return $wallet;
+        });
+
         $manager->flush();
+    }
+
+    /**
+     * This method must return an array of fixtures classes
+     * on which the implementing class depends on.
+     *
+     * @return array Array of dependencies
+     */
+    public function getDependencies(): array
+    {
+        return [TypeFixtures::class];
     }
 }

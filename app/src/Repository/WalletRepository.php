@@ -73,6 +73,13 @@ class WalletRepository extends ServiceEntityRepository
             ->orderBy('wallet.idCurrency_Type', 'DESC');
     }
 
+    /**
+     * Get or create new query builder.
+     *
+     * @param QueryBuilder|null $queryBuilder
+     *
+     * @return QueryBuilder QueryBuilder
+     */
     private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
     {
         return $queryBuilder ?? $this->createQueryBuilder('wallet');

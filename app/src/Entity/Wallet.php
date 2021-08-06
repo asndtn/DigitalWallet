@@ -41,7 +41,8 @@ class Wallet
      *
      * @var int
      *
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity=Type::class)
+     * @ORM\JoinColumn(nullable=false)
      */
     private $idWallet_Type;
 
@@ -77,7 +78,7 @@ class Wallet
     /**
      * Setter for idUser.
      *
-     * @param int $idUser
+     * @param int $idUser idUser
      */
     public function setIdUser(int $idUser): void
     {
@@ -87,9 +88,9 @@ class Wallet
     /**
      * Getter for idWallet_Type.
      *
-     * @return int|null idWallet_Type
+     * @return Type|int|null
      */
-    public function getIdWalletType(): ?int
+    public function getIdWalletType()
     {
         return $this->idWallet_Type;
     }
@@ -97,9 +98,9 @@ class Wallet
     /**
      * Setter for idWallet_Type.
      *
-     * @param int $idWallet_Type
+     * @param Type|null $idWallet_Type
      */
-    public function setIdWalletType(int $idWallet_Type): void
+    public function setIdWalletType(?Type $idWallet_Type): void
     {
         $this->idWallet_Type = $idWallet_Type;
     }
@@ -107,7 +108,7 @@ class Wallet
     /**
      * Getter for idWallet_Currency.
      *
-     * @return int|null
+     * @return int|null idWallet_Currency
      */
     public function getIdWalletCurrency(): ?int
     {
@@ -117,7 +118,7 @@ class Wallet
     /**
      * Setter for idWallet_Currency.
      *
-     * @param int $idWallet_Currency
+     * @param int $idWallet_Currency idWallet_Currency
      */
     public function setIdWalletCurrency(int $idWallet_Currency): void
     {
