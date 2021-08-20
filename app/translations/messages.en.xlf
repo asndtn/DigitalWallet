@@ -22,13 +22,13 @@
                 <source>label_id_user</source>
                 <target>User Id</target>
             </trans-unit>
-            <trans-unit id="label_id_wallet_type">
-                <source>label_id_wallet_type</source>
-                <target>Wallet Type Id</target>
+            <trans-unit id="label_wallet_type">
+                <source>label_wallet_type</source>
+                <target>Wallet Type</target>
             </trans-unit>
-            <trans-unit id="label_id_wallet_currency">
-                <source>label_id_wallet_currency</source>
-                <target>Wallet Currency Id</target>
+            <trans-unit id="label_currencies">
+                <source>label_currencies</source>
+                <target>Wallet Currency</target>
             </trans-unit>
             <trans-unit id="label_title">
                 <source>label_title</source>

@@ -47,13 +47,10 @@ class Wallet
     private $idWallet_Type;
 
     /**
-     * idWallet_Currency.
-     *
-     * @var int
-     *
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity=Currency::class, inversedBy="wallets")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $idWallet_Currency;
+    private $currency;
 
     /**
      * Getter for Id.
@@ -106,22 +103,23 @@ class Wallet
     }
 
     /**
-     * Getter for idWallet_Currency.
+     * Getter for Currency.
      *
-     * @return int|null idWallet_Currency
+     * @return string|null|Currency
      */
-    public function getIdWalletCurrency(): ?int
+    public function getCurrency(): ?Currency
     {
-        return $this->idWallet_Currency;
+        return $this->currency;
     }
 
     /**
-     * Setter for idWallet_Currency.
+     * Setter for Currency.
      *
-     * @param int $idWallet_Currency idWallet_Currency
+     * @param Currency|null $currency
      */
-    public function setIdWalletCurrency(int $idWallet_Currency): void
+    public function setCurrency(?Currency $currency): void
     {
-        $this->idWallet_Currency = $idWallet_Currency;
+        $this->currency = $currency;
     }
+
 }

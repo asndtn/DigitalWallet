@@ -57,7 +57,7 @@ abstract class AbstractBaseFixtures extends Fixture
     abstract protected function loadData(ObjectManager $manager): void;
 
     /**
-     * Create many objects at once.
+     * Create many objects at once:.
      *
      *      $this->createMany(10, function(int $i) {
      *          $user = new User();
@@ -83,7 +83,7 @@ abstract class AbstractBaseFixtures extends Fixture
 
             $this->manager->persist($entity);
 
-            //store for usage later as groupName_#COUNT#
+            // store for usage later as groupName_#COUNT#
             $this->addReference(sprintf('%s_%d', $groupName, $i), $entity);
         }
     }
