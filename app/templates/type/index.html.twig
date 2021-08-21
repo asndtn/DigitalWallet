@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title_type_list'|trans }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ 'title_type_list'|trans }}</h1>
+    {% if pagination is defined and pagination.items|length %}
+
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>{{ knp_pagination_sortable(pagination, 'label_id'|trans, 'type.id') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_name'|trans, 'type.name') }}</th>
+                <th>{{ 'label_actions'|trans }}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for type in pagination.items %}
+            <tr>
+                <td>{{ type.id }}</td>
+                <td>{{ type.name }}</td>
+                <td>
+                    <a href="{{ url('type_show', {id: type.id}) }}" title="{{ 'action_view'|trans }}">{{ 'action_view'|trans }}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+        {% else %}
+            <p>
+                {{ 'message_empty_list'|trans }}
+            </p>
+        {% endif %}
+{% endblock %}

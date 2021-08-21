@@ -1,12 +1,12 @@
 <?php
 /**
- * Wallet controller.
+ * Currency controller.
  */
 
 namespace App\Controller;
 
-use App\Entity\Wallet;
-use App\Repository\WalletRepository;
+use App\Entity\Currency;
+use App\Repository\CurrencyRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,38 +14,37 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class WalletController.
+ * Class CurrencyController.
  *
- * @Route("/wallet")
+ * @Route("/currency")
  */
-class WalletController extends AbstractController
+class CurrencyController extends AbstractController
 {
     /**
      * Index action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request        HTTP request
-     * @param \App\Repository\TypeRepository            $typeRepository Type repository
-     * @param \Knp\Component\Pager\PaginatorInterface   $paginator      Paginator
-     *
+     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
+     * @param \App\Repository\CurrencyRepository $currencyRepository
+     * @param \Knp\Component\Pager\PaginatorInterface $paginator Paginator
      * @return \Symfony\Component\HttpFoundation\Response HTTP Response
      *
      * @Route(
      *     "/",
      *     methods={"GET"},
-     *     name="wallet_index",
+     *     name="currency_index",
      * )
      */
-    public function index(Request $request, WalletRepository $walletRepository, PaginatorInterface $paginator): Response
+    public function index(Request $request, CurrencyRepository $currencyRepository, PaginatorInterface $paginator): Response
     {
         $pagination = $paginator->paginate(
-            $walletRepository->queryAllbyIdUser(),
+            $currencyRepository->queryAll(),
             $request->query->getInt('page', 1),
-            WalletRepository::PAGINATOR_ITEMS_PER_PAGE
+            CurrencyRepository::PAGINATOR_ITEMS_PER_PAGE
         );
 
         return $this->render(
-            'wallet/index.html.twig',
-            ['pagination' => $pagination]
+            'currency/index.html.twig',
+            ['pagination' => $pagination ]
         );
     }
 
@@ -59,15 +58,15 @@ class WalletController extends AbstractController
      * @Route(
      *     "/{id}",
      *     methods={"GET"},
-     *     name="wallet_show",
+     *     name="currency_show",
      *     requirements={"id": "[1-9]\d*"}
      * )
      */
-    public function show(Wallet $wallet): Response
+    public function show(Currency $currency): Response
     {
         return $this->render(
-            'wallet/show.html.twig',
-            ['wallet' => $wallet]
+            'currency/show.html.twig',
+            ['currency' => $currency]
         );
     }
 }

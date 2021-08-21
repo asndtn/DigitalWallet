@@ -26,13 +26,15 @@ class WalletRepository extends ServiceEntityRepository
      *
      * Use constants to define configuration options that rarely change instead
      * of specifying them in app/config/config.yml.
-     * See https://symfony.com/doc/current/best_practices.html#configuration
+     * See https://symfony.com/doc/current/best_practices.html#configuration.
      *
      * @constant int
      */
     const PAGINATOR_ITEMS_PER_PAGE = 10;
 
     /**
+     * Wallet repository constructor.
+     *
      * @param \Doctrine\Persistence\ManagerRegistry $registry Manager registry
      */
     public function __construct(ManagerRegistry $registry)
@@ -84,33 +86,4 @@ class WalletRepository extends ServiceEntityRepository
     {
         return $queryBuilder ?? $this->createQueryBuilder('wallet');
     }
-
-    // /**
-    //  * @return Wallet[] Returns an array of Wallet objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('w')
-            ->andWhere('w.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('w.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Wallet
-    {
-        return $this->createQueryBuilder('w')
-            ->andWhere('w.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

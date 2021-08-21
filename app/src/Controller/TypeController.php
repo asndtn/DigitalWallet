@@ -27,7 +27,7 @@ class TypeController extends AbstractController
      * @param \App\Repository\TypeRepository            $typeRepository Type repository
      * @param \Knp\Component\Pager\PaginatorInterface   $paginator      Paginator
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return \Symfony\Component\HttpFoundation\Response HTTP Response
      *
      * @Route(
      *     "/",
@@ -55,6 +55,13 @@ class TypeController extends AbstractController
      * @param \App\Entity\Type $type Type entity
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP Response
+     *
+     * @Route(
+     *     "/{id}",
+     *     methods={"GET"},
+     *     name="type_show",
+     *     requirements={"id": "[1-9]\d*"}
+     * )
      */
     public function show(Type $type): Response
     {

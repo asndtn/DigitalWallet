@@ -26,8 +26,8 @@
                 <source>label_wallet_type</source>
                 <target>Wallet Type</target>
             </trans-unit>
-            <trans-unit id="label_currencies">
-                <source>label_currencies</source>
+            <trans-unit id="label_wallet_currency">
+                <source>label_wallet_currency</source>
                 <target>Wallet Currency</target>
             </trans-unit>
             <trans-unit id="label_title">
@@ -53,6 +53,26 @@
             <trans-unit id="title_record_list">
                 <source>title_record_list</source>
                 <target>Records list</target>
+            </trans-unit>
+            <trans-unit id="title_type_list">
+                <source>title_type_list</source>
+                <target>Types list</target>
+            </trans-unit>
+            <trans-unit id="title_currency_list">
+                <source>title_currency_list</source>
+                <target>Currencies list</target>
+            </trans-unit>
+            <trans-unit id="label_name">
+                <source>label_name</source>
+                <target>Name</target>
+            </trans-unit>
+            <trans-unit id="title_type_details">
+                <source>title_type_details</source>
+                <target>Type details</target>
+            </trans-unit>
+            <trans-unit id="title_currency_details">
+                <source>title_currency_details</source>
+                <target>Currency details</target>
             </trans-unit>
         </body>
     </file>
