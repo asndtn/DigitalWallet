@@ -20,6 +20,7 @@
                 <th>{{ knp_pagination_sortable(pagination, 'label_amount'|trans, 'input.amount') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'label_date'|trans, 'input.date') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'label_description'|trans, 'input.description') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_category'|trans, 'input.category.name') }}</th>
                 <th>{{ 'label_actions'|trans }}</th>
             </tr>
             </thead>
@@ -27,10 +28,10 @@
             {% for input in pagination.items %}
                 <tr>
                     <td>{{ input.id }}</td>
-
                     <td>{{ input.amount }}</td>
                     <td>{{ input.date|format_date('long') }}</td>
                     <td>{{ input.description }}</td>
+                    <td>{{ input.category.name }}</td>
                     <td>
                         <a href="{{ url('input_show', {id: input.id}) }}" title="{{ 'action_view'|trans }}">{{ 'action_view'|trans }}</a>
                     </td>

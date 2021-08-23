@@ -17,6 +17,8 @@
             <dd>{{ input.date|format_date('long') }}</dd>
             <dt>{{ 'label_description'|trans }}</dt>
             <dd>{{ input.description }}</dd>
+            <dt>{{ 'label_category'|trans }}</dt>
+            <dd>{{ input.category.name }}</dd>
         </dl>
         <p>
             <a href="{{ url('input_index') }}" title="{{ 'action_back_to_list'|trans}}">{{ 'action_back_to_list'|trans }}</a>

@@ -37,15 +37,6 @@ class Input
     private $wallet;
 
     /**
-     * Category.
-     *
-     * @var string
-     *
-     * @ORM\Column(type="string")
-     */
-    private $category;
-
-    /**
      * Amount.
      *
      * @var float
@@ -77,6 +68,14 @@ class Input
     private $description;
 
     /**
+     * Category.
+     *
+     * @ORM\ManyToOne(targetEntity=Category::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $category;
+
+    /**
      * Getter for Id.
      *
      * @return int|null Result
@@ -104,26 +103,6 @@ class Input
     public function setWallet(?Wallet $wallet): void
     {
         $this->wallet = $wallet;
-    }
-
-    /**
-     * Getter for Category.
-     *
-     * @return string|null Category
-     */
-    public function getCategory(): ?string
-    {
-        return $this->category;
-    }
-
-    /**
-     * Setter for Category.
-     *
-     * @param string $category Category
-     */
-    public function setCategory(string $category): void
-    {
-        $this->category = $category;
     }
 
     /**
@@ -161,7 +140,7 @@ class Input
      *
      * @param DateTimeInterface $date Date
      */
-    public function setDate(\DateTimeInterface $date): void
+    public function setDate(DateTimeInterface $date): void
     {
         $this->date = $date;
     }
@@ -184,5 +163,25 @@ class Input
     public function setDescription(?string $description): void
     {
         $this->description = $description;
+    }
+
+    /**
+     * Getter for Category.
+     *
+     * @return Category|null Category
+     */
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    /**
+     * Setter for Category.
+     *
+     * @param Category|null $category Category
+     */
+    public function setCategory(?Category $category): void
+    {
+        $this->category = $category;
     }
 }

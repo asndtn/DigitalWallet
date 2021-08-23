@@ -24,7 +24,7 @@ class InputFixtures extends AbstractBaseFixtures implements DependentFixtureInte
         $this->createMany(10, 'inputs', function ($i) {
             $input = new Input();
             $input->setWallet($this->getRandomReference('wallets'));
-            $input->setCategory($this->faker->word);
+            $input->setCategory($this->getRandomReference('categories'));
             $input->setAmount($this->faker->randomFloat(null, 0, null));
             $input->setDate($this->faker->dateTimeBetween('-100 days', '-1 days'));
             $input->setDescription($this->faker->sentence);
@@ -44,5 +44,16 @@ class InputFixtures extends AbstractBaseFixtures implements DependentFixtureInte
     public function getDependencies(): array
     {
         return [WalletFixtures::class];
+    }
+
+    /**
+     * This method must return an array of fixtures classes
+     * on which the implementing class depends on.
+     *
+     * @return array Array of dependencies
+     */
+    public function getDependenciesCategories(): array
+    {
+        return [CategoryFixtures::class];
     }
 }
