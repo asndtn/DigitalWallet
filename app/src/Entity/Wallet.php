@@ -6,6 +6,8 @@
 namespace App\Entity;
 
 use App\Repository\WalletRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -37,7 +39,7 @@ class Wallet
     private $idUser;
 
     /**
-     * idWallet_Type.
+     * Wallet_Type.
      *
      * @var int
      *
@@ -47,10 +49,24 @@ class Wallet
     private $idWallet_Type;
 
     /**
+     * Currency.
+     *
      * @ORM\ManyToOne(targetEntity=Currency::class, inversedBy="wallets")
      * @ORM\JoinColumn(nullable=false)
      */
     private $currency;
+
+    /**
+     * Inputs.
+     *
+     * @ORM\OneToMany(targetEntity=Input::class, mappedBy="wallets")
+     */
+    private $inputs;
+
+    public function __construct()
+    {
+        $this->inputs = new ArrayCollection();
+    }
 
     /**
      * Getter for Id.
@@ -120,6 +136,36 @@ class Wallet
     public function setCurrency(?Currency $currency): void
     {
         $this->currency = $currency;
+    }
+
+    /**
+     * @return Collection|Input[]
+     */
+    public function getInputs(): Collection
+    {
+        return $this->inputs;
+    }
+
+    public function addInput(Input $input): self
+    {
+        if (!$this->inputs->contains($input)) {
+            $this->inputs[] = $input;
+            $input->setWallet($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInput(Input $input): self
+    {
+        if ($this->inputs->removeElement($input)) {
+            // set the owning side to null (unless already changed)
+            if ($input->getWallet() === $this) {
+                $input->setWallet(null);
+            }
+        }
+
+        return $this;
     }
 
 }

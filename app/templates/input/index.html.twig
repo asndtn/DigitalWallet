@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title_input_list'|trans }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ 'title_input_list'|trans }}</h1>
+    {% if pagination is defined and pagination.items|length %}
+
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>{{ knp_pagination_sortable(pagination, 'label_id'|trans, 'input.id') }}</th>
+
+                <th>{{ knp_pagination_sortable(pagination, 'label_amount'|trans, 'input.amount') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_date'|trans, 'input.date') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_description'|trans, 'input.description') }}</th>
+                <th>{{ 'label_actions'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for input in pagination.items %}
+                <tr>
+                    <td>{{ input.id }}</td>
+
+                    <td>{{ input.amount }}</td>
+                    <td>{{ input.date|format_date('long') }}</td>
+                    <td>{{ input.description }}</td>
+                    <td>
+                        <a href="{{ url('input_show', {id: input.id}) }}" title="{{ 'action_view'|trans }}">{{ 'action_view'|trans }}</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+    {% else %}
+        <p>
+            {{ 'message_empty_list'|trans }}
+        </p>
+    {% endif %}
+{% endblock %}
