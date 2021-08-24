@@ -1,12 +1,12 @@
 <?php
 /**
- * Category controller.
+ * Balance controller.
  */
 
 namespace App\Controller;
 
-use App\Entity\Category;
-use App\Repository\CategoryRepository;
+use App\Entity\Balance;
+use App\Repository\BalanceRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,36 +14,36 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class CategoryController.
+ * Class BalanceController.
  *
- * @Route("/category")
+ * @Route("/balance")
  */
-class CategoryController extends AbstractController
+class BalanceController extends AbstractController
 {
     /**
      * Index action.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
-     * @param \App\Repository\CategoryRepository $categoryRepository
+     * @param \App\Repository\BalanceRepository $balanceRepository
      * @param \Knp\Component\Pager\PaginatorInterface $paginator Paginator
      * @return \Symfony\Component\HttpFoundation\Response HTTP Response
      *
      * @Route(
      *     "/",
      *     methods={"GET"},
-     *     name="category_index",
+     *     name="balance_index",
      * )
      */
-    public function index(Request $request, CategoryRepository $categoryRepository, PaginatorInterface $paginator): Response
+    public function index(Request $request, BalanceRepository $balanceRepository, PaginatorInterface $paginator): Response
     {
         $pagination = $paginator->paginate(
-            $categoryRepository->queryAll(),
+            $balanceRepository->queryAll(),
             $request->query->getInt('page', 1),
-            CategoryRepository::PAGINATOR_ITEMS_PER_PAGE
+            BalanceRepository::PAGINATOR_ITEMS_PER_PAGE
         );
 
         return $this->render(
-            'category/index.html.twig',
+            'balance/index.html.twig',
             ['pagination' => $pagination]
         );
     }
@@ -51,22 +51,22 @@ class CategoryController extends AbstractController
     /**
      * Show action.
      *
-     * @param \App\Entity\Category $category Category entity
+     * @param \App\Entity\Balance $balance Balance entity
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP Response
      *
      * @Route(
      *     "/{id}",
      *     methods={"GET"},
-     *     name="category_show",
+     *     name="balance_show",
      *     requirements={"id": "[1-9]\d*"}
      * )
      */
-    public function show(Category $category): Response
+    public function show(Balance $balance): Response
     {
         return $this->render(
-            'category/show.html.twig',
-            ['category' => $category]
+            'balance/show.html.twig',
+            ['balance' => $balance]
         );
     }
 }
