@@ -30,7 +30,7 @@ class CurrencyRepository extends ServiceEntityRepository
      *
      * @constant int
      */
-    const PAGINATOR_ITEMS_PER_PAGE = 10;
+    const PAGINATOR_ITEMS_PER_PAGE = 3;
 
     /**
      * Currency repository constructor.
@@ -63,5 +63,33 @@ class CurrencyRepository extends ServiceEntityRepository
     private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
     {
         return $queryBuilder ?? $this->createQueryBuilder('currency');
+    }
+
+    /**
+     * Save record.
+     *
+     * @param \App\Entity\Currency $currency Currency entity
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function save(Currency $currency): void
+    {
+        $this->_em->persist($currency);
+        $this->_em->flush();
+    }
+
+    /**
+     * Delete record.
+     *
+     * @param \App\Entity\Currency $currency Currency entity
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function delete(Currency $currency): void
+    {
+        $this->_em->remove($currency);
+        $this->_em->flush();
     }
 }

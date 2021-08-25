@@ -60,7 +60,7 @@ class InputController extends AbstractController
      *     "/{id}",
      *     methods={"GET"},
      *     name="input_show",
-     *     requirements={"id": "[1-9]\d*"}
+     *     requirements={"id": "[1-9]\d*"},
      * )
      */
     public function show(Input $input): Response

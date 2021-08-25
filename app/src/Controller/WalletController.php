@@ -60,7 +60,7 @@ class WalletController extends AbstractController
      *     "/{id}",
      *     methods={"GET"},
      *     name="wallet_show",
-     *     requirements={"id": "[1-9]\d*"}
+     *     requirements={"id": "[1-9]\d*"},
      * )
      */
     public function show(Wallet $wallet): Response

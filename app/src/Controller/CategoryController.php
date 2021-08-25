@@ -53,13 +53,13 @@ class CategoryController extends AbstractController
      *
      * @param \App\Entity\Category $category Category entity
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP Response
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
      * @Route(
      *     "/{id}",
      *     methods={"GET"},
      *     name="category_show",
-     *     requirements={"id": "[1-9]\d*"}
+     *     requirements={"id": "[1-9]\d*"},
      * )
      */
     public function show(Category $category): Response

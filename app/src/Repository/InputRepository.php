@@ -30,7 +30,7 @@ class InputRepository extends ServiceEntityRepository
      *
      * @constant int
      */
-    const PAGINATOR_ITEMS_PER_PAGE = 10;
+    const PAGINATOR_ITEMS_PER_PAGE = 3;
 
     /**
      * Input repository constructor.

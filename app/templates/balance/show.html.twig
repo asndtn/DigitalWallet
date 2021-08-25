@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title_balance_details'|trans({'%id%': balance.id|default('')}) }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ 'title_balance_details'|trans({'%id%': balance.id|default('')}) }}</h1>
+    {% if balance is defined and balance|length %}
+    <dl class="dl-horizontal">
+        <dt>{{ 'label_id'|trans }}</dt>
+        <dd>{{ balance.id }}</dd>
+        <dt>{{ 'label_amount'|trans }}</dt>
+        <dd>{{ balance.balanceAmount }}</dd>
+    </dl>
+    <p>
+        <a href="{{ url('balance_index') }}" title="{{ 'action_back_to_list'|trans}}">{{ 'action_back_to_list'|trans }}</a>
+    </p>
+    {% else %}
+        <p>
+            {{ 'message_item_not_found'|trans }}
+        </p>
+    {% endif %}
+{% endblock %}
