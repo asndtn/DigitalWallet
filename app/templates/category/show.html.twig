@@ -14,6 +14,9 @@
             <dd>{{ category.name }}</dd>
         </dl>
         <p>
+            <a href="{{ url('category_delete', {id: category.id}) }}" title="{{ 'action_delete'|trans }}">{{ 'action_delete'|trans }}</a>
+        </p>
+        <p>
             <a href="{{ url('category_index') }}" title="{{ 'action_back_to_list'|trans}}">{{ 'action_back_to_list'|trans }}</a>
         </p>
     {% else %}
