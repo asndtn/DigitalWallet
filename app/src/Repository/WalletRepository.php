@@ -54,25 +54,25 @@ class WalletRepository extends ServiceEntityRepository
     }
 
     /**
-     * Query all records by idWallet_Type.
+     * Query all records by Type.
      *
      * @return \Doctrine\ORM\QueryBuilder QueryBuilder
      */
-    public function queryAllbyIdWallet_Type(): QueryBuilder
+    public function queryAllbyType(): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
-            ->orderBy('wallet.idWallet_Type', 'DESC');
+            ->orderBy('wallet.Type', 'DESC');
     }
 
     /**
-     * Query all records by idCurrency_Type.
+     * Query all records by Currency.
      *
      * @return \Doctrine\ORM\QueryBuilder QueryBuilder
      */
-    public function queryAllbyIdCurrency_Type(): QueryBuilder
+    public function queryAllbyCurrency(): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
-            ->orderBy('wallet.idCurrency_Type', 'DESC');
+            ->orderBy('wallet.Currency', 'DESC');
     }
 
     /**

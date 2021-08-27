@@ -64,4 +64,32 @@ class InputRepository extends ServiceEntityRepository
     {
         return $queryBuilder ?? $this->createQueryBuilder('input');
     }
+
+    /**
+     * Save record.
+     *
+     * @param \App\Entity\Input $input Input entity
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function save(Input $input): void
+    {
+        $this->_em->persist($input);
+        $this->_em->flush();
+    }
+
+    /**
+     * Delete record.
+     *
+     * @param \App\Entity\Input $input Input entity
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function delete(Input $input): void
+    {
+        $this->_em->remove($input);
+        $this->_em->flush();
+    }
 }

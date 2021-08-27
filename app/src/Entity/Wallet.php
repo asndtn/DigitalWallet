@@ -39,14 +39,12 @@ class Wallet
     private $idUser;
 
     /**
-     * Wallet_Type.
+     * Type.
      *
-     * @var int
-     *
-     * @ORM\ManyToOne(targetEntity=Type::class)
+     * @ORM\ManyToOne(targetEntity=Type::class, inversedBy="wallets")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $idWallet_Type;
+    private $type;
 
     /**
      * Currency.
@@ -63,10 +61,10 @@ class Wallet
      */
     private $inputs;
 
-    public function __construct()
+/**    public function __construct()
     {
         $this->inputs = new ArrayCollection();
-    }
+    } **/
 
     /**
      * Getter for Id.
@@ -99,23 +97,23 @@ class Wallet
     }
 
     /**
-     * Getter for idWallet_Type.
+     * Getter for Type.
      *
-     * @return Type|int|null
+     * @return string|null|Type
      */
-    public function getIdWalletType()
+    public function getType(): ?Type
     {
-        return $this->idWallet_Type;
+        return $this->type;
     }
 
     /**
-     * Setter for idWallet_Type.
+     * Setter for Type.
      *
-     * @param Type|null $idWallet_Type
+     * @param Type|null $type
      */
-    public function setIdWalletType(?Type $idWallet_Type): void
+    public function setType(?Type $type): void
     {
-        $this->idWallet_Type = $idWallet_Type;
+        $this->type = $type;
     }
 
     /**
