@@ -8,6 +8,7 @@ namespace App\Form;
 use App\Entity\Input;
 use App\Entity\Category;
 use App\Entity\Wallet;
+use App\Entity\Tag;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -78,6 +79,22 @@ class InputType extends AbstractType
                 'label' => 'label_wallet',
                 'placeholder' => 'label_none',
                 'required' => true,
+            ]
+        );
+
+        $builder->add(
+            'tags',
+            EntityType::class,
+            [
+                'class' => Tag::class,
+                'choice_label' => function ($tag) {
+                    return $tag->getName();
+                },
+                'label' => 'label_tags',
+                'placeholder' => 'label_none',
+                'required' => false,
+                'expanded' => true,
+                'multiple' => true,
             ]
         );
     }

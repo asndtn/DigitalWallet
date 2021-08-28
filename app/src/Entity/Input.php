@@ -98,6 +98,27 @@ class Input
     private $category;
 
     /**
+     * Tags.
+     *
+     * @var array
+     *
+     * @ORM\ManyToMany(
+     *     targetEntity="\App\Entity\Tag",
+     *     inversedBy="inputs",
+     * )
+     * @ORM\JoinTable(name="inputs_tags")
+     */
+    private $tags;
+
+    /**
+     * Input constructor.
+     */
+    public function __construct()
+    {
+        $this->tags = new ArrayCollection();
+    }
+
+    /**
      * Getter for Id.
      *
      * @return int|null Result
@@ -150,7 +171,7 @@ class Input
     /**
      * Getter for Date.
      *
-     * @return DateTimeInterface|null Date
+     * @return \DateTimeInterface|null Date
      */
     public function getDate(): ?DateTimeInterface
     {
@@ -160,7 +181,7 @@ class Input
     /**
      * Setter for Date.
      *
-     * @param DateTimeInterface $date Date
+     * @param \DateTimeInterface $date Date
      */
     public function setDate(DateTimeInterface $date): void
     {
@@ -190,7 +211,7 @@ class Input
     /**
      * Getter for Category.
      *
-     * @return Category|null Category
+     * @return \App\Entity\Category|null Category
      */
     public function getCategory(): ?Category
     {
@@ -200,10 +221,44 @@ class Input
     /**
      * Setter for Category.
      *
-     * @param Category|null $category Category
+     * @param \App\Entity\Category|null $category Category
      */
     public function setCategory(?Category $category): void
     {
         $this->category = $category;
+    }
+
+    /**
+     * Getter for tags.
+     *
+     * @return \Doctrine\Common\Collections\Collection|\App\Entity\Tag[] Tags collection
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    /**
+     * Add tag to collection.
+     *
+     * @param \App\Entity\Tag $tag Tag entity
+     */
+    public function addTag(Tag $tag): void
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags[] = $tag;
+        }
+    }
+
+    /**
+     * Remove tag from collection.
+     *
+     * @param \App\Entity\Tag $tag Tag entity
+     */
+    public function removeTag(Tag $tag): void
+    {
+        if ($this->tags->contains($tag)) {
+            $this->tags->removeElement($tag);
+        }
     }
 }
