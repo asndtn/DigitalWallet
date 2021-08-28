@@ -5,14 +5,18 @@
 
 namespace App\Entity;
 
-use App\Repository\InputRepository;
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Input.
  *
- * @ORM\Entity(repositoryClass=InputRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\InputRepository")
  * @ORM\Table(name="inputs")
  */
 class Input
@@ -31,7 +35,12 @@ class Input
     /**
      * Wallet.
      *
-     * @ORM\ManyToOne(targetEntity=Wallet::class, inversedBy="inputs")
+     * @var \Doctrine\Common\Collections\ArrayCollection|\App\Entity\Wallet[] $wallet Wallets
+     *
+     * @ORM\ManyToOne(
+     *     targetEntity="App\Entity\Wallet",
+     *     inversedBy="inputs"
+     * )
      * @ORM\JoinColumn(nullable=false)
      */
     private $wallet;
@@ -42,6 +51,9 @@ class Input
      * @var float
      *
      * @ORM\Column(type="float")
+     *
+     * @Assert\Positive
+     * @Assert\NotBlank
      */
     private $amount;
 
@@ -51,6 +63,10 @@ class Input
      * @var DateTimeInterface
      *
      * @ORM\Column(type="datetime")
+     *
+     * @Assert\Type(type="\DateTimeInterface")
+     *
+     * @Gedmo\Timestampable(on="create")
      */
     private $date;
 
@@ -70,8 +86,14 @@ class Input
     /**
      * Category.
      *
-     * @ORM\ManyToOne(targetEntity=Category::class)
+     * @var \Doctrine\Common\Collections\ArrayCollection|\App\Entity\Category[] $categories Categories
+     *
+     * @ORM\ManyToOne(
+     *     targetEntity="App\Entity\Category"
+     * )
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\Type(type="App\Entity\Category")
      */
     private $category;
 

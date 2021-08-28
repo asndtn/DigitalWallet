@@ -7,6 +7,7 @@ namespace App\Entity;
 
 use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -40,6 +41,20 @@ class Category
     private $name;
 
     /**
+     * Code.
+     *
+     * @var string
+     *
+     * @ORM\Column(
+     *     type="string",
+     *     length=45
+     * )
+     *
+     * @Gedmo\Slug(fields={"name"})
+     */
+    private $code;
+
+    /**
      * Getter for Id.
      *
      * @return int|null Result
@@ -67,5 +82,25 @@ class Category
     public function setName(string $name): void
     {
         $this->name = $name;
+    }
+
+    /**
+     * Getter for Code.
+     *
+     * @return string|null Code
+     */
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    /**
+     * Setter for Code.
+     *
+     * @param string $code Code
+     */
+    public function setCode(string $code): void
+    {
+        $this->code = $code;
     }
 }
