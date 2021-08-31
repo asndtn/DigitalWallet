@@ -107,4 +107,10 @@ class WalletRepository extends ServiceEntityRepository
         $this->_em->persist($wallet);
         $this->_em->flush();
     }
+
+    public function delete(Wallet $wallet): void
+    {
+        $this->_em->remove($wallet);
+        $this->_em->flush();
+    }
 }

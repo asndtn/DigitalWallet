@@ -32,7 +32,7 @@ class Wallet
     /**
      * Type.
      *
-     * @ORM\ManyToOne(targetEntity=Type::class, inversedBy="wallets")
+     * @ORM\ManyToOne(targetEntity=Type::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $type;
@@ -48,7 +48,12 @@ class Wallet
     /**
      * Inputs.
      *
-     * @ORM\OneToMany(targetEntity=Input::class, mappedBy="wallets")
+     * @var ArrayCollection|Input[] Input
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="\App\Entity\Input",
+     *     mappedBy="wallet",
+     * )
      */
     private $inputs;
 
@@ -62,10 +67,13 @@ class Wallet
      */
     private $owner;
 
-/**    public function __construct()
+    /**
+     * Wallet constructor.
+     */
+    public function __construct()
     {
         $this->inputs = new ArrayCollection();
-    } **/
+    }
 
     /**
      * Getter for Id.
@@ -118,35 +126,37 @@ class Wallet
     }
 
     /**
-     * Getter for Input.
+     * Getter for inputs.
      *
-     * @return Collection|Input[]
+     * @return \Doctrine\Common\Collections\Collection|\App\Entity\Input[] Inputs collection
      */
     public function getInputs(): Collection
     {
         return $this->inputs;
     }
 
-    public function addInput(Input $input): self
+    /**
+     * Add input to collection.
+     *
+     * @param Input $input Input entity
+     */
+    public function addInput(Input $input): void
     {
         if (!$this->inputs->contains($input)) {
             $this->inputs[] = $input;
-            $input->setWallet($this);
         }
-
-        return $this;
     }
 
-    public function removeInput(Input $input): self
+    /**
+     * Remove input from collection.
+     *
+     * @param Input $input Input entity
+     */
+    public function removeInput(Input $input): void
     {
-        if ($this->inputs->removeElement($input)) {
-            // set the owning side to null (unless already changed)
-            if ($input->getWallet() === $this) {
-                $input->setWallet(null);
-            }
+        if ($this->inputs->contains($input)) {
+            $this->inputs->removeElement($input);
         }
-
-        return $this;
     }
 
     /**

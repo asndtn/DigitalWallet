@@ -35,11 +35,11 @@ class Input
     /**
      * Wallet.
      *
-     * @var \Doctrine\Common\Collections\ArrayCollection|\App\Entity\Wallet[] $wallet Wallets
+     * @var Wallet Wallet
      *
      * @ORM\ManyToOne(
      *     targetEntity="App\Entity\Wallet",
-     *     inversedBy="inputs"
+     *     inversedBy="inputs",
      * )
      * @ORM\JoinColumn(nullable=false)
      */

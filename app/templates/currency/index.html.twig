@@ -6,6 +6,11 @@
 
 {% block body %}
     <h1>{{ 'title_currency_list'|trans }}</h1>
+
+    <p>
+        <a href="{{ url('currency_create') }}" title="{{ 'action_create'|trans}}">{{ 'action_create'|trans }}</a>
+    </p>
+
     {% if pagination is defined and pagination.items|length %}
 
         <div class="navigation text-center">

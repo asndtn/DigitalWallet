@@ -16,6 +16,18 @@
             <dd>{{ wallet.type.name }}</dd>
             <dt>{{ 'label_currency'|trans }}</dt>
             <dd>{{ wallet.currency.name }}</dd>
+            <dt>{{ 'label_inputs'|trans }}</dt>
+            <dd>
+                <ul>
+                    {% if wallet.inputs is defined and wallet.inputs|length %}
+                        {% for input in wallet.inputs %}
+                            <li><a href="{{ url('input_show', {id: input.id}) }}" title="{{ 'action_view'|trans }}">{{ input.amount }}</a></li>
+                        {% endfor %}
+                    {% else %}
+                        &nbsp
+                    {% endif %}
+                </ul>
+            </dd>
         </dl>
         <p>
             <a href="{{ url('wallet_index') }}" title="{{ 'action_back_to_list'|trans}}">{{ 'action_back_to_list'|trans }}</a>
