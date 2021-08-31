@@ -6,6 +6,7 @@
 namespace App\Repository;
 
 use App\Entity\Wallet;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
@@ -43,25 +44,14 @@ class WalletRepository extends ServiceEntityRepository
     }
 
     /**
-     * Query all records by idUser.
+     * Query all records by Id.
      *
      * @return \Doctrine\ORM\QueryBuilder QueryBuilder
      */
-    public function queryAllbyIdUser(): QueryBuilder
+    public function queryAll(): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
-            ->orderBy('wallet.idUser', 'DESC');
-    }
-
-    /**
-     * Query all records by Type.
-     *
-     * @return \Doctrine\ORM\QueryBuilder QueryBuilder
-     */
-    public function queryAllbyType(): QueryBuilder
-    {
-        return $this->getOrCreateQueryBuilder()
-            ->orderBy('wallet.Type', 'DESC');
+            ->orderBy('wallet.id', 'DESC');
     }
 
     /**
@@ -76,6 +66,23 @@ class WalletRepository extends ServiceEntityRepository
     }
 
     /**
+     * Query wallets by owner.
+     *
+     * @param \App\Entity\User $user User entity
+     *
+     * @return \Doctrine\ORM\QueryBuilder Query builder
+     */
+    public function queryByOwner(User $user): QueryBuilder
+    {
+        $queryBuilder = $this->queryAll();
+
+        $queryBuilder->andWhere('wallet.owner = :owner')
+            ->setParameter('owner', $user);
+
+        return $queryBuilder;
+    }
+
+    /**
      * Get or create new query builder.
      *
      * @param QueryBuilder|null $queryBuilder
@@ -85,5 +92,19 @@ class WalletRepository extends ServiceEntityRepository
     private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
     {
         return $queryBuilder ?? $this->createQueryBuilder('wallet');
+    }
+
+    /**
+     * Save record.
+     *
+     * @param \App\Entity\Wallet $wallet Wallet entity
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function save(Wallet $wallet): void
+    {
+        $this->_em->persist($wallet);
+        $this->_em->flush();
     }
 }

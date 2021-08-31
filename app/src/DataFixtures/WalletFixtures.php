@@ -23,9 +23,10 @@ class WalletFixtures extends AbstractBaseFixtures implements DependentFixtureInt
     {
         $this->createMany(50, 'wallets', function ($i) {
             $wallet = new Wallet();
-            $wallet->setIdUser($this->faker->randomDigitNotNull);
             $wallet->setType($this->getRandomReference('types'));
             $wallet->setCurrency($this->getRandomReference('currencies'));
+            $wallet->setOwner($this->getRandomReference('users'));
+            
             return $wallet;
         });
 
@@ -40,6 +41,6 @@ class WalletFixtures extends AbstractBaseFixtures implements DependentFixtureInt
      */
     public function getDependencies(): array
     {
-        return [TypeFixtures::class];
+        return [TypeFixtures::class, CurrencyFixtures::class, UserFixtures::class];
     }
 }

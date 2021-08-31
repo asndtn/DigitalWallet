@@ -10,11 +10,11 @@
         <dl class="dl-horizontal">
             <dt>{{ 'label_id'|trans }}</dt>
             <dd>{{ wallet.id }}</dd>
-            <dt>{{ 'label_id_user'|trans }}</dt>
-            <dd>{{ wallet.idUser }}</dd>
-            <dt>{{ 'label_wallet_type'|trans }}</dt>
-            <dd>{{ wallet.idwallettype.name }}</dd>
-            <dt>{{ 'label_wallet_currency'|trans }}</dt>
+            <dt>{{ 'label_email'|trans }}</dt>
+            <dd>{{ wallet.owner.email }}</dd>
+            <dt>{{ 'label_type'|trans }}</dt>
+            <dd>{{ wallet.type.name }}</dd>
+            <dt>{{ 'label_currency'|trans }}</dt>
             <dd>{{ wallet.currency.name }}</dd>
         </dl>
         <p>

@@ -16,7 +16,7 @@
             <thead>
             <tr>
                 <th>{{ knp_pagination_sortable(pagination, 'label_id'|trans, 'wallet.id') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'label_id_user'|trans, 'wallet.idUser') }}</th>
+                <th>{{ 'label_email' }}</th>
                 <th>{{ 'label_type'|trans }}</th>
                 <th>{{ 'label_wallet_currency'|trans }}</th>
                 <th>{{ 'label_actions'|trans }}</th>
@@ -26,11 +26,27 @@
             {% for wallet in pagination.items %}
                 <tr>
                     <td>{{ wallet.id }}</td>
-                    <td>{{ wallet.idUser }}</td>
+                    <td>{{ wallet.owner.email }}</td>
                     <td>{{ wallet.type.name }}</td>
                     <td>{{ wallet.currency.name }}</td>
                     <td>
-                        <a href="{{ url('wallet_show', {id: wallet.id}) }}" title="{{ 'action_view'|trans }}">{{ 'action_view'|trans }}</a>
+                        <ul>
+                            <li>
+                                {% if is_granted('VIEW', wallet) %}
+                                <a href="{{ url('wallet_show', {id: wallet.id}) }}" title="{{ 'action_view'|trans }}">{{ 'action_view'|trans }}</a>
+                                {% endif %}
+                            </li>
+                            <li>
+                                {% if is_granted('EDIT', wallet) %}
+                                <a href="{{ url('wallet_edit', {id: wallet.id}) }}" title="{{ 'action_edit'|trans }}">{{ "action_edit"|trans }}</a>
+                                {% endif %}
+                            </li>
+                            <li>
+                                {% if is_granted('DELETE', wallet) %}
+                                <a href="{{ url('wallet_delete', {id: wallet.id}) }}" title="{{ 'action_delete'|trans }}">{{ "action_delete"|trans }}</a>
+                                {% endif %}
+                            </li>
+                        </ul>
                     </td>
                 </tr>
             {% endfor %}

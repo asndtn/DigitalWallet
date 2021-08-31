@@ -30,15 +30,6 @@ class Wallet
     private $id;
 
     /**
-     * idUser.
-     *
-     * @var int
-     *
-     * @ORM\Column(type="integer")
-     */
-    private $idUser;
-
-    /**
      * Type.
      *
      * @ORM\ManyToOne(targetEntity=Type::class, inversedBy="wallets")
@@ -61,6 +52,16 @@ class Wallet
      */
     private $inputs;
 
+    /**
+     * Owner.
+     *
+     * @var \App\Entity\User
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $owner;
+
 /**    public function __construct()
     {
         $this->inputs = new ArrayCollection();
@@ -74,26 +75,6 @@ class Wallet
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * Getter for idUser.
-     *
-     * @return int|null idUser
-     */
-    public function getIdUser(): ?int
-    {
-        return $this->idUser;
-    }
-
-    /**
-     * Setter for idUser.
-     *
-     * @param int $idUser idUser
-     */
-    public function setIdUser(int $idUser): void
-    {
-        $this->idUser = $idUser;
     }
 
     /**
@@ -137,6 +118,8 @@ class Wallet
     }
 
     /**
+     * Getter for Input.
+     *
      * @return Collection|Input[]
      */
     public function getInputs(): Collection
@@ -164,6 +147,26 @@ class Wallet
         }
 
         return $this;
+    }
+
+    /**
+     * Getter for Owner.
+     *
+     * @return User|null
+     */
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    /**
+     * Setter for Owner.
+     *
+     * @param User|null $owner
+     */
+    public function setOwner(?User $owner): void
+    {
+        $this->owner = $owner;
     }
 
 }
