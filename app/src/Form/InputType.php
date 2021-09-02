@@ -11,6 +11,7 @@ use App\Entity\Wallet;
 use App\Entity\Tag;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -85,8 +86,7 @@ class InputType extends AbstractType
                 'required' => true,
             ]
         );
-
-        $builder-> add(
+       $builder-> add(
             'wallet',
             EntityType::class,
             [

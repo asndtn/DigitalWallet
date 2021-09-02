@@ -6,7 +6,7 @@
 namespace App\Controller;
 
 use App\Entity\Tag;
-use App\Repository\TagRepository;
+use App\Service\TagService;
 use App\Form\TagType;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,11 +23,26 @@ use Symfony\Component\Routing\Annotation\Route;
 class TagController extends AbstractController
 {
     /**
-     * Index action.
+     * Tag service.
+     *
+     * @var TagService
+     */
+    private $tagService;
+
+    /**
+     * Tag Controller constructor.
+     *
+     * @param TagService $tagService Tag service
+     */
+    public function __construct(TagService $tagService)
+    {
+        $this->tagService = $tagService;
+    }
+
+    /**
+     * Index tag.
      *
      * @param Request $request HTTP request
-     * @param TagRepository $tagRepository TagRepository
-     * @param PaginatorInterface $paginator Paginator
      * @return Response HTTP response
      *
      * @Route(
@@ -36,13 +51,10 @@ class TagController extends AbstractController
      *     name="tag_index",
      * )
      */
-    public function index(Request $request, TagRepository $tagRepository, PaginatorInterface $paginator): Response
+    public function index(Request $request): Response
     {
-        $pagination = $paginator->paginate(
-            $tagRepository->queryAll(),
-            $request->query->getInt('page', 1),
-            TagRepository::PAGINATOR_ITEMS_PER_PAGE
-        );
+        $page = $request->query->getInt('page', 1);
+        $pagination = $this->tagService->createPaginatedList($page);
 
         return $this->render(
             'tag/index.html.twig',
@@ -75,10 +87,9 @@ class TagController extends AbstractController
     /**
      * Create action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Repository\TagRepository        $tagRepository Tag repository
+     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return \Symfony\Component\HttpFoundation\Response           HTTP response
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
@@ -89,14 +100,14 @@ class TagController extends AbstractController
      *     name="tag_create",
      * )
      */
-    public function create(Request $request, TagRepository $tagRepository): Response
+    public function create(Request $request): Response
     {
         $tag = new Tag();
         $form = $this->createForm(TagType::class, $tag);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $tagRepository->save($tag);
+            $this->tagService->save($tag);
 
             $this->addFlash('success', 'message_created_successfully');
 
@@ -112,9 +123,8 @@ class TagController extends AbstractController
     /**
      * Edit action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Entity\Tag                      $tag           Tag entity
-     * @param \App\Repository\TagRepository        $tagRepository Tag repository
+     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
+     * @param \App\Entity\Tag $tag Tag entity
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -128,13 +138,13 @@ class TagController extends AbstractController
      *     name="tag_edit",
      * )
      */
-    public function edit(Request $request, Tag $tag, TagRepository $tagRepository): Response
+    public function edit(Request $request, Tag $tag): Response
     {
         $form = $this->createForm(TagType::class, $tag, ['method' => 'PUT']);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $tagRepository->save($tag);
+            $this->tagService->save($tag);
 
             $this->addFlash('success', 'message_updated_successfully');
 
@@ -153,9 +163,8 @@ class TagController extends AbstractController
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Entity\Tag                      $tag           Tag entity
-     * @param \App\Repository\TagRepository        $tagRepository Tag repository
+     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
+     * @param \App\Entity\Tag $tag Tag entity
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -169,8 +178,9 @@ class TagController extends AbstractController
      *     name="tag_delete",
      * )
      */
-    public function delete(Request $request, Tag $tag, TagRepository $tagRepository): Response
+    public function delete(Request $request, Tag $tag): Response
     {
+        //TODO restraining from deleting a tag that relates to any input
         $form = $this->createForm(FormType::class, $tag, ['method' => 'DELETE']);
         $form->handleRequest($request);
 
@@ -179,7 +189,7 @@ class TagController extends AbstractController
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $tagRepository->delete($tag);
+            $this->tagService->delete($tag);
             $this->addFlash('success', 'message_deleted_successfully');
 
             return $this->redirectToRoute('tag_index');

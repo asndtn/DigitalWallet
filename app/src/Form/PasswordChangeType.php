@@ -11,7 +11,6 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Test\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use const _HumbugBox7eb78fbcc73e\RD_KAFKA_RESP_ERR__PARTITION_EOF;
 
 /**
  * Class PasswordChangeType.
