@@ -20,12 +20,8 @@
             <thead>
             <tr>
                 <th>{{ knp_pagination_sortable(pagination, 'label_id'|trans, 'input.id') }}</th>
-
                 <th>{{ knp_pagination_sortable(pagination, 'label_amount'|trans, 'input.amount') }}</th>
-                <th>{{ 'label_wallet'|trans }}</th>
-                <th>{{ 'label_wallet_id'|trans }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'label_date'|trans, 'input.date') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'label_description'|trans, 'input.description') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'label_category'|trans, 'input.category.name') }}</th>
                 <th>{{ 'label_tags'|trans }}</th>
                 <th>{{ 'label_actions'|trans }}</th>
@@ -36,10 +32,7 @@
                 <tr>
                     <td>{{ input.id }}</td>
                     <td>{{ input.amount }}</td>
-                    <td>{{ input.wallet.type.name }}</td>
-                    <td>{{ input.wallet.id }}</td>
                     <td>{{ input.date|format_date('long') }}</td>
-                    <td>{{ input.description }}</td>
                     <td>{{ input.category.name }}</td>
                     <td>
                         {% if input.tags is defined and input.tags|length %}

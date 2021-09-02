@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title.app_register'|trans }}
+{% endblock %}
+
+{% block body %}
+
+    {% if app.user %}
+        <div class="mb-3">
+            {{'you_are_logged_in_as'|trans}} {{ app.user.userDetail.name }}, <a href="{{ path('app_logout') }}">Logout</a>
+        </div>
+    {% endif %}
+
+    <h1>{{ 'title.app_register'|trans }}</h1>
+    {{ form_start(form, { method: 'POST', action: url('app_register') }) }}
+    {{ form_widget(form) }}
+    <div class="form-group row float-sm-right">
+        <input type="submit" value="{{ 'action.save'|trans }}" class="btn btn-primary" />
+    </div>
+    <div class="form-group row float-sm-left">
+        <a href="{{ url('app_login') }}" class="btn btn-link">
+            {{ 'action.back_to_list'|trans }}
+        </a>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

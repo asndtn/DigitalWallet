@@ -50,6 +50,13 @@ class InputRepository extends ServiceEntityRepository
     public function queryAll(): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
+            ->select(
+                'partial input.{id, amount, date, category}',
+                    'partial category.{id, name}',
+                    'partial tags.{id, name}'
+            )
+            ->join('input.category', 'category')
+            ->leftJoin('input.tags', 'tags')
             ->orderBy('input.category', 'DESC');
     }
 

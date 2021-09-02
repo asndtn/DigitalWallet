@@ -80,6 +80,14 @@ class Input
      *     length=255,
      *     nullable=true
      * )
+     *
+     * @Assert\Length(
+     *     min = 2,
+     *     max = 255,
+     *     minMessage = "Description must be at least {{ limit }} characters long.",
+     *     maxMessage = "Description cannot be longer than {{ limit }} characters.",
+     *     allowEmptyString = false
+     * )
      */
     private $description;
 

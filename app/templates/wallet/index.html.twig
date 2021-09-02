@@ -21,10 +21,8 @@
             <thead>
             <tr>
                 <th>{{ knp_pagination_sortable(pagination, 'label_id'|trans, 'wallet.id') }}</th>
-                <th>{{ 'label_email' }}</th>
                 <th>{{ 'label_type'|trans }}</th>
                 <th>{{ 'label_wallet_currency'|trans }}</th>
-                <th>{{ 'label_inputs'|trans }}</th>
                 <th>{{ 'label_actions'|trans }}</th>
             </tr>
             </thead>
@@ -32,18 +30,8 @@
             {% for wallet in pagination.items %}
                 <tr>
                     <td>{{ wallet.id }}</td>
-                    <td>{{ wallet.owner.email }}</td>
                     <td>{{ wallet.type.name }}</td>
                     <td>{{ wallet.currency.name }}</td>
-                    <td>
-                        {% if wallet.inputs is defined and wallet.inputs|length %}
-                            {% for input in wallet.inputs %}
-                                {{ input.amount }}
-                            {% endfor %}
-                        {% else %}
-                            &nbsp
-                        {% endif %}
-                    </td>
                     <td>
                         <ul>
                             <li>

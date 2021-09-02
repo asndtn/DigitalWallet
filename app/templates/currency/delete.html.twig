@@ -1,20 +1,11 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}
-    {{ 'title_currency_delete'|trans({'%id%': currency.id|default('')}) }}
-{% endblock %}
-
-{% block body %}
-    <h1>{{ 'title_currency_delete'|trans({'%id%': currency.id|default('')}) }}</h1>
-    {{ form_start(form, { method: 'DELETE', action: url('currency_delete', {id: currency.id}) }) }}
-    {{ form_widget(form) }}
-    <div class="form-group row float-sm-right">
-        <input type="submit" value="{{ 'action_save'|trans }}" class="btn btn-primary" />
-    </div>
-    <div class="form-group row float-sm-left">
-        <a href="{{ url('currency_index') }}" class="btn btn-link">
-            {{ 'action_back_to_list'|trans }}
-        </a>
-    </div>
-    {{ form_end(form) }}
-{% endblock %}
+{% include 'default/_form.html.twig' with {
+    page_title: 'title_currency_delete',
+    page_title_param: {'%id%': currency.id},
+    attr: {
+        method: 'DELETE',
+        action: url('currency_delete', {'id': currency.id}),
+    },
+    form: form,
+    submit_label: 'action_delete'|trans,
+    back_to_list_path: 'currency_index',
+} %}
