@@ -25,7 +25,7 @@ class TagService
     /**
      * Paginator.
      *
-     * @var \Knp\Component\Pager\Pagination\PaginationInterface
+     * @var \Knp\Component\Pager\PaginatorInterface
      */
     private $paginator;
 

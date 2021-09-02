@@ -6,9 +6,8 @@
 namespace App\Controller;
 
 use App\Entity\Input;
-use App\Repository\InputRepository;
 use App\Form\InputType;
-use Knp\Component\Pager\PaginatorInterface;
+use App\Service\InputService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,12 +22,26 @@ use Symfony\Component\Routing\Annotation\Route;
 class InputController extends AbstractController
 {
     /**
-     * Index action.
+     * Input service.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request        HTTP request
-     * @param \App\Repository\TypeRepository            $typeRepository Type repository
-     * @param \Knp\Component\Pager\PaginatorInterface   $paginator      Paginator
+     * @var \App\Service\InputService
+     */
+    private $inputService;
+
+    /**
+     * InputController constructor.
      *
+     * @param InputService $inputService
+     */
+    public function __construct(InputService $inputService)
+    {
+        $this->inputService = $inputService;
+    }
+
+    /**
+     * Index input.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
      * @return \Symfony\Component\HttpFoundation\Response HTTP Response
      *
      * @Route(
@@ -37,13 +50,10 @@ class InputController extends AbstractController
      *     name="input_index",
      * )
      */
-    public function index(Request $request, InputRepository $inputRepository, PaginatorInterface $paginator): Response
+    public function index(Request $request): Response
     {
-        $pagination = $paginator->paginate(
-            $inputRepository->queryAll(),
-            $request->query->getInt('page', 1),
-            InputRepository::PAGINATOR_ITEMS_PER_PAGE
-        );
+        $page = $request->query->getInt('page', 1);
+        $pagination = $this->inputService->createPaginatedList($page);
 
         return $this->render(
             'input/index.html.twig',
@@ -52,7 +62,7 @@ class InputController extends AbstractController
     }
 
     /**
-     * Show action.
+     * Show Input.
      *
      * @param \App\Entity\Input $input Input entity
      *
@@ -77,8 +87,6 @@ class InputController extends AbstractController
      * Create action.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Repository\InputRepository        $inputRepository Input repository
-     *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
      * @throws \Doctrine\ORM\ORMException
@@ -90,7 +98,7 @@ class InputController extends AbstractController
      *     name="input_create",
      * )
      */
-    public function create(Request $request, InputRepository $inputRepository): Response
+    public function create(Request $request): Response
     {
         $input = new Input();
         $form = $this->createForm(InputType::class, $input);
@@ -98,7 +106,8 @@ class InputController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $input->setDate(new \DateTime());
-            $inputRepository->save($input);
+            $this->inputService->save($input);
+
             $this->addFlash('success', 'input_created_successfully');
 
             return $this->redirectToRoute('input_index');
@@ -114,10 +123,9 @@ class InputController extends AbstractController
      * Edit action.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Entity\Input                      $input           Input entity
-     * @param \App\Repository\InputRepository        $inputRepository Input repository
+     * @param \App\Entity\Input                         $input              Input entity
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return \Symfony\Component\HttpFoundation\Response                   HTTP response
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
@@ -129,13 +137,13 @@ class InputController extends AbstractController
      *     name="input_edit",
      * )
      */
-    public function edit(Request $request, Input $input, InputRepository $inputRepository): Response
+    public function edit(Request $request, Input $input): Response
     {
         $form = $this->createForm(InputType::class, $input, ['method' => 'PUT']);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $inputRepository->save($input);
+            $this->inputService->save($input);
 
             $this->addFlash('success', 'message_updated_successfully');
 
@@ -156,7 +164,6 @@ class InputController extends AbstractController
      *
      * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
      * @param \App\Entity\Input                         $input              Input entity
-     * @param \App\Repository\InputRepository           $inputRepository    Input repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -170,7 +177,7 @@ class InputController extends AbstractController
      *     name="input_delete",
      * )
      */
-    public function delete(Request $request, Input $input, InputRepository $inputRepository): Response
+    public function delete(Request $request, Input $input): Response
     {
         $form = $this->createForm(FormType::class, $input, ['method' => 'DELETE']);
         $form->handleRequest($request);
@@ -180,7 +187,8 @@ class InputController extends AbstractController
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $inputRepository->delete($input);
+            $this->inputService->delete($input);
+
             $this->addFlash('success', 'message.deleted_successfully');
 
             return $this->redirectToRoute('input_index');

@@ -1,26 +1,26 @@
 <?php
 /**
- * Category service.
+ * Input service.
  */
 
 namespace App\Service;
 
-use App\Entity\Category;
-use App\Repository\CategoryRepository;
+use App\Entity\Input;
+use App\Repository\InputRepository;
 use \Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 
 /**
- * Class CategoryService.
+ * Class InputService.
  */
-class CategoryService
+class InputService
 {
     /**
-     * Category repository.
+     * Input repository.
      *
-     * @var \App\Repository\CategoryRepository
+     * @var \App\Repository\InputRepository
      */
-    private $categoryRepository;
+    private $inputRepository;
 
     /**
      * Paginator.
@@ -30,14 +30,14 @@ class CategoryService
     private $paginator;
 
     /**
-     * Category service constructor.
+     * Input service constructor.
      *
-     * @param \App\Repository\CategoryRepository $categoryRepository    Category repository
+     * @param \App\Repository\InputRepository $inputRepository    Input repository
      * @param \Knp\Component\Pager\PaginatorInterface $paginator        Paginator
      */
-    public function __construct(CategoryRepository $categoryRepository, PaginatorInterface $paginator)
+    public function __construct(InputRepository $inputRepository, PaginatorInterface $paginator)
     {
-        $this->categoryRepository = $categoryRepository;
+        $this->inputRepository = $inputRepository;
         $this->paginator = $paginator;
     }
 
@@ -51,35 +51,35 @@ class CategoryService
     public function createPaginatedList(int $page): PaginationInterface
     {
         return $this->paginator->paginate(
-            $this->categoryRepository->queryAll(),
+            $this->inputRepository->queryAll(),
             $page,
-            CategoryRepository::PAGINATOR_ITEMS_PER_PAGE
+            InputRepository::PAGINATOR_ITEMS_PER_PAGE
         );
     }
 
     /**
-     * Save category.
+     * Save input.
      *
-     * @param Category $category Category entity
+     * @param Input $input Input entity
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function save(Category $category): void
+    public function save(Input $input): void
     {
-        $this->categoryRepository->save($category);
+        $this->inputRepository->save($input);
     }
 
     /**
-     * Delete category.
+     * Delete input.
      *
-     * @param Category $category Category entity
+     * @param Input $input Input entity
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function delete(Category $category): void
+    public function delete(Input $input): void
     {
-        $this->categoryRepository->delete($category);
+        $this->inputRepository->delete($input);
     }
 }
