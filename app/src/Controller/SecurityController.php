@@ -6,6 +6,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\PasswordChangeType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -86,6 +87,53 @@ class SecurityController extends AbstractController
         return $this->render(
             'security/register.html.twig',
             ['form' => $form->createView()]
+        );
+    }
+
+    /**
+     * Password change action.
+     *
+     * @param Request                       $request        HTTP Request
+     * @param User                          $user           User entity
+     * @param UserRepository                $userRepository User Repository
+     * @param UserPasswordEncoderInterface $passwordEncoder Password Encoder
+     *
+     * @return Response HTTP Response
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     *
+     * @Route(
+     *     "user/{id}/passwordChange",
+     *     methods={"GET", "PUT"},
+     *     requirements={"id": "[1-9]\d*"},
+     *     name="app_changePassword",
+     * )
+     */
+    public function passwordChange(Request $request, User $user, UserRepository $userRepository, UserPasswordEncoderInterface $passwordEncoder): Response
+    {
+        $form = $this->createForm(PasswordChangeType::class, $user, ['method' => 'PUT']);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user->setPassword(
+                $passwordEncoder->encodePassword(
+                    $user,
+                    $user->getPassword()
+                )
+            );
+
+            $userRepository->save($user);
+
+            $this->addFlash('success', 'message_updated_successfully');
+        }
+
+        return $this->render(
+            'security/passwordchange.html.twig',
+            [
+                'form' => $form->createView(),
+                'user' => $user,
+            ]
         );
     }
 
