@@ -6,9 +6,8 @@
 namespace App\Controller;
 
 use App\Entity\Type;
-use App\Repository\TypeRepository;
 use App\Form\TypeType;
-use Knp\Component\Pager\PaginatorInterface;
+use App\Service\TypeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,11 +22,27 @@ use Symfony\Component\Routing\Annotation\Route;
 class TypeController extends AbstractController
 {
     /**
+     * Type service.
+     *
+     * @var \App\Service\TypeService
+     */
+    private $typeService;
+
+    /**
+     * Type controller constructor.
+     *
+     * @param TypeService $typeService Type service
+     */
+    public function __construct(TypeService $typeService)
+    {
+        $this->typeService = $typeService;
+    }
+
+    /**
      * Index action.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
-     * @param \App\Repository\TypeRepository $typeRepository
-     * @param \Knp\Component\Pager\PaginatorInterface $paginator Paginator
+     *
      * @return \Symfony\Component\HttpFoundation\Response HTTP Response
      *
      * @Route(
@@ -36,13 +51,10 @@ class TypeController extends AbstractController
      *     name="type_index",
      * )
      */
-    public function index(Request $request, TypeRepository $typeRepository, PaginatorInterface $paginator): Response
+    public function index(Request $request): Response
     {
-        $pagination = $paginator->paginate(
-            $typeRepository->queryAll(),
-            $request->query->getInt('page', 1),
-            TypeRepository::PAGINATOR_ITEMS_PER_PAGE
-        );
+        $page = $request->query->getInt('page', 1);
+        $pagination = $this->typeService->createPaginatedList($page);
 
         return $this->render(
             'type/index.html.twig',
@@ -76,7 +88,6 @@ class TypeController extends AbstractController
      * Create action.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Repository\TypeRepository        $typeRepository Type repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -89,15 +100,14 @@ class TypeController extends AbstractController
      *     name="type_create",
      * )
      */
-    public function create(Request $request, TypeRepository $typeRepository): Response
+    public function create(Request $request): Response
     {
         $type = new Type();
         $form = $this->createForm(TypeType::class, $type);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $typeRepository->save($type);
-
+            $this->typeService->save($type);
             $this->addFlash('success', 'message_created_successfully');
 
             return $this->redirectToRoute('type_index');
@@ -114,7 +124,6 @@ class TypeController extends AbstractController
      *
      * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
      * @param \App\Entity\Type                      $type           Type entity
-     * @param \App\Repository\TypeRepository        $typeRepository Type repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -128,14 +137,13 @@ class TypeController extends AbstractController
      *     name="type_edit",
      * )
      */
-    public function edit(Request $request, Type $type, TypeRepository $typeRepository): Response
+    public function edit(Request $request, Type $type): Response
     {
         $form = $this->createForm(TypeType::class, $type, ['method' => 'PUT']);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $typeRepository->save($type);
-
+            $this->typeService->save($type);
             $this->addFlash('success', 'message_updated_successfully');
 
             return $this->redirectToRoute('type_index');
@@ -155,7 +163,6 @@ class TypeController extends AbstractController
      *
      * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
      * @param \App\Entity\Type                      $type           Type entity
-     * @param \App\Repository\TypeRepository        $typeRepository Type repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -169,7 +176,7 @@ class TypeController extends AbstractController
      *     name="type_delete",
      * )
      */
-    public function delete(Request $request, Type $type, TypeRepository $typeRepository): Response
+    public function delete(Request $request, Type $type): Response
     {
         $form = $this->createForm(FormType::class, $type, ['method' => 'DELETE']);
         $form->handleRequest($request);
@@ -179,7 +186,7 @@ class TypeController extends AbstractController
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $typeRepository->delete($type);
+            $this->typeService->delete($type);
             $this->addFlash('success', 'message.deleted_successfully');
 
             return $this->redirectToRoute('type_index');
