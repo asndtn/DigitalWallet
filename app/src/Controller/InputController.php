@@ -8,6 +8,7 @@ namespace App\Controller;
 use App\Entity\Input;
 use App\Form\InputType;
 use App\Service\InputService;
+use App\Service\WalletService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,8 +53,16 @@ class InputController extends AbstractController
      */
     public function index(Request $request): Response
     {
-        $page = $request->query->getInt('page', 1);
-        $pagination = $this->inputService->createPaginatedList($page);
+        $filters = [];
+        $filters['category_id'] = $request->query->getInt('filters_category_id');
+        $filters['tag_id'] = $request->query->getInt('filters_tag_id');
+        $filters['wallet_id'] =$request->query->getInt('filters_wallet_id');
+
+        $pagination = $this->inputService->createPaginatedList(
+            $request->query->getInt('page', 1),
+            $this->getUser(),
+            $filters
+        );
 
         return $this->render(
             'input/index.html.twig',

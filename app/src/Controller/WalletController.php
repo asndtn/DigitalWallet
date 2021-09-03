@@ -53,14 +53,14 @@ class WalletController extends AbstractController
      */
     public function index(Request $request): Response
     {
-        $filters = [];
-        $filters['type_id'] = $request->query->getInt('filters_type_id');
-        $filters['currency_id'] = $request->query->getInt('filters_currency_id');
+//        $filters = [];
+//        $filters['type_id'] = $request->query->getInt('filters_type_id');
+//        $filters['currency_id'] = $request->query->getInt('filters_currency_id');
 
         $pagination = $this->walletService->createPaginatedList(
             $request->query->getInt('page', 1),
             $this->getUser(),
-            $filters
+            $request->query->getAlnum('filters', [])
         );
 
         return $this->render(

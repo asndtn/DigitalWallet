@@ -5,7 +5,11 @@
 
 namespace App\Repository;
 
+use App\Entity\Category;
 use App\Entity\Input;
+use App\Entity\Tag;
+use App\Entity\User;
+use App\Entity\Wallet;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
@@ -43,21 +47,45 @@ class InputRepository extends ServiceEntityRepository
     }
 
     /**
+     * Query wallets by owner.
+     *
+     * @param \App\Entity\User $user    User entity
+     * @param array            $filters Filters array
+     *
+     * @return QueryBuilder
+     */
+    public function queryByOwner(User $user, array $filters = []): QueryBuilder
+    {
+        $queryBuilder = $this->queryAll($filters);
+        $queryBuilder->andWhere('wallet.owner = :owner')
+            ->setParameter('owner', $user);
+
+        return $queryBuilder;
+    }
+
+    /**
      * Query all records.
+     *
+     * @param array $filters Filters array
      *
      * @return \Doctrine\ORM\QueryBuilder QueryBuilder
      */
-    public function queryAll(): QueryBuilder
+    public function queryAll(array $filters): QueryBuilder
     {
-        return $this->getOrCreateQueryBuilder()
+        $queryBuilder = $this->getOrCreateQueryBuilder()
             ->select(
                 'partial input.{id, amount, date, category}',
-                    'partial category.{id, name}',
-                    'partial tags.{id, name}'
+                'partial category.{id, name}',
+                'partial tags.{id, name}',
+                'wallet'
             )
             ->join('input.category', 'category')
+            ->join('input.wallet', 'wallet')
             ->leftJoin('input.tags', 'tags')
             ->orderBy('input.category', 'DESC');
+        $queryBuilder = $this->applyFiltersToList($queryBuilder, $filters);
+
+        return $queryBuilder;
     }
 
     /**
@@ -98,5 +126,33 @@ class InputRepository extends ServiceEntityRepository
     {
         $this->_em->remove($input);
         $this->_em->flush();
+    }
+
+    /**
+     * Apply filters to paginated list.
+     *
+     * @param \Doctrine\ORM\QueryBuilder $queryBuilder Query builder
+     * @param array                      $filters      Filters array
+     *
+     * @return \Doctrine\ORM\QueryBuilder Query builder
+     */
+    private function applyFiltersToList(QueryBuilder $queryBuilder, array $filters = []): QueryBuilder
+    {
+        if (isset($filters['category']) && $filters['category'] instanceof Category) {
+            $queryBuilder->andWhere('category = :category')
+                ->setParameter('category', $filters['category']);
+        }
+
+        if (isset($filters['tag']) && $filters['tag'] instanceof Tag) {
+            $queryBuilder->andWhere('tags IN (:tag)')
+                ->setParameter('tag', $filters['tag']);
+        }
+
+        if (isset($filters['wallet']) && $filters['wallet'] instanceof Wallet) {
+            $queryBuilder->andWhere('wallet = :wallet')
+                ->setParameter('wallet', $filters['wallet']);
+        }
+
+        return $queryBuilder;
     }
 }

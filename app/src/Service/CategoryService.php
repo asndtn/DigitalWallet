@@ -32,8 +32,8 @@ class CategoryService
     /**
      * Category service constructor.
      *
-     * @param \App\Repository\CategoryRepository $categoryRepository    Category repository
-     * @param \Knp\Component\Pager\PaginatorInterface $paginator        Paginator
+     * @param \App\Repository\CategoryRepository      $categoryRepository Category repository
+     * @param \Knp\Component\Pager\PaginatorInterface $paginator          Paginator
      */
     public function __construct(CategoryRepository $categoryRepository, PaginatorInterface $paginator)
     {
@@ -81,5 +81,17 @@ class CategoryService
     public function delete(Category $category): void
     {
         $this->categoryRepository->delete($category);
+    }
+
+    /**
+     * Find category by Id.
+     *
+     * @param int $id Category Id
+     *
+     * @return \App\Entity\Category|null Category entity
+     */
+    public function findOneById(int $id): ?Category
+    {
+        return $this->categoryRepository->findOneById($id);
     }
 }

@@ -33,14 +33,16 @@
                     <td>{{ input.id }}</td>
                     <td>{{ input.amount }}</td>
                     <td>{{ input.date|format_date('long') }}</td>
-                    <td>{{ input.category.name }}</td>
+                    <td><a href="{{ url('input_index', {'filters.category_id' : input.category.id}) }}" title="{{ input.category.id }}">{{ input.category.name }}</a></td>
                     <td>
                         {% if input.tags is defined and input.tags|length %}
                             {% for tag in input.tags %}
-                                {{ tag.name }}
+                                <a href="{{ url('input_index', {'filters.tag_id' : tag.id}) }}" title="{{ tag.name }}">
+                                    {{ tag.name }}
+                                </a>
                             {% endfor %}
                         {% else %}
-                            &nbsp
+                            &nbsp;
                         {% endif %}
                     </td>
 
