@@ -26,7 +26,17 @@
                 <td>{{ type.id }}</td>
                 <td>{{ type.name }}</td>
                 <td>
-                    <a href="{{ url('type_show', {id: type.id}) }}" title="{{ 'action_view'|trans }}">{{ 'action_view'|trans }}
+                    <ul>
+                        <li>
+                            <a href="{{ url('type_show', {id: type.id}) }}" title="{{ 'action_view'|trans }}">{{ 'action_view'|trans }}</a>
+                        </li>
+                        <li>
+                            <a href="{{ url('type_edit', {id: type.id}) }}" title="{{ 'action_edit'|trans }}">{{ 'action_edit'|trans }}</a>
+                        </li>
+                        <li>
+                            <a href="{{ url('type_delete', {id: type.id}) }}" title="{{ 'action_delete'|trans }}">{{ 'action_delete'|trans }}</a>
+                        </li>
+                    </ul>
                 </td>
             </tr>
         {% endfor %}

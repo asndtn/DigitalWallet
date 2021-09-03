@@ -31,7 +31,17 @@
                     <td>{{ currency.id }}</td>
                     <td>{{ currency.name }}</td>
                     <td>
-                        <a href="{{ url('currency_show', {id: currency.id}) }}" title="{{ 'action_view'|trans }}">{{ 'action_view'|trans }}</a>
+                        <ul>
+                            <li>
+                                <a href="{{ url('currency_show', {id: currency.id}) }}" title="{{ 'action_view'|trans }}">{{ 'action_view'|trans }}</a>
+                            </li>
+                            <li>
+                                <a href="{{ url('currency_edit', {id: currency.id}) }}" title="{{ 'action_edit'|trans }}">{{ 'action_edit'|trans }}</a>
+                            </li>
+                            <li>
+                                <a href="{{ url('currency_delete', {id: currency.id}) }}" title="{{ 'action_delete'|trans }}">{{ 'action_delete'|trans }}</a>
+                            </li>
+                        </ul>
                     </td>
                 </tr>
             {% endfor %}

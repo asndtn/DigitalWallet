@@ -63,4 +63,32 @@ class TypeRepository extends ServiceEntityRepository
     {
         return $queryBuilder ?? $this->createQueryBuilder('type');
     }
+
+    /**
+     * Save type.
+     *
+     * @param Type $type Type entity
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function save(Type $type): void
+    {
+        $this->_em->persist($type);
+        $this->_em->flush();
+    }
+
+    /**
+     * Delete record.
+     *
+     * @param \App\Entity\Type $type Type entity
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function delete(Type $type): void
+    {
+        $this->_em->remove($type);
+        $this->_em->flush();
+    }
 }
