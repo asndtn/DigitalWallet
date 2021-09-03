@@ -6,9 +6,8 @@
 namespace App\Controller;
 
 use App\Entity\Currency;
-use App\Repository\CurrencyRepository;
 use App\Form\CurrencyType;
-use Knp\Component\Pager\PaginatorInterface;
+use App\Service\CurrencyService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,11 +22,27 @@ use Symfony\Component\Routing\Annotation\Route;
 class CurrencyController extends AbstractController
 {
     /**
+     * Currency service.
+     *
+     * @var \App\Service\CurrencyService
+     */
+    private $currencyService;
+
+    /**
+     * Currency controller constructor.
+     *
+     * @param CurrencyService $currencyService Currency service
+     */
+    public function __construct(CurrencyService $currencyService)
+    {
+        $this->currencyService = $currencyService;
+    }
+
+    /**
      * Index action.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
-     * @param \App\Repository\CurrencyRepository $currencyRepository
-     * @param \Knp\Component\Pager\PaginatorInterface $paginator Paginator
+     *
      * @return \Symfony\Component\HttpFoundation\Response HTTP Response
      *
      * @Route(
@@ -36,13 +51,10 @@ class CurrencyController extends AbstractController
      *     name="currency_index",
      * )
      */
-    public function index(Request $request, CurrencyRepository $currencyRepository, PaginatorInterface $paginator): Response
+    public function index(Request $request): Response
     {
-        $pagination = $paginator->paginate(
-            $currencyRepository->queryAll(),
-            $request->query->getInt('page', 1),
-            CurrencyRepository::PAGINATOR_ITEMS_PER_PAGE
-        );
+        $page = $request->query->getInt('page', 1);
+        $pagination = $this->currencyService->createPaginatedList($page);
 
         return $this->render(
             'currency/index.html.twig',
@@ -76,7 +88,6 @@ class CurrencyController extends AbstractController
      * Create action.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Repository\CurrencyRepository        $currencyRepository Currency repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -89,15 +100,14 @@ class CurrencyController extends AbstractController
      *     name="currency_create",
      * )
      */
-    public function create(Request $request, CurrencyRepository $currencyRepository): Response
+    public function create(Request $request): Response
     {
         $currency = new Currency();
         $form = $this->createForm(CurrencyType::class, $currency);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $currencyRepository->save($currency);
-
+            $this->currencyService->save($currency);
             $this->addFlash('success', 'message_created_successfully');
 
             return $this->redirectToRoute('currency_index');
@@ -114,7 +124,6 @@ class CurrencyController extends AbstractController
      *
      * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
      * @param \App\Entity\Currency                      $currency           Currency entity
-     * @param \App\Repository\CurrencyRepository        $currencyRepository Currency repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -128,14 +137,13 @@ class CurrencyController extends AbstractController
      *     name="currency_edit",
      * )
      */
-    public function edit(Request $request, Currency $currency, CurrencyRepository $currencyRepository): Response
+    public function edit(Request $request, Currency $currency): Response
     {
         $form = $this->createForm(CurrencyType::class, $currency, ['method' => 'PUT']);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $currencyRepository->save($currency);
-
+            $this->currencyService->save($currency);
             $this->addFlash('success', 'message_updated_successfully');
 
             return $this->redirectToRoute('currency_index');
@@ -155,7 +163,6 @@ class CurrencyController extends AbstractController
      *
      * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
      * @param \App\Entity\Currency                      $currency           Currency entity
-     * @param \App\Repository\CurrencyRepository        $currencyRepository Currency repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -169,7 +176,7 @@ class CurrencyController extends AbstractController
      *     name="currency_delete",
      * )
      */
-    public function delete(Request $request, Currency $currency, CurrencyRepository $currencyRepository): Response
+    public function delete(Request $request, Currency $currency): Response
     {
         $form = $this->createForm(FormType::class, $currency, ['method' => 'DELETE']);
         $form->handleRequest($request);
@@ -179,7 +186,7 @@ class CurrencyController extends AbstractController
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $currencyRepository->delete($currency);
+            $this->currencyService->delete($currency);
             $this->addFlash('success', 'message_deleted_successfully');
 
             return $this->redirectToRoute('currency_index');

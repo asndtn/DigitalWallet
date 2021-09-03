@@ -5,8 +5,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Type;
 use App\Entity\Wallet;
 use App\Entity\User;
+use App\Entity\Currency;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
@@ -44,38 +46,62 @@ class WalletRepository extends ServiceEntityRepository
     }
 
     /**
-     * Query all records by Id.
+     * Query all records.
+     *
+     * @param array $filters Filters array
      *
      * @return \Doctrine\ORM\QueryBuilder QueryBuilder
      */
-    public function queryAll(): QueryBuilder
+    public function queryAll(array $filters = []): QueryBuilder
     {
-        return $this->getOrCreateQueryBuilder()
+        $queryBuilder = $this->getOrCreateQueryBuilder()
+            ->select(
+                'partial wallet.{id, type, currency}',
+                'partial type.{id, name}',
+                'partial currency.{id, name}'
+            )
+            ->join('wallet.type', 'type')
+            ->leftJoin('wallet.currency', 'currency')
             ->orderBy('wallet.id', 'DESC');
+        $queryBuilder = $this->applyFiltersToList($queryBuilder, $filters);
+
+        return $queryBuilder;
     }
 
     /**
-     * Query all records by Currency.
+     * Apply filters to paginated list.
      *
-     * @return \Doctrine\ORM\QueryBuilder QueryBuilder
+     * @param \Doctrine\ORM\QueryBuilder $queryBuilder Query builder
+     * @param array                      $filters      Filters array
+     *
+     * @return \Doctrine\ORM\QueryBuilder Query builder
      */
-    public function queryAllbyCurrency(): QueryBuilder
+    private function applyFiltersToList(QueryBuilder $queryBuilder, array $filters = []): QueryBuilder
     {
-        return $this->getOrCreateQueryBuilder()
-            ->orderBy('wallet.Currency', 'DESC');
+        if (isset($filters['type']) && $filters['type'] instanceof Type) {
+            $queryBuilder->andWhere('type = :type')
+                ->setParameter('type', $filters['type']);
+        }
+
+        if (isset($filters['currency']) && $filters['currency'] instanceof Currency) {
+            $queryBuilder->andWhere('currencies IN (:currency)')
+                ->setParameter('currency', $filters['currency']);
+        }
+
+        return $queryBuilder;
     }
 
     /**
      * Query wallets by owner.
      *
-     * @param \App\Entity\User $user User entity
+     * @param \App\Entity\User $user    User entity
+     * @param array            $filters Filters array
      *
      * @return \Doctrine\ORM\QueryBuilder Query builder
      */
-    public function queryByOwner(User $user): QueryBuilder
+    public function queryByOwner(User $user, array $filters = []): QueryBuilder
     {
-        $queryBuilder = $this->queryAll();
-
+        $queryBuilder = $this->queryAll($filters);
         $queryBuilder->andWhere('wallet.owner = :owner')
             ->setParameter('owner', $user);
 
@@ -108,6 +134,14 @@ class WalletRepository extends ServiceEntityRepository
         $this->_em->flush();
     }
 
+    /**
+     * Delete wallet.
+     * 
+     * @param Wallet $wallet Wallet entity
+     * 
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
     public function delete(Wallet $wallet): void
     {
         $this->_em->remove($wallet);

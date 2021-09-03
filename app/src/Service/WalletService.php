@@ -31,28 +31,79 @@ class WalletService
     private $paginator;
 
     /**
-     * Wallet service constructor.
+     * Type service.
      *
-     * @param \App\Repository\WalletRepository $walletRepository Wallet repository
-     * @param \Knp\Component\Pager\PaginatorInterface $paginator Paginator
+     * @var \App\Service\TypeService
      */
-    public function __construct(WalletRepository $walletRepository, PaginatorInterface $paginator)
+    private $typeService;
+
+    /**
+     * Currency service.
+     *
+     * @var \App\Service\CurrencyService
+     */
+    private $currencyService;
+
+    /**
+     * WalletService constructor.
+     *
+     * @param \App\Repository\WalletRepository        $walletRepository Wallet repository
+     * @param \Knp\Component\Pager\PaginatorInterface $paginator        Paginator
+     * @param \App\Service\TypeService                $typeService      Type service
+     * @param \App\Service\CurrencyService            $currencyService  Currency service
+     */
+    public function __construct(WalletRepository $walletRepository, PaginatorInterface $paginator, TypeService $typeService, CurrencyService $currencyService)
     {
         $this->walletRepository = $walletRepository;
         $this->paginator = $paginator;
+        $this->typeService = $typeService;
+        $this->currencyService = $currencyService;
+    }
+
+    /**
+     * Prepare filters for the wallets list.
+     *
+     * @param array $filters Raw filters from request
+     *
+     * @return array Result array of filters
+     */
+    private function prepareFilters(array $filters): array
+    {
+        $resultFilters = [];
+        if (isset($filters['type_id']) && is_numeric($filters['type_id'])) {
+            $type = $this->typeService->findOneById(
+                $filters['type_id']
+            );
+            if (null !== $type) {
+                $resultFilters['type'] = $type;
+            }
+        }
+
+        if (isset($filters['currency_id']) && is_numeric($filters['currency_id'])) {
+            $currency = $this->currencyService->findOneById($filters['currency_id']);
+            if (null !== $currency) {
+                $resultFilters['currency'] = $currency;
+            }
+        }
+
+        return $resultFilters;
     }
 
     /**
      * Create paginated list.
      *
-     * @param int $page Page number
+     * @param int                                                 $page    Page number
+     * @param \Symfony\Component\Security\Core\User\UserInterface $user    User entity
+     * @param array                                               $filters Filters array
      *
+     * @return \Knp\Component\Pager\Pagination\PaginationInterface Paginated list
      */
-    public function createPaginatedList(int $page, UserInterface $user): PaginationInterface
+    public function createPaginatedList(int $page, UserInterface $user, array $filters = []): PaginationInterface
     {
-        //TODO queryByOwner via Services
+        $filters = $this->prepareFilters($filters);
+
         return $this->paginator->paginate(
-            $this->walletRepository->queryByOwner($user),
+            $this->walletRepository->queryByOwner($user, $filters),
             $page,
             WalletRepository::PAGINATOR_ITEMS_PER_PAGE
         );
