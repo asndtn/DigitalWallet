@@ -66,6 +66,7 @@ class WalletRepository extends ServiceEntityRepository
     public function queryByOwner(User $user): QueryBuilder
     {
         $queryBuilder = $this->queryAll();
+
         $queryBuilder->andWhere('wallet.owner = :owner')
             ->setParameter('owner', $user);
 
@@ -112,3 +113,4 @@ class WalletRepository extends ServiceEntityRepository
         return $queryBuilder ?? $this->createQueryBuilder('wallet');
     }
 }
+

@@ -58,11 +58,8 @@ class WalletController extends AbstractController
      */
     public function index(Request $request): Response
     {
-        $pagination = $this->walletService->createPaginatedList(
-            $request->query->getInt('page', 1),
-            $this->getUser(),
-            $request->query->getAlnum('filters', [])
-        );
+        $page = $request->query->getInt('page', 1);
+        $pagination = $this->walletService->createPaginatedList($page, $this->getUser());
 
         return $this->render(
             'wallet/index.html.twig',

@@ -18,7 +18,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Security;
-use function _HumbugBox7eb78fbcc73e\Assert\thatNullOr;
 
 /**
  * Class InputType.
@@ -108,7 +107,9 @@ class InputType extends AbstractType
                 },
 
                 'choice_label' => function ($wallet) {
-                    return $wallet->getId();
+                    $type = $wallet->getType();
+
+                    return $type->getName();
                 },
                 'label' => 'label_wallet',
                 'placeholder' => 'label_none',

@@ -6,8 +6,7 @@
 namespace App\Controller;
 
 use App\Entity\Balance;
-use App\Repository\BalanceRepository;
-use Knp\Component\Pager\PaginatorInterface;
+use App\Service\BalanceService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,12 +23,28 @@ use Symfony\Component\Routing\Annotation\Route;
 class BalanceController extends AbstractController
 {
     /**
+     * Balance service.
+     *
+     * @var BalanceService
+     */
+    private $balanceService;
+
+    /**
+     * BalanceController constructor.
+     *
+     * @param BalanceService $balanceService Balance service
+     */
+    public function __construct(BalanceService $balanceService)
+    {
+        $this->balanceService = $balanceService;
+    }
+
+    /**
      * Index action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
-     * @param \App\Repository\BalanceRepository $balanceRepository
-     * @param \Knp\Component\Pager\PaginatorInterface $paginator Paginator
-     * @return \Symfony\Component\HttpFoundation\Response HTTP Response
+     * @param Request $request HTTP request
+     *
+     * @return Response HTTP Response
      *
      * @Route(
      *     "/",
@@ -37,13 +52,10 @@ class BalanceController extends AbstractController
      *     name="balance_index",
      * )
      */
-    public function index(Request $request, BalanceRepository $balanceRepository, PaginatorInterface $paginator): Response
+    public function index(Request $request): Response
     {
-        $pagination = $paginator->paginate(
-            $balanceRepository->queryAll(),
-            $request->query->getInt('page', 1),
-            BalanceRepository::PAGINATOR_ITEMS_PER_PAGE
-        );
+        $page = $request->query->getInt('page', 1);
+        $pagination = $this->balanceService->createPaginatedList($page);
 
         return $this->render(
             'balance/index.html.twig',
@@ -54,9 +66,9 @@ class BalanceController extends AbstractController
     /**
      * Show action.
      *
-     * @param \App\Entity\Balance $balance Balance entity
+     * @param Balance $balance Balance entity
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP Response
+     * @return Response HTTP Response
      *
      * @Route(
      *     "/{id}",

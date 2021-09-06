@@ -5,12 +5,14 @@
 
 namespace App\Service;
 
+use App\Entity\User;
 use App\Entity\Wallet;
 use App\Repository\WalletRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class WalletService.
@@ -46,14 +48,15 @@ class WalletService
     /**
      * Create paginated list.
      *
-     * @param int $page Page number
+     * @param int  $page Page number
+     * @param User $user User entity
      *
      * @return PaginationInterface Paginated list
      */
-    public function createPaginatedList(int $page): PaginationInterface
+    public function createPaginatedList(int $page, User $user): PaginationInterface
     {
         return $this->paginator->paginate(
-            $this->walletRepository->queryAll(),
+            $this->walletRepository->queryByOwner($user),
             $page,
             WalletRepository::PAGINATOR_ITEMS_PER_PAGE
         );

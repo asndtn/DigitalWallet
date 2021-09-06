@@ -76,7 +76,6 @@ class WalletVoter extends Voter
                 break;
             default:
                 return false;
-                break;
         }
 
         return false;
