@@ -17,7 +17,6 @@
             <tr>
                 <th>{{ knp_pagination_sortable(pagination, 'label_id'|trans, 'balance.id') }}</th>
                 <th>{{ 'label_amount'|trans }}</th>
-                <th>{{ 'label_wallet' }}</th>
                 <th>{{ 'label_actions'|trans }}</th>
             </tr>
             </thead>
@@ -26,7 +25,6 @@
                 <tr>
                     <td>{{ balance.id }}</td>
                     <td>{{ balance.balanceAmount }}</td>
-                    <td>{{ balance.wallet.type.name }}</td>
                     <td>
                         <a href="{{ url('balance_show', {id: balance.id}) }}" title="{{ 'action_view'|trans }}">{{ 'action_view'|trans }}</a>
                     </td>

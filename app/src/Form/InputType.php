@@ -5,18 +5,20 @@
 
 namespace App\Form;
 
-use App\Entity\Input;
 use App\Entity\Category;
+use App\Entity\Input;
 use App\Entity\Wallet;
-use App\Entity\Tag;
+use App\Entity\Type;
+use App\Form\DataTransformer\TagsDataTransformer;
+use App\Repository\WalletRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use App\Form\DataTransformer\TagsDataTransformer;
+use Symfony\Component\Security\Core\Security;
+use function _HumbugBox7eb78fbcc73e\Assert\thatNullOr;
 
 /**
  * Class InputType.
@@ -26,18 +28,27 @@ class InputType extends AbstractType
     /**
      * Tags data transformer.
      *
-     * @var \App\Form\DataTransformer\TagsDataTransformer
+     * @var TagsDataTransformer
      */
     private $tagsDataTransformer;
 
     /**
-     * TaskType constructor.
+     * Security.
      *
-     * @param \App\Form\DataTransformer\TagsDataTransformer $tagsDataTransformer Tags data transformer
+     * @var Security
      */
-    public function __construct(TagsDataTransformer $tagsDataTransformer)
+    private $security;
+
+    /**
+     * InputType constructor.
+     *
+     * @param TagsDataTransformer $tagsDataTransformer Tags data transformer
+     * @param Security            $security            Security
+     */
+    public function __construct(TagsDataTransformer $tagsDataTransformer, Security $security)
     {
         $this->tagsDataTransformer = $tagsDataTransformer;
+        $this->security = $security;
     }
 
     /**
@@ -48,8 +59,8 @@ class InputType extends AbstractType
      *
      * @see FormTypeExtensionInterface::buildForm()
      *
-     * @param \Symfony\Component\Form\FormBuilderInterface $builder The form builder
-     * @param array                                        $options The options
+     * @param FormBuilderInterface $builder The form builder
+     * @param array                $options The options
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -60,16 +71,6 @@ class InputType extends AbstractType
                 'label' => 'label_amount',
                 'required' => true,
                 'attr' => ['max_length' => 64],
-            ]
-        );
-
-        $builder->add(
-            'description',
-            TextType::class,
-            [
-                'label' => 'label_description',
-                'required' => false,
-                'attr' => ['max_length' => 255],
             ]
         );
 
@@ -86,11 +87,26 @@ class InputType extends AbstractType
                 'required' => true,
             ]
         );
-       $builder-> add(
+
+        $builder->add(
+            'description',
+            TextType::class,
+            [
+                'label' => 'label_description',
+                'required' => false,
+                'attr' => ['max_length' => 255],
+            ]
+        );
+
+        $builder->add(
             'wallet',
             EntityType::class,
             [
                 'class' => Wallet::class,
+                'query_builder' => function (WalletRepository $walletRepository) {
+                    return $walletRepository->queryByOwner($this->security->getUser());
+                },
+
                 'choice_label' => function ($wallet) {
                     return $wallet->getId();
                 },
@@ -118,7 +134,7 @@ class InputType extends AbstractType
     /**
      * Configures the options for this type.
      *
-     * @param \Symfony\Component\OptionsResolver\OptionsResolver $resolver The resolver for the options
+     * @param OptionsResolver $resolver The resolver for the options
      */
     public function configureOptions(OptionsResolver $resolver): void
     {

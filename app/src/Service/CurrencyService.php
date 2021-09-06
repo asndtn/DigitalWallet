@@ -58,18 +58,6 @@ class CurrencyService
     }
 
     /**
-     * Find currency by Id.
-     *
-     * @param int $id Currency Id
-     *
-     * @return \App\Entity\Currency|null Currency entity
-     */
-    public function findOneById(int $id): ?Currency
-    {
-        return $this->currencyRepository->findOneById($id);
-    }
-
-    /**
      * Save currency.
      *
      * @param Currency $currency Currency entity

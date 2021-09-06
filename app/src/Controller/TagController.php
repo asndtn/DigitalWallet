@@ -6,9 +6,11 @@
 namespace App\Controller;
 
 use App\Entity\Tag;
-use App\Service\TagService;
 use App\Form\TagType;
-use Knp\Component\Pager\PaginatorInterface;
+use App\Service\TagService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,6 +21,8 @@ use Symfony\Component\Routing\Annotation\Route;
  * Class TagController.
  *
  * @Route("/tag")
+ *
+ * @IsGranted("ROLE_ADMIN")
  */
 class TagController extends AbstractController
 {
@@ -43,6 +47,7 @@ class TagController extends AbstractController
      * Index tag.
      *
      * @param Request $request HTTP request
+     *
      * @return Response HTTP response
      *
      * @Route(
@@ -58,16 +63,16 @@ class TagController extends AbstractController
 
         return $this->render(
             'tag/index.html.twig',
-            ['pagination' => $pagination ]
+            ['pagination' => $pagination]
         );
     }
 
     /**
      * Show action.
      *
-     * @param \App\Entity\Wallet $wallet Wallet entity
+     * @param Tag $tag Tag entity
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP Response
+     * @return Response HTTP Response
      *
      * @Route(
      *     "/{id}",
@@ -87,12 +92,12 @@ class TagController extends AbstractController
     /**
      * Create action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
+     * @param Request $request HTTP request
      *
-     * @return \Symfony\Component\HttpFoundation\Response           HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/create",
@@ -123,13 +128,13 @@ class TagController extends AbstractController
     /**
      * Edit action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
-     * @param \App\Entity\Tag $tag Tag entity
+     * @param Request $request HTTP request
+     * @param Tag     $tag     Tag entity
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/edit",
@@ -163,13 +168,13 @@ class TagController extends AbstractController
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
-     * @param \App\Entity\Tag $tag Tag entity
+     * @param Request $request HTTP request
+     * @param Tag     $tag     Tag entity
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/delete",

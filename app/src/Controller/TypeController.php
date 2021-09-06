@@ -8,6 +8,7 @@ namespace App\Controller;
 use App\Entity\Type;
 use App\Form\TypeType;
 use App\Service\TypeService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,6 +19,8 @@ use Symfony\Component\Routing\Annotation\Route;
  * Class TypeController.
  *
  * @Route("/type")
+ *
+ * @IsGranted("ROLE_ADMIN")
  */
 class TypeController extends AbstractController
 {

@@ -9,6 +9,7 @@ use App\Repository\WalletRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -69,6 +70,17 @@ class Wallet
     private $owner;
 
     /**
+     * Balance.
+     *
+     * @ORM\OneToOne(
+     *     targetEntity="\App\Entity\Balance",
+     *     mappedBy="wallet",
+     *     cascade={"persist", "remove"},
+     * )
+     */
+    private $balance;
+
+    /**
      * Wallet constructor.
      */
     public function __construct()
@@ -89,7 +101,7 @@ class Wallet
     /**
      * Getter for Type.
      *
-     * @return string|null|Type
+     * @return string|Type|null
      */
     public function getType(): ?Type
     {
@@ -99,7 +111,7 @@ class Wallet
     /**
      * Setter for Type.
      *
-     * @param Type|null $type
+     * @param Type|null $type Type
      */
     public function setType(?Type $type): void
     {
@@ -109,7 +121,7 @@ class Wallet
     /**
      * Getter for Currency.
      *
-     * @return string|null|Currency
+     * @return string|Currency|null
      */
     public function getCurrency(): ?Currency
     {
@@ -119,7 +131,7 @@ class Wallet
     /**
      * Setter for Currency.
      *
-     * @param Currency|null $currency
+     * @param Currency|null $currency Currency
      */
     public function setCurrency(?Currency $currency): void
     {
@@ -129,7 +141,7 @@ class Wallet
     /**
      * Getter for inputs.
      *
-     * @return \Doctrine\Common\Collections\Collection|\App\Entity\Input[] Inputs collection
+     * @return Collection|Input[] Inputs collection
      */
     public function getInputs(): Collection
     {
@@ -173,11 +185,35 @@ class Wallet
     /**
      * Setter for Owner.
      *
-     * @param User|null $owner
+     * @param User|null $owner Owner
      */
     public function setOwner(?User $owner): void
     {
         $this->owner = $owner;
     }
 
+    /**
+     * Getter for Balance.
+     *
+     * @return Balance|null Balance
+     */
+    public function getBalance(): ?Balance
+    {
+        return $this->balance;
+    }
+
+    /**
+     * Setter for Balance.
+     *
+     * @param Balance $balance Balance
+     */
+    public function setBalance(Balance $balance): void
+    {
+        // set the owning side of the relation if necessary
+        if ($balance->getWallet() !== $this) {
+            $balance->setWallet($this);
+        }
+
+        $this->balance = $balance;
+    }
 }

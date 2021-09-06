@@ -1,20 +1,20 @@
 <?php
 /**
- * Wallet security voter.
+ * User security voter.
  */
 
 namespace App\Security\Voter;
 
-use App\Entity\Wallet;
+use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * Class WalletVoter.
+ * Class UserVoter.
  */
-class WalletVoter extends Voter
+class UserVoter extends Voter
 {
     /**
      * Security helper.
@@ -44,7 +44,7 @@ class WalletVoter extends Voter
     protected function supports($attribute, $subject): bool
     {
         return in_array($attribute, ['VIEW', 'EDIT', 'DELETE'])
-            && $subject instanceof Wallet;
+            && $subject instanceof User;
     }
 
     /**
@@ -57,7 +57,7 @@ class WalletVoter extends Voter
      *
      * @return bool Result
      */
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
         // if the user is anonymous, do not grant access
@@ -70,15 +70,20 @@ class WalletVoter extends Voter
             case 'VIEW':
             case 'EDIT':
             case 'DELETE':
-                if ($subject->getOwner() === $user) {
-                    return true;
-                }
-                break;
+                return $this->getOwnerOrAdmin($subject, $user);
             default:
                 return false;
-                break;
         }
+    }
 
-        return false;
+    /**
+     * Getter for Owner or Admin.
+     *
+     * @param      $subject
+     * @param User $user    User entity
+     */
+    private function getOwnerOrAdmin($subject, User $user): bool
+    {
+        return $subject->getId() === $user->getId() || (in_array('ROLE_ADMIN', $user->getRoles()));
     }
 }

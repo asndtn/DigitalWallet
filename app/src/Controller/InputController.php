@@ -8,7 +8,9 @@ namespace App\Controller;
 use App\Entity\Input;
 use App\Form\InputType;
 use App\Service\InputService;
-use App\Service\WalletService;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,20 +21,20 @@ use Symfony\Component\Routing\Annotation\Route;
  * Class InputController.
  *
  * @Route("/input")
+ *
+ * @IsGranted("ROLE_USER")
  */
 class InputController extends AbstractController
 {
     /**
      * Input service.
      *
-     * @var \App\Service\InputService
+     * @var InputService
      */
     private $inputService;
 
     /**
      * InputController constructor.
-     *
-     * @param InputService $inputService
      */
     public function __construct(InputService $inputService)
     {
@@ -42,8 +44,9 @@ class InputController extends AbstractController
     /**
      * Index input.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
-     * @return \Symfony\Component\HttpFoundation\Response HTTP Response
+     * @param Request $request HTTP request
+     *
+     * @return Response HTTP Response
      *
      * @Route(
      *     "/",
@@ -56,7 +59,6 @@ class InputController extends AbstractController
         $filters = [];
         $filters['category_id'] = $request->query->getInt('filters_category_id');
         $filters['tag_id'] = $request->query->getInt('filters_tag_id');
-        $filters['wallet_id'] =$request->query->getInt('filters_wallet_id');
 
         $pagination = $this->inputService->createPaginatedList(
             $request->query->getInt('page', 1),
@@ -73,15 +75,20 @@ class InputController extends AbstractController
     /**
      * Show Input.
      *
-     * @param \App\Entity\Input $input Input entity
+     * @param Input $input Input entity
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP Response
+     * @return Response HTTP Response
      *
      * @Route(
      *     "/{id}",
      *     methods={"GET"},
      *     name="input_show",
      *     requirements={"id": "[1-9]\d*"},
+     * )
+     *
+     * @IsGranted(
+     *     "VIEW",
+     *     subject="input",
      * )
      */
     public function show(Input $input): Response
@@ -95,11 +102,12 @@ class InputController extends AbstractController
     /**
      * Create action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @param Request $request HTTP request
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @return Response HTTP response
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/create",
@@ -131,19 +139,24 @@ class InputController extends AbstractController
     /**
      * Edit action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Entity\Input                         $input              Input entity
+     * @param Request $request HTTP request
+     * @param Input   $input   Input entity
      *
-     * @return \Symfony\Component\HttpFoundation\Response                   HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/edit",
      *     methods={"GET", "PUT"},
      *     requirements={"id": "[1-9]\d*"},
      *     name="input_edit",
+     * )
+     *
+     * @IsGranted(
+     *    "EDIT",
+     *     subject="input",
      * )
      */
     public function edit(Request $request, Input $input): Response
@@ -171,19 +184,24 @@ class InputController extends AbstractController
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request            HTTP request
-     * @param \App\Entity\Input                         $input              Input entity
+     * @param Request $request HTTP request
+     * @param Input   $input   Input entity
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/delete",
      *     methods={"GET", "DELETE"},
      *     requirements={"id": "[1-9]\d*"},
      *     name="input_delete",
+     * )
+     *
+     * @IsGranted(
+     *     "DELETE",
+     *     subject="input",
      * )
      */
     public function delete(Request $request, Input $input): Response

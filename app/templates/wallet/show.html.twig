@@ -28,6 +28,8 @@
                     {% endif %}
                 </ul>
             </dd>
+            <dt>{{ 'label_balance'|trans }}</dt>
+            <dd>{{ wallet.balance.balanceamount }}</dd>
         </dl>
         <p>
             <a href="{{ url('input_create') }}" title="{{ 'action_create_input'|trans }}">{{ 'action_create_input'|trans }}</a>

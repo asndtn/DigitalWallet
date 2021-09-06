@@ -10,7 +10,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -94,7 +93,7 @@ class Input
     /**
      * Category.
      *
-     * @var \Doctrine\Common\Collections\ArrayCollection|\App\Entity\Category[] $categories Categories
+     * @var ArrayCollection|Category[] Categories
      *
      * @ORM\ManyToOne(
      *     targetEntity="App\Entity\Category"

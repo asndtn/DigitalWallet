@@ -7,7 +7,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\PasswordChangeType;
-use App\Form\UserType;
+use App\Form\RegisterType;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -72,7 +72,7 @@ class SecurityController extends AbstractController
     public function register(Request $request, UserRepository $userRepository, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(RegisterType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

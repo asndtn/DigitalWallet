@@ -58,18 +58,6 @@ class TypeService
     }
 
     /**
-     * Find type by Id.
-     *
-     * @param int $id Type Id
-     *
-     * @return \App\Entity\Type|null Type entity
-     */
-    public function findOneById(int $id): ?Type
-    {
-        return $this->typeRepository->findOneById($id);
-    }
-
-    /**
      * Save type.
      *
      * @param Type $type Type entity

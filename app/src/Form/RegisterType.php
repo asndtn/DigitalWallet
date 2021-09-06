@@ -12,9 +12,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class UserType.
+ * Class RegisterType.
  */
-class UserType extends AbstractType
+class RegisterType extends AbstractType
 {
     /**
      * Builds the form.
@@ -37,6 +37,16 @@ class UserType extends AbstractType
               'required' => 'true',
               'attr' => ['max_length' => 45],
           ]
+        );
+
+        $builder->add(
+            'password',
+            TextType::class,
+            [
+                'label' => 'label_password',
+                'required' => 'true',
+                'attr' => ['max_length' => 255],
+            ]
         );
     }
 

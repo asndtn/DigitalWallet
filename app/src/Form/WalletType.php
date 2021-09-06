@@ -5,9 +5,9 @@
 
 namespace App\Form;
 
-use App\Entity\Wallet;
-use App\Entity\Type;
 use App\Entity\Currency;
+use App\Entity\Type;
+use App\Entity\Wallet;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -27,8 +27,8 @@ class WalletType extends AbstractType
      *
      * @see FormTypeExtensionInterface::buildForm()
      *
-     * @param \Symfony\Component\Form\FormBuilderInterface $builder The form builder
-     * @param array                                        $options The options
+     * @param FormBuilderInterface $builder The form builder
+     * @param array                $options The options
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

@@ -34,12 +34,16 @@ class Balance
      *
      * @ORM\Column(type="float")
      */
-    private $balance_amount;
+    private $balance_amount = 0;
 
     /**
      * Wallet.
      *
-     * @ORM\OneToOne(targetEntity=Wallet::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(
+     *     targetEntity="\App\Entity\Wallet",
+     *     inversedBy="balance",
+     *     cascade={"persist", "remove"},
+     * )
      * @ORM\JoinColumn(nullable=false)
      */
     private $wallet;
@@ -77,7 +81,7 @@ class Balance
     /**
      * Getter for Wallet.
      *
-     * @return Wallet|null Wallet
+     * @return Wallet|null Wallet entity
      */
     public function getWallet(): ?Wallet
     {
@@ -87,7 +91,7 @@ class Balance
     /**
      * Setter for Wallet.
      *
-     * @param Wallet $wallet Wallet
+     * @param Wallet $wallet Wallet entity
      */
     public function setWallet(Wallet $wallet): void
     {

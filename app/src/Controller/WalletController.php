@@ -8,6 +8,8 @@ namespace App\Controller;
 use App\Entity\Wallet;
 use App\Form\WalletType;
 use App\Service\WalletService;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -19,13 +21,15 @@ use Symfony\Component\Routing\Annotation\Route;
  * Class WalletController.
  *
  * @Route("/wallet")
+ *
+ * @IsGranted("ROLE_USER")
  */
 class WalletController extends AbstractController
 {
     /**
      * Wallet service.
      *
-     * @var \App\Service\WalletService
+     * @var WalletService
      */
     private $walletService;
 
@@ -42,8 +46,9 @@ class WalletController extends AbstractController
     /**
      * Index wallet.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @return \Symfony\Component\HttpFoundation\Response           HTTP Response
+     * @param Request $request HTTP request
+     *
+     * @return Response HTTP response
      *
      * @Route(
      *     "/",
@@ -53,10 +58,6 @@ class WalletController extends AbstractController
      */
     public function index(Request $request): Response
     {
-//        $filters = [];
-//        $filters['type_id'] = $request->query->getInt('filters_type_id');
-//        $filters['currency_id'] = $request->query->getInt('filters_currency_id');
-
         $pagination = $this->walletService->createPaginatedList(
             $request->query->getInt('page', 1),
             $this->getUser(),
@@ -72,9 +73,9 @@ class WalletController extends AbstractController
     /**
      * Show wallet.
      *
-     * @param \App\Entity\Wallet $wallet Wallet entity
+     * @param Wallet $wallet Wallet entity
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
      * @Route(
      *     "/{id}",
@@ -99,12 +100,12 @@ class WalletController extends AbstractController
     /**
      * Create action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
+     * @param Request $request HTTP request
      *
-     * @return \Symfony\Component\HttpFoundation\Response           HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/create",
@@ -136,19 +137,24 @@ class WalletController extends AbstractController
     /**
      * Edit action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param \App\Entity\Wallet                        $wallet     Wallet entity
+     * @param Request $request HTTP request
+     * @param Wallet  $wallet  Wallet entity
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/edit",
      *     methods={"GET", "PUT"},
      *     requirements={"id": "[1-9]\d*"},
      *     name="wallet_edit",
+     * )
+     *
+     * @IsGranted(
+     *     "VIEW",
+     *     subject="wallet",
      * )
      */
     public function edit(Request $request, Wallet $wallet): Response
@@ -182,19 +188,24 @@ class WalletController extends AbstractController
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request      HTTP request
-     * @param \App\Entity\Wallet                        $wallet       Wallet entity
+     * @param Request $request HTTP request
+     * @param Wallet  $wallet  Wallet entity
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/delete",
      *     methods={"GET", "DELETE"},
      *     requirements={"id": "[1-9]\d*"},
      *     name="wallet_delete",
+     * )
+     *
+     * @IsGranted(
+     *     "DELETE",
+     *     subject="wallet",
      * )
      */
     public function delete(Request $request, Wallet $wallet): Response
