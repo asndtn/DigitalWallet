@@ -1,10 +1,11 @@
 <?php
 /**
- * User security voter.
+ * Input security voter.
  */
 
 namespace App\Security\Voter;
 
+use App\Entity\Input;
 use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
@@ -12,9 +13,9 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * Class UserVoter.
+ * Class InputVoter.
  */
-class UserVoter extends Voter
+class InputVoter extends Voter
 {
     /**
      * Security helper.
@@ -44,7 +45,7 @@ class UserVoter extends Voter
     protected function supports($attribute, $subject): bool
     {
         return in_array($attribute, ['VIEW', 'EDIT', 'DELETE'])
-            && $subject instanceof User;
+            && $subject instanceof Input;
     }
 
     /**
@@ -70,22 +71,22 @@ class UserVoter extends Voter
             case 'VIEW':
             case 'EDIT':
             case 'DELETE':
-                return $this->isOwnerOrAdmin($subject, $user);
+                return $this->isOwner($subject, $user);
             default:
                 return false;
         }
     }
 
     /**
-     * Determines if it is Owner or Admin.
+     * Determines if it is Author(Owner).
      *
-     * @param      $subject
-     * @param User $user    User entity
+     * @param mixed $subject Subject
+     * @param User  $user    User entity
      *
      * @return bool
      */
-    private function isOwnerOrAdmin($subject, User $user): bool
+    private function isOwner($subject, User $user): bool
     {
-        return $subject->getId() === $user->getId() || (in_array('ROLE_ADMIN', $user->getRoles()));
+        return $subject->getWallet()->getOwner() === $user;
     }
 }

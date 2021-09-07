@@ -45,9 +45,24 @@
                             &nbsp;
                         {% endif %}
                     </td>
-
                     <td>
-                        <a href="{{ url('input_show', {id: input.id}) }}" title="{{ 'action_view'|trans }}">{{ 'action_view'|trans }}</a>
+                        <ul>
+                            {% if is_granted('VIEW', input) %}
+                            <li>
+                                <a href="{{ url('input_show', {id: input.id}) }}" title="{{ 'action_view'|trans }}">{{ 'action_view'|trans }}</a>
+                            </li>
+                            {% endif %}
+                            {% if is_granted('EDIT', input) %}
+                            <li>
+                                <a href="{{ url('input_edit', {id: input.id}) }}" title="{{ 'action_edit'|trans }}">{{ 'action_edit'|trans }}</a>
+                            </li>
+                            {% endif %}
+                            {% if is_granted('DELETE', input) %}
+                            <li>
+                                <a href="{{ url('input_delete', {id: input.id}) }}" title="{{ 'action_delete'|trans }}">{{ 'action_delete'|trans }}</a>
+                            </li>
+                            {% endif %}
+                        </ul>
                     </td>
                 </tr>
             {% endfor %}

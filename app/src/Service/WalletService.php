@@ -87,4 +87,16 @@ class WalletService
     {
         $this->walletRepository->delete($wallet);
     }
+
+    /**
+     * Find wallet by Id.
+     *
+     * @param int $id Wallet Id
+     *
+     * @return Wallet|null Category entity
+     */
+    public function findOneById(int $id): ?Wallet
+    {
+        return $this->walletRepository->findOneById($id);
+    }
 }

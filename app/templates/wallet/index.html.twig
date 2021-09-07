@@ -42,21 +42,21 @@
                     <td>{{ 'TODO' }}</td>
                     <td>
                         <ul>
+                            {% if is_granted('VIEW', wallet) %}
                             <li>
-                                {% if is_granted('VIEW', wallet) %}
                                 <a href="{{ url('wallet_show', {id: wallet.id}) }}" title="{{ 'action_view'|trans }}">{{ 'action_view'|trans }}</a>
-                                {% endif %}
+                            {% endif %}
                             </li>
+                            {% if is_granted('EDIT', wallet) %}
                             <li>
-                                {% if is_granted('EDIT', wallet) %}
                                 <a href="{{ url('wallet_edit', {id: wallet.id}) }}" title="{{ 'action_edit'|trans }}">{{ "action_edit"|trans }}</a>
-                                {% endif %}
                             </li>
+                            {% endif %}
+                            {% if is_granted('DELETE', wallet) %}
                             <li>
-                                {% if is_granted('DELETE', wallet) %}
                                 <a href="{{ url('wallet_delete', {id: wallet.id}) }}" title="{{ 'action_delete'|trans }}">{{ "action_delete"|trans }}</a>
-                                {% endif %}
                             </li>
+                            {% endif %}
                         </ul>
                     </td>
                 </tr>

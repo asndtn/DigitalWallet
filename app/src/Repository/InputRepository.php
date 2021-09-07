@@ -49,8 +49,8 @@ class InputRepository extends ServiceEntityRepository
     /**
      * Query wallets by owner.
      *
-     * @param \App\Entity\User $user    User entity
-     * @param array            $filters Filters array
+     * @param User  $user    User entity
+     * @param array $filters Filters array
      *
      * @return QueryBuilder
      */
@@ -68,7 +68,7 @@ class InputRepository extends ServiceEntityRepository
      *
      * @param array $filters Filters array
      *
-     * @return \Doctrine\ORM\QueryBuilder QueryBuilder
+     * @return QueryBuilder QueryBuilder
      */
     public function queryAll(array $filters): QueryBuilder
     {
@@ -83,6 +83,7 @@ class InputRepository extends ServiceEntityRepository
             ->join('input.wallet', 'wallet')
             ->leftJoin('input.tags', 'tags')
             ->orderBy('input.category', 'DESC');
+
         $queryBuilder = $this->applyFiltersToList($queryBuilder, $filters);
 
         return $queryBuilder;

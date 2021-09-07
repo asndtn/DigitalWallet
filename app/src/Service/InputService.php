@@ -8,7 +8,9 @@ namespace App\Service;
 use App\Entity\Input;
 use App\Entity\User;
 use App\Repository\InputRepository;
-use \Knp\Component\Pager\Pagination\PaginationInterface;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -20,66 +22,64 @@ class InputService
     /**
      * Input repository.
      *
-     * @var \App\Repository\InputRepository
+     * @var InputRepository
      */
     private $inputRepository;
 
     /**
      * Paginator.
      *
-     * @var \Knp\Component\Pager\PaginatorInterface
+     * @var PaginatorInterface
      */
     private $paginator;
 
     /**
      * Category service.
      *
-     * @var \App\Service\CategoryService
+     * @var CategoryService
      */
     private $categoryService;
 
     /**
      * Tag service.
      *
-     * @var \App\Service\TagService
+     * @var TagService
      */
     private $tagService;
 
     /**
      * Wallet service.
      *
-     * @var \App\Service\WalletService
+     * @var WalletService
      */
     private $walletService;
 
     /**
-     * Input service constructor.
+     * InputService constructor.
      *
-     * @param \App\Repository\InputRepository         $inputRepository Input repository
-     * @param \Knp\Component\Pager\PaginatorInterface $paginator       Paginator
-     * @param \App\Service\CategoryService            $categoryService Category service
-     * @param \App\Service\TagService                 $tagService      Tag service
-     * @param \App\Service\WalletService              $walletService   Wallet service
+     * @param InputRepository    $inputRepository Input repository
+     * @param PaginatorInterface $paginator       Paginator
+     * @param CategoryService    $categoryService Category service
+     * @param TagService         $tagService      Tag service
      */
-    public function __construct(InputRepository $inputRepository, PaginatorInterface $paginator, CategoryService $categoryService, TagService $tagService, WalletService $walletService)
+    public function __construct(InputRepository $inputRepository, PaginatorInterface $paginator, CategoryService $categoryService, TagService $tagService)
     {
         $this->inputRepository = $inputRepository;
         $this->paginator = $paginator;
         $this->categoryService = $categoryService;
         $this->tagService = $tagService;
-        $this->walletService = $walletService;
     }
 
     /**
      * Create paginated list.
      *
-     * @param int                                                 $page    Page number
-     * @param \Symfony\Component\Security\Core\User\UserInterface $user    User entity
-     * @param array                                               $filters Filters array
+     * @param int   $page    Page number
+     * @param User  $user    User entity
+     * @param array $filters Filters array
      *
-     * @return \Knp\Component\Pager\Pagination\PaginationInterface Paginated list
+     * @return PaginationInterface Paginated list
      */
-    public function createPaginatedList(int $page, UserInterface $user, array $filters = []): PaginationInterface
+    public function createPaginatedList(int $page, User $user, array $filters = []): PaginationInterface
     {
         $filters = $this->prepareFilters($filters);
 
@@ -95,8 +95,8 @@ class InputService
      *
      * @param Input $input Input entity
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function save(Input $input): void
     {
@@ -108,8 +108,8 @@ class InputService
      *
      * @param Input $input Input entity
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function delete(Input $input): void
     {
@@ -139,15 +139,6 @@ class InputService
             $tag = $this->tagService->findOneById($filters['tag_id']);
             if (null !== $tag) {
                 $resultFilters['tag'] = $tag;
-            }
-        }
-
-        if (isset($filters['wallet_id']) && is_numeric($filters['wallet_id'])) {
-            $wallet = $this->walletService->findOneById(
-                $filters['wallet_id']
-            );
-            if (null !== $wallet) {
-                $resultFilters['wallet'] = $wallet;
             }
         }
 
