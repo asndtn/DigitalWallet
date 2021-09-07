@@ -5,61 +5,53 @@
 
             <trans-unit id="label_none">
                 <source>label_none</source>
-                <target>Choose an option...</target>
+                <target>Wybierz opcję...</target>
             </trans-unit>
 
             <trans-unit id="label_actions">
                 <source>label_actions</source>
-                <target>Actions</target>
+                <target>Akcje</target>
             </trans-unit>
             <trans-unit id="action_view">
                 <source>action_view</source>
-                <target>View</target>
+                <target>Zobacz</target>
             </trans-unit>
             <trans-unit id="action_edit">
                 <source>action_edit</source>
-                <target>Edit</target>
+                <target>Edytuj</target>
             </trans-unit>
             <trans-unit id="action_delete">
                 <source>action_delete</source>
-                <target>Delete</target>
+                <target>Usuń</target>
             </trans-unit>
             <trans-unit id="action_create">
                 <source>action_create</source>
-                <target>Create</target>
+                <target>Utwórz</target>
             </trans-unit>
             <trans-unit id="action_save">
                 <source>action_save</source>
-                <target>Save</target>
+                <target>Zapisz</target>
             </trans-unit>
             <trans-unit id="action_back_to_list">
                 <source>action_back_to_list</source>
-                <target>Back to list</target>
+                <target>Powrót do listy</target>
             </trans-unit>
 
             <trans-unit id="title_wallets_list">
                 <source>title_wallets_list</source>
-                <target>Your wallets</target>
+                <target>Twoje portfele</target>
             </trans-unit>
             <trans-unit id="title_wallet_details">
                 <source>title_wallet_details</source>
-                <target>Wallet Details #%id%</target>
-            </trans-unit>
-            <trans-unit id="title_wallet_create">
-                <source>title_wallet_create</source>
-                <target>Create new wallet</target>
-            </trans-unit>
-            <trans-unit id="action_create_wallet">
-                <source>action_create_wallet</source>
-                <target>Create new wallet</target>
+                <target>Szczegóły portfela #%id%</target>
             </trans-unit>
             <trans-unit id="title_wallet_edit">
                 <source>title_wallet_edit</source>
-                <target>Edit your wallet</target>
+                <target>Edytuj swój portfel</target>
             </trans-unit>
             <trans-unit id="title_wallet_delete">
                 <source>title_wallet_delete</source>
-                <target>Delete your wallet</target>
+                <target>Usuń swój portfel</target>
             </trans-unit>
             <trans-unit id="label_id">
                 <source>label_id</source>
@@ -67,184 +59,180 @@
             </trans-unit>
             <trans-unit id="label_id_user">
                 <source>label_id_user</source>
-                <target>User Id</target>
+                <target>Użytkownik Id</target>
             </trans-unit>
             <trans-unit id="label_type">
                 <source>label_type</source>
-                <target>Wallet type</target>
+                <target>Typ portfela</target>
             </trans-unit>
             <trans-unit id="label_currency">
                 <source>label_currency</source>
-                <target>Wallet currency</target>
+                <target>Waluta portfela</target>
             </trans-unit>
             <trans-unit id="label_inputs">
                 <source>label_inputs</source>
-                <target>Inputs</target>
+                <target>Operacje</target>
             </trans-unit>
 
             <trans-unit id="title_input_list">
                 <source>title_input_list</source>
-                <target>Inputs list</target>
+                <target>Lista operacji</target>
             </trans-unit>
             <trans-unit id="title_input_details">
                 <source>title_input_details</source>
-                <target>Input details</target>
-            </trans-unit>
-            <trans-unit id="action_create_input">
-                <source>action_create_input</source>
-                <target>Create new input</target>
+                <target>Szczegóły operacji</target>
             </trans-unit>
             <trans-unit id="title_input_create">
                 <source>title_input_create</source>
-                <target>Create new input</target>
+                <target>Utwórz nową operację</target>
             </trans-unit>
             <trans-unit id="title_input_edit">
                 <source>title_input_edit</source>
-                <target>Edit your input</target>
+                <target>Edytuj operację</target>
             </trans-unit>
             <trans-unit id="title_input_delete">
                 <source>title_input_delete</source>
-                <target>Delete your input</target>
+                <target>Usuń operację</target>
             </trans-unit>
             <trans-unit id="label_category">
                 <source>label_category</source>
-                <target>Input category</target>
+                <target>Kategoria operacji</target>
             </trans-unit>
             <trans-unit id="label_amount">
                 <source>label_amount</source>
-                <target>Input amount</target>
+                <target>Kwota operacji</target>
             </trans-unit>
             <trans-unit id="label_date">
                 <source>label_date</source>
-                <target>Input date</target>
+                <target>Data operacji</target>
             </trans-unit>
             <trans-unit id="label_description">
                 <source>label_description</source>
-                <target>Input description</target>
+                <target>Opis operacji</target>
             </trans-unit>
 
             <trans-unit id="label_title">
                 <source>label_title</source>
-                <target>Title</target>
+                <target>Tytuł</target>
             </trans-unit>
             <trans-unit id="label_content">
                 <source>label_content</source>
-                <target>Content</target>
+                <target>Zawartość</target>
             </trans-unit>
             <trans-unit id="label_tags">
                 <source>label_tags</source>
-                <target>Tags</target>
+                <target>Tagi</target>
             </trans-unit>
             <trans-unit id="message_empty_list">
                 <source>message_empty_list</source>
-                <target>Empty list</target>
+                <target>Pusta lista</target>
             </trans-unit>
 
             <trans-unit id="label_name">
                 <source>label_name</source>
-                <target>Name</target>
+                <target>Nazwa</target>
             </trans-unit>
 
             <trans-unit id="title_type_list">
                 <source>title_type_list</source>
-                <target>Types list</target>
+                <target>Lista typów</target>
             </trans-unit>
             <trans-unit id="title_type_details">
                 <source>title_type_details</source>
-                <target>Type details</target>
+                <target>Szczegóły typu</target>
             </trans-unit>
             <trans-unit id="title_type_create">
                 <source>title_type_create</source>
-                <target>Create new type</target>
+                <target>Utwórz nowy typ</target>
             </trans-unit>
             <trans-unit id="title_type_edit">
                 <source>title_type_edit</source>
-                <target>Edit type</target>
+                <target>Edytuj typ</target>
             </trans-unit>
             <trans-unit id="title_type_delete">
                 <source>title_type_delete</source>
-                <target>Delete type</target>
+                <target>Usuń typ</target>
             </trans-unit>
 
             <trans-unit id="title_currency_list">
                 <source>title_currency_list</source>
-                <target>Currencies list</target>
+                <target>Lista walut</target>
             </trans-unit>
             <trans-unit id="title_currency_details">
                 <source>title_currency_details</source>
-                <target>Currency details</target>
+                <target>Szczegóły waluty</target>
             </trans-unit>
             <trans-unit id="title_currency_edit">
                 <source>title_currency_edit</source>
-                <target>Edit currency</target>
+                <target>Edytuj walutę</target>
             </trans-unit>
             <trans-unit id="title_currency_delete">
                 <source>title_currency_delete</source>
-                <target>Delete currency</target>
+                <target>Usuń walutę</target>
             </trans-unit>
 
             <trans-unit id="title_balance_list">
                 <source>title_balance_list</source>
-                <target>Balances list</target>
+                <target>Lista sald</target>
             </trans-unit>
             <trans-unit id="title_balance_details">
                 <source>title_balance_details</source>
-                <target>Balance details</target>
+                <target>Szczegóły salda</target>
             </trans-unit>
             <trans-unit id="label_balance">
                 <source>label_balance</source>
-                <target>Balance</target>
+                <target>Saldo</target>
             </trans-unit>
 
             <trans-unit id="title_tag_list">
                 <source>title_tag_list</source>
-                <target>Tags list</target>
+                <target>Lista tagów</target>
             </trans-unit>
             <trans-unit id="title_tag_details">
                 <source>title_tag_details</source>
-                <target>Tag details</target>
+                <target>Szczegóły tagu</target>
             </trans-unit>
             <trans-unit id="title_tag_edit">
                 <source>title_tag_edit</source>
-                <target>Edit tag</target>
+                <target>Edytuj tag</target>
             </trans-unit>
             <trans-unit id="title_tag_delete">
                 <source>title_tag_delete</source>
-                <target>Delete tag</target>
+                <target>Usuń tag</target>
             </trans-unit>
 
             <trans-unit id="title_category_list">
                 <source>title_category_list</source>
-                <target>Categories list</target>
+                <target>Lista kategorii</target>
             </trans-unit>
             <trans-unit id="title_category_details">
                 <source>title_category_details</source>
-                <target>Category details</target>
+                <target>Szczegóły kategorii</target>
             </trans-unit>
             <trans-unit id="title_category_edit">
                 <source>title_category_edit</source>
-                <target>Edit category</target>
+                <target>Edytuj kategorię</target>
             </trans-unit>
             <trans-unit id="title_category_delete">
                 <source>title_category_delete</source>
-                <target>Delete category</target>
+                <target>Usuń kategorię</target>
             </trans-unit>
 
             <trans-unit id="title_user_list">
                 <source>title_user_list</source>
-                <target>Users list</target>
+                <target>Lista użytkowników</target>
             </trans-unit>
             <trans-unit id="title_user_details">
                 <source>title_user_details</source>
-                <target>User details</target>
+                <target>Szczegóły użytkownika</target>
             </trans-unit>
             <trans-unit id="title_user_edit">
                 <source>title_user_edit</source>
-                <target>Edit user</target>
+                <target>Edytuj użytkownika</target>
             </trans-unit>
             <trans-unit id="title_user_delete">
                 <source>title_user_delete</source>
-                <target>Delete user</target>
+                <target>Usuń użytkownika</target>
             </trans-unit>
             <trans-unit id="label_email">
                 <source>label_email</source>
@@ -252,49 +240,53 @@
             </trans-unit>
             <trans-unit id="label_password">
                 <source>label_password</source>
-                <target>Password</target>
+                <target>Hasło</target>
             </trans-unit>
 
             <trans-unit id="title.app_register">
                 <source>title.app_register</source>
-                <target>Register</target>
+                <target>Zarejestruj się</target>
             </trans-unit>
             <trans-unit id="title_change_password">
                 <source>title_change_password</source>
-                <target>Change your password</target>
+                <target>Zmień swoje hasło</target>
             </trans-unit>
             <trans-unit id="label_repeated_password">
-                <source>label_repeated_password</source>
+                <source>Powtórz hasło</source>
                 <target>Repeat password</target>
             </trans-unit>
 
             <trans-unit id="message_created_successfully">
                 <source>message_created_successfully</source>
-                <target>Created successfully</target>
+                <target>Utworzono!</target>
             </trans-unit>
             <trans-unit id="message_updated_successfully">
                 <source>message_updated_successfully</source>
-                <target>Updated successfully</target>
+                <target>Zmieniono!</target>
             </trans-unit>
             <trans-unit id="message_deleted_successfully">
                 <source>message_deleted_successfully</source>
-                <target>Deleted successfully</target>
+                <target>Usunięto!</target>
             </trans-unit>
             <trans-unit id="message_registered_successfully">
                 <source>message_registered_successfully</source>
-                <target>Registered successfully. You can now login into your account.</target>
+                <target>Zarejestrowano! Możesz się teraz zalogować.</target>
             </trans-unit>
             <trans-unit id="label_sign_in">
                 <source>label_sign_in</source>
-                <target>Please sign in</target>
+                <target>Zaloguj się</target>
             </trans-unit>
             <trans-unit id="label_logged">
                 <source>label_logged</source>
-                <target>You are logged in as</target>
+                <target>Jesteś zalogowany jako</target>
             </trans-unit>
             <trans-unit id="action_logout">
                 <source>action_logout</source>
-                <target>logout</target>
+                <target>wyloguj się</target>
+            </trans-unit>
+            <trans-unit id="label_got_an_account">
+                <source>label_got_an_account</source>
+                <target>Masz już konto?</target>
             </trans-unit>
         </body>
     </file>

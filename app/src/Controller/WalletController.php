@@ -120,7 +120,7 @@ class WalletController extends AbstractController
             $wallet->setOwner($this->getUser());
             $this->walletService->save($wallet);
 
-            $this->addFlash('success', 'message_created_successfully');
+            $this->addFlash('success', 'message_wallet_created_successfully');
 
             return $this->redirectToRoute('wallet_index');
         }
@@ -168,7 +168,7 @@ class WalletController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->walletService->save($wallet);
 
-            $this->addFlash('success', 'message_updated_successfully');
+            $this->addFlash('success', 'message_wallet_updated_successfully');
 
             return $this->redirectToRoute('wallet_index');
         }
@@ -222,7 +222,7 @@ class WalletController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->walletService->delete($wallet);
-            $this->addFlash('success', 'message_deleted_successfully');
+            $this->addFlash('success', 'message_wallet_deleted_successfully');
 
             return $this->redirectToRoute('wallet_index');
         }

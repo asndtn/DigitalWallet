@@ -5,13 +5,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Balance;
-use App\Entity\Category;
 use App\Entity\Input;
-use App\Entity\Wallet;
 use App\Form\InputType;
 use App\Service\InputService;
-use App\Service\WalletService;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -40,7 +36,7 @@ class InputController extends AbstractController
     /**
      * InputController constructor.
      *
-     * @param InputService $inputService
+     * @param InputService $inputService Input service
      */
     public function __construct(InputService $inputService)
     {
@@ -105,10 +101,7 @@ class InputController extends AbstractController
     /**
      * Create action.
      *
-     * @param Request  $request  HTTP request
-     * @param Wallet   $wallet   Wallet entity
-     * @param Balance  $balance  Balance enitty
-     * @param Category $category Category entity
+     * @param Request $request HTTP request
      *
      * @return Response HTTP response
      *
@@ -121,29 +114,17 @@ class InputController extends AbstractController
      *     name="input_create",
      * )
      */
-    public function create(Request $request, Wallet $wallet, Balance $balance, Category $category): Response
+    public function create(Request $request): Response
     {
         $input = new Input();
         $form = $this->createForm(InputType::class, $input);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $wallet = $input->getWallet();
-            $balance = $wallet->getBalance();
-            $balance_amount = $balance->getBalanceAmount();
-            $input_category = $input->getCategory();
-            $category = $input_category->getName();
-            $amount = $input->getAmount();
             $input->setDate(new \DateTime());
             $this->inputService->save($input);
 
-            if ($category === 'Income') {
-                $balance->setBalanceAmount($balance_amount += $amount);
-            } elseif ($category === 'Expense') {
-                $balance->setBalanceAmount($balance_amount -= $amount);
-            }
-
-            $this->addFlash('success', 'input_created_successfully');
+            $this->addFlash('success', 'message_created_successfully');
 
             return $this->redirectToRoute('input_index');
         }
@@ -234,7 +215,7 @@ class InputController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->inputService->delete($input);
 
-            $this->addFlash('success', 'message.deleted_successfully');
+            $this->addFlash('success', 'message_deleted_successfully');
 
             return $this->redirectToRoute('input_index');
         }

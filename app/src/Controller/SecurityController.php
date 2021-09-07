@@ -54,11 +54,11 @@ class SecurityController extends AbstractController
     /**
      * Register action.
      *
-     * @param Request                       $request            HTTP request
-     * @param UserRepository                $userRepository     User repository
-     * @param UserPasswordEncoderInterface  $passwordEncoder    Password encoder
+     * @param Request                      $request         HTTP request
+     * @param UserRepository               $userRepository  User repository
+     * @param UserPasswordEncoderInterface $passwordEncoder Password encoder
      *
-     * @return Response                                         Response
+     * @return Response Response
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
@@ -93,9 +93,9 @@ class SecurityController extends AbstractController
     /**
      * Password change action.
      *
-     * @param Request                       $request        HTTP Request
-     * @param User                          $user           User entity
-     * @param UserRepository                $userRepository User Repository
+     * @param Request                      $request         HTTP Request
+     * @param User                         $user            User entity
+     * @param UserRepository               $userRepository  User Repository
      * @param UserPasswordEncoderInterface $passwordEncoder Password Encoder
      *
      * @return Response HTTP Response

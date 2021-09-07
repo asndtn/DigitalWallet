@@ -111,7 +111,7 @@ class InputType extends AbstractType
 
                     return $type->getName();
                 },
-                'label' => 'label_wallet',
+                'label' => 'label_type',
                 'placeholder' => 'label_none',
                 'required' => true,
             ]

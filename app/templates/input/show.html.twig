@@ -8,11 +8,11 @@
     <h1>{{ 'title_input_details'|trans({'%id%': input.id|default('')}) }}</h1>
     {% if input is defined and input|length %}
         <dl class="dl-horizontal">
-            <dt>{{ 'label_wallet' }}</dt>
+            <dt>{{ 'label_type'|trans }}</dt>
             <dd>{{ input.wallet.type.name }}</dd>
             <dt>{{ 'label_amount'|trans }}</dt>
             <dd>{{ input.amount }}</dd>
-            <dt>{{ 'label_currency' }}</dt>
+            <dt>{{ 'label_currency'|trans }}</dt>
             <dd>{{ input.wallet.currency.name }}</dd>
             <dt>{{ 'label_date'|trans }}</dt>
             <dd>{{ input.date|format_date('long') }}</dd>

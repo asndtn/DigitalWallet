@@ -16,11 +16,12 @@
     {{ form_start(form, { method: 'POST', action: url('app_register') }) }}
     {{ form_widget(form) }}
     <div class="form-group row float-sm-right">
-        <input type="submit" value="{{ 'action.save'|trans }}" class="btn btn-primary" />
+        <input type="submit" value="{{ 'action_save'|trans }}" class="btn btn-primary" />
     </div>
     <div class="form-group row float-sm-left">
         <a href="{{ url('app_login') }}" class="btn btn-link">
-            {{ 'action.back_to_list'|trans }}
+            {{ 'label_got_an_account'|trans }}
+            {{ 'label_sign_in'|trans }}
         </a>
     </div>
     {{ form_end(form) }}
