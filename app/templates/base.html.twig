@@ -9,9 +9,51 @@
     {% endblock %}
 </head>
 <body>
+    <header>
+        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+            {{ 'label_logged'|trans }} {{ app.user.username }}, <a href="{{ path('app_logout') }}">{{ 'action_logout'|trans }}</a>
+            <nav>
+                <ul>
+                    <li>
+                        <a href="{{ url('wallet_index') }}" title="{{ 'wallet_index'|trans }}">{{ 'wallet_index' }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ url('input_index') }}" title="{{ 'input_index'|trans }}">{{ 'input_index' }}</a>
+                    </li>
+                </ul>
+            </nav>
+            {% if is_granted('ROLE_ADMIN') %}
+                <ul>
+                    <li>
+                        <a href="{{ url('type_index') }}" title="{{ 'type_index'|trans }}">{{ 'type_index' }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ url('currency_index') }}" title="{{ 'currency_index'|trans }}">{{ 'currency_index' }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ url('tag_index') }}" title="{{ 'tag_index'|trans }}">{{ 'tag_index' }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ url('category_index') }}" title="{{ 'category_index'|trans }}">{{ 'category_index' }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ url('user_index') }}" title="{{ 'user_index'|trans }}">{{ 'user_index' }}</a>
+                    </li>
+                </ul>
+            {% endif %}
+        {% endif %}
+        <ul>
+            <li>
+                <a href="{{ url('app_login') }}" title="{{ 'app_login'|trans }}">{{ 'app_login' }}</a>
+            </li>
+            <li>
+                <a href="{{ url('app_register') }}" title="{{ 'app_register'|trans }}">{{ 'app_register' }}</a>
+            </li>
+        </ul>
+    </header>
 <div class="container-fluid">
-    {% include 'default/_flash_messages.html.twig' %}
     {% block body %}{% endblock %}
+    {% include 'default/_flash_messages.html.twig' %}
 </div>
 {% block javascripts %}
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>

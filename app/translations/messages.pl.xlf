@@ -288,6 +288,10 @@
                 <source>label_got_an_account</source>
                 <target>Masz już konto?</target>
             </trans-unit>
+            <trans-unit id="title_homepage">
+                <source>title_homepage</source>
+                <target>Witaj w aplikacji DigitalWallet!</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

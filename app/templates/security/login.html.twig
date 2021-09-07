@@ -8,12 +8,6 @@
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
 
-    {% if app.user %}
-        <div class="mb-3">
-            {{ 'label_logged'|trans }} {{ app.user.username }}, <a href="{{ path('app_logout') }}">{{ 'action_logout'|trans }}</a>
-        </div>
-    {% endif %}
-
     <h1 class="h3 mb-3 font-weight-normal">{{ 'label_sign_in'|trans }}</h1>
     <label for="inputEmail">{{ 'label_email'|trans }}</label>
     <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>

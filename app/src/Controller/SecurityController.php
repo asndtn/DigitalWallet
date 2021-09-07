@@ -1,6 +1,6 @@
 <?php
 /**
- * Security controller
+ * Security controller.
  */
 
 namespace App\Controller;
@@ -9,6 +9,8 @@ use App\Entity\User;
 use App\Form\PasswordChangeType;
 use App\Form\RegisterType;
 use App\Repository\UserRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -60,8 +62,8 @@ class SecurityController extends AbstractController
      *
      * @return Response Response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/register",
@@ -100,8 +102,8 @@ class SecurityController extends AbstractController
      *
      * @return Response HTTP Response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "user/{id}/passwordChange",

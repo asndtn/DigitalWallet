@@ -296,6 +296,10 @@
                 <source>action_logout</source>
                 <target>logout</target>
             </trans-unit>
+            <trans-unit id="title_homepage">
+                <source>title_homepage</source>
+                <target>Welcome to the DigitalWallet app!</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
