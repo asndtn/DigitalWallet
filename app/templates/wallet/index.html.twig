@@ -28,8 +28,8 @@
             <tr>
                 <th>{{ knp_pagination_sortable(pagination, 'label_id'|trans, 'wallet.id') }}</th>
                 <th>{{ 'label_type'|trans }}</th>
-                <th>{{ 'label_currency'|trans }}</th>
                 <th>{{ 'label_balance'|trans }}</th>
+                <th>{{ 'label_currency'|trans }}</th>
                 <th>{{ 'label_actions'|trans }}</th>
             </tr>
             </thead>
@@ -38,8 +38,8 @@
                 <tr>
                     <td>{{ wallet.id }}</td>
                     <td>{{ wallet.type.name }}</td>
+                    <td>{{ wallet.balance }}</td>
                      <td>{{ wallet.currency.name }}</td>
-                    <td>{{ 'TODO' }}</td>
                     <td>
                         <ul>
                             {% if is_granted('VIEW', wallet) %}

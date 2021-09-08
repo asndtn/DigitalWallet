@@ -10,6 +10,7 @@ use App\Entity\Type;
 use App\Entity\Wallet;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -56,6 +57,15 @@ class WalletType extends AbstractType
                 },
                 'label' => 'label_currency',
                 'placeholder' => 'label_none',
+                'required' => true,
+            ]
+        );
+
+        $builder->add(
+            'balance',
+            IntegerType::class,
+            [
+                'label' => 'label_balance',
                 'required' => true,
             ]
         );

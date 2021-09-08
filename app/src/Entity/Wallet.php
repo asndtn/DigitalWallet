@@ -72,11 +72,7 @@ class Wallet
     /**
      * Balance.
      *
-     * @ORM\OneToOne(
-     *     targetEntity="\App\Entity\Balance",
-     *     mappedBy="wallet",
-     *     cascade={"persist", "remove"},
-     * )
+     * @ORM\Column(type="float")
      */
     private $balance;
 
@@ -193,27 +189,22 @@ class Wallet
     }
 
     /**
-     * Getter for Balance.
+     * Getter for balance.
      *
-     * @return Balance|null Balance
+     * @return float|null Balance
      */
-    public function getBalance(): ?Balance
+    public function getBalance(): ?float
     {
         return $this->balance;
     }
 
     /**
-     * Setter for Balance.
+     * Setter for balance.
      *
-     * @param Balance $balance Balance
+     * @param float $balance Balance
      */
-    public function setBalance(Balance $balance): void
+    public function setBalance(float $balance): void
     {
-        // set the owning side of the relation if necessary
-        if ($balance->getWallet() !== $this) {
-            $balance->setWallet($this);
-        }
-
         $this->balance = $balance;
     }
 }

@@ -122,10 +122,36 @@ class InputController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $input->setDate(new \DateTime());
-            $this->inputService->save($input);
+            $wallet = $input->getWallet();
+            $balance = $wallet->getBalance();
+            $inputCategory = $input->getCategory();
+            $category = $inputCategory->getName();
+            $amount = $input->getAmount();
 
-            $this->addFlash('success', 'message_created_successfully');
-
+            if ('Income' === $category) {
+                $wallet->setBalance($balance += $amount);
+                $this->inputService->save($input);
+                $this->addFlash('success', 'message_created_successfully');
+            } elseif ('Expense' === $category) {
+                if ($balance - $amount >= 0) {
+                    $wallet->setBalance($balance += $amount);
+                    $this->inputService->save($input);
+                    $this->addFlash('success', 'message_created_successfully');
+                } else {
+                    $this->addFlash('warning', 'balance_cannot_be_less_than_0');
+                }
+            }
+//            if ($balance + $amount >= 0) {
+//                if ('Income' === $category) {
+//                    $wallet->setBalance($balance += $amount);
+//                } elseif ('Expense' === $category) {
+//                    $wallet->setBalance($balance -= $amount);
+//                }
+//                $this->inputService->save($input);
+//                $this->addFlash('success', 'message_created_successfully');
+//            } elseif ($balance + $amount < 0) {
+//                $this->addFlash('warning', 'balance_cannot_be_less_than_0');
+//            }
             return $this->redirectToRoute('input_index');
         }
 

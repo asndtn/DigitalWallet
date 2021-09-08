@@ -12,6 +12,8 @@
         <dd>{{ balance.id }}</dd>
         <dt>{{ 'label_amount'|trans }}</dt>
         <dd>{{ balance.balanceAmount }}</dd>
+        <dt>{{ 'wallet_id'|trans }}</dt>
+        <dd>{{ balance.wallet.id }}</dd>
     </dl>
     <p>
         <a href="{{ url('balance_index') }}" title="{{ 'action_back_to_list'|trans}}">{{ 'action_back_to_list'|trans }}</a>
