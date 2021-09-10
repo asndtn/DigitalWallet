@@ -352,6 +352,14 @@
                 <source>title_currency_create</source>
                 <target>Create a currency</target>
             </trans-unit>
+            <trans-unit id="message_form_error">
+                <source>message_form_error</source>
+                <target>Error!</target>
+            </trans-unit>
+            <trans-unit id="label_initial_balance">
+                <source>label_initial_balance</source>
+                <target>Initial balance</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

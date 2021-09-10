@@ -51,7 +51,6 @@ class Input
      *
      * @ORM\Column(type="float")
      *
-     * @Assert\Positive
      * @Assert\NotBlank
      */
     private $amount;

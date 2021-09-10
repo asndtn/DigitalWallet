@@ -174,25 +174,15 @@ class InputController extends AbstractController
             $balance = $wallet->getBalance();
             $balanceAmount = $balance->getBalanceAmount();
 
-            $inputCategory = $input->getCategory();
-            $category = $inputCategory->getName();
-
             $amount = $input->getAmount();
 
-            if ('Income' === $category) {
+            if ($balanceAmount + $amount >= 0) {
                 $total = $balanceAmount + $amount;
                 $balance->setBalanceAmount($total);
                 $this->inputService->save($input);
                 $this->addFlash('success', 'message_created_successfully');
-            } elseif ('Expense' === $category) {
-                if ($balanceAmount - $amount >= 0) {
-                    $total = $balanceAmount - $amount;
-                    $balance->setBalanceAmount($total);
-                    $this->inputService->save($input);
-                    $this->addFlash('success', 'message_created_successfully');
-                } else {
-                    $this->addFlash('warning', 'message_balance_0');
-                }
+            } else {
+                $this->addFlash('warning', 'message_balance_0');
             }
 
             return $this->redirectToRoute('input_index');
@@ -229,6 +219,8 @@ class InputController extends AbstractController
      */
     public function edit(Request $request, Input $input): Response
     {
+        $ogAmount = $input->getAmount();
+
         $form = $this->createForm(InputType::class, $input, ['method' => 'PUT']);
         $form->handleRequest($request);
 
@@ -237,25 +229,17 @@ class InputController extends AbstractController
             $balance = $wallet->getBalance();
             $balanceAmount = $balance->getBalanceAmount();
 
-            $inputCategory = $input->getCategory();
-            $category = $inputCategory->getName();
+            $newAmount = $input->getAmount();
+            $diff = $newAmount - $ogAmount;
 
-            $amount = $input->getAmount();
-
-            if ('Income' === $category) {
-                $total = $balanceAmount + $amount;
+            if ($balanceAmount + $diff >= 0) {
+                $total = $balanceAmount + $diff;
                 $balance->setBalanceAmount($total);
                 $this->inputService->save($input);
-                $this->addFlash('success', 'message_updated_successfully');
-            } elseif ('Expense' === $category) {
-                if ($balanceAmount - $amount >= 0) {
-                    $total = $balanceAmount - $amount;
-                    $balance->setBalanceAmount($total);
-                    $this->inputService->save($input);
-                    $this->addFlash('success', 'message_updated_successfully');
-                } else {
-                    $this->addFlash('warning', 'message_balance_0');
-                }
+
+                $this->addFlash('success', 'congrats');
+            } else {
+                $this->addFlash('warning', 'message_balance_0');
             }
 
             return $this->redirectToRoute('input_index');
@@ -307,25 +291,15 @@ class InputController extends AbstractController
             $balance = $wallet->getBalance();
             $balanceAmount = $balance->getBalanceAmount();
 
-            $inputCategory = $input->getCategory();
-            $category = $inputCategory->getName();
-
             $amount = $input->getAmount();
 
-            if ('Expense' === $category) {
-                $total = $balanceAmount + $amount;
+            if ($balanceAmount - $amount >= 0) {
+                $total = $balanceAmount - $amount;
                 $balance->setBalanceAmount($total);
                 $this->inputService->delete($input);
                 $this->addFlash('success', 'message_deleted_successfully');
-            } elseif ('Income' === $category) {
-                if ($balance - $amount >= 0) {
-                    $total = $balanceAmount - $amount;
-                    $balance->setBalanceAmount($total);
-                    $this->inputService->delete($input);
-                    $this->addFlash('success', 'message_deleted_successfully');
-                } else {
-                    $this->addFlash('warning', 'message_balance_0');
-                }
+            } else {
+                $this->addFlash('warning', 'message_balance_0');
             }
 
             return $this->redirectToRoute('input_index');

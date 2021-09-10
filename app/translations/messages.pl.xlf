@@ -360,6 +360,14 @@
                 <source>title_currency_create</source>
                 <target>Utwórz walutę</target>
             </trans-unit>
+            <trans-unit id="message_form_error">
+                <source>message_form_error</source>
+                <target>Błąd!</target>
+            </trans-unit>
+            <trans-unit id="label_initial_balance">
+                <source>label_initial_balance</source>
+                <target>Saldo początkowe</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

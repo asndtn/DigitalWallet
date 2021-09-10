@@ -45,7 +45,7 @@ class BalanceType extends AbstractType
             'balanceAmount',
             NumberType::class,
             [
-                'label' => 'label_balance',
+                'label' => 'label_initial_balance',
                 'required' => true,
                 'attr' => ['max_length' => 64],
             ]
