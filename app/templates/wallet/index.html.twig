@@ -7,11 +7,11 @@
 {% block body %}
     <h1>{{ 'title_wallets_list'|trans }}</h1>
 
-    {% if app.user %}
+{#     {% if app.user %}
         <div class="mb-3">
             {{ 'label_logged'|trans }} {{ app.user.username }}, <a href="{{ path('app_logout') }}">{{ 'action_logout'|trans }}</a>
         </div>
-    {% endif %}
+    {% endif %} #}
 
     <p>
         <a href="{{ url('wallet_create') }}" title="{{ 'action_create'|trans}}">{{ 'action_create'|trans }}</a>
@@ -38,8 +38,8 @@
                 <tr>
                     <td>{{ wallet.id }}</td>
                     <td>{{ wallet.type.name }}</td>
-                    <td>{{ wallet.balance }}</td>
-                     <td>{{ wallet.currency.name }}</td>
+                    <td>{{ wallet.balance.balanceAmount }}</td>
+                    <td>{{ wallet.currency.name }}</td>
                     <td>
                         <ul>
                             {% if is_granted('VIEW', wallet) %}
@@ -72,8 +72,8 @@
             <p>
                 {{ 'message_empty_list'|trans }}
             </p>
-            <p>
+            {# <p>
                 <a href="{{ url('wallet_create') }}" title="{{ 'action_create_wallet'|trans}}">{{ 'action_create_wallet'|trans }}</a>
-            </p>
+            </p> #}
         {% endif %}
 {% endblock %}

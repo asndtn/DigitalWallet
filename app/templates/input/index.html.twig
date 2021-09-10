@@ -6,15 +6,28 @@
 
 {% block body %}
     <h1>{{ 'title_input_list'|trans }}</h1>
+
+    {% if balance is defined %}
+    {{ balance }}
+    {% endif %}
+
+    {{ form_start(form, { method: 'POST', action: url('input_index') }) }}
+    {{ form_widget(form) }}
+    <div class="form-group row float-sm-right">
+        <input type="submit" value="{{ submit_label|default('action_save'|trans) }}" class="btn btn-primary" />
+    </div>
+    {{ form_end(form) }}
+
+    <p>
+        <a href="{{ url('input_create') }}" title="{{ 'action_create'|trans}}">{{ 'action_create'|trans }}</a>
+    </p>
     {% if pagination is defined and pagination.items|length %}
 
         <div class="navigation text-center">
             {{ knp_pagination_render(pagination) }}
         </div>
 
-        <p>
-            <a href="{{ url('input_create') }}" title="{{ 'action_create'|trans}}">{{ 'action_create'|trans }}</a>
-        </p>
+
 
         <table class="table table-striped">
             <thead>
@@ -48,19 +61,19 @@
                     <td>
                         <ul>
                             {% if is_granted('VIEW', input) %}
-                            <li>
-                                <a href="{{ url('input_show', {id: input.id}) }}" title="{{ 'action_view'|trans }}">{{ 'action_view'|trans }}</a>
-                            </li>
+                                <li>
+                                    <a href="{{ url('input_show', {id: input.id}) }}" title="{{ 'action_view'|trans }}">{{ 'action_view'|trans }}</a>
+                                </li>
                             {% endif %}
                             {% if is_granted('EDIT', input) %}
-                            <li>
-                                <a href="{{ url('input_edit', {id: input.id}) }}" title="{{ 'action_edit'|trans }}">{{ 'action_edit'|trans }}</a>
-                            </li>
+                                <li>
+                                    <a href="{{ url('input_edit', {id: input.id}) }}" title="{{ 'action_edit'|trans }}">{{ 'action_edit'|trans }}</a>
+                                </li>
                             {% endif %}
                             {% if is_granted('DELETE', input) %}
-                            <li>
-                                <a href="{{ url('input_delete', {id: input.id}) }}" title="{{ 'action_delete'|trans }}">{{ 'action_delete'|trans }}</a>
-                            </li>
+                                <li>
+                                    <a href="{{ url('input_delete', {id: input.id}) }}" title="{{ 'action_delete'|trans }}">{{ 'action_delete'|trans }}</a>
+                                </li>
                             {% endif %}
                         </ul>
                     </td>

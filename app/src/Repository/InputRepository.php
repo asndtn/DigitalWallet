@@ -10,10 +10,11 @@ use App\Entity\Input;
 use App\Entity\Tag;
 use App\Entity\User;
 use App\Entity\Wallet;
+use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Class InputRepository.
@@ -34,7 +35,7 @@ class InputRepository extends ServiceEntityRepository
      *
      * @constant int
      */
-    const PAGINATOR_ITEMS_PER_PAGE = 10;
+    public const PAGINATOR_ITEMS_PER_PAGE = 10;
 
     /**
      * Input repository constructor.
@@ -51,8 +52,6 @@ class InputRepository extends ServiceEntityRepository
      *
      * @param User  $user    User entity
      * @param array $filters Filters array
-     *
-     * @return QueryBuilder
      */
     public function queryByOwner(User $user, array $filters = []): QueryBuilder
     {
@@ -90,9 +89,32 @@ class InputRepository extends ServiceEntityRepository
     }
 
     /**
-     * Get or create new query builder.
+     * Query by date.
      *
-     * @param QueryBuilder|null $queryBuilder
+     * @param DateTimeInterface $fromDate from date
+     * @param DateTimeInterface $to       to date
+     * @param User              $user     User entity
+     * @param array             $filters  Filters array
+     */
+    public function queryByDate($fromDate, $to, User $user, array $filters = []): QueryBuilder
+    {
+        $queryBuilder = $this->queryByOwner($user, $filters);
+        $queryBuilder
+            ->andWhere('input.date BETWEEN :fromDate AND :to')
+            ->setParameter('fromDate', $fromDate)
+            ->setParameter('to', $to);
+
+        return $queryBuilder;
+
+//        return $this->getOrCreateQueryBuilder()
+//                ->select('inputs')
+//                ->where('date BETWEEN :from AND :to')
+//                ->setParameter('from', $from->format('yyyy-MM-dd'))
+//                ->setParameter('to', $to);
+    }
+
+    /**
+     * Get or create new query builder.
      *
      * @return QueryBuilder QueryBuilder
      */

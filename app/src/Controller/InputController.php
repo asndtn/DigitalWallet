@@ -4,14 +4,18 @@
  */
 
 namespace App\Controller;
+require_once __DIR__.'/../../vendor/autoload.php';
 
+use App\Entity\Balance;
 use App\Entity\Input;
+use App\Form\DateRangeType;
 use App\Form\InputType;
 use App\Service\InputService;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,7 +56,7 @@ class InputController extends AbstractController
      *
      * @Route(
      *     "/",
-     *     methods={"GET"},
+     *     methods={"GET", "POST"},
      *     name="input_index",
      * )
      */
@@ -63,11 +67,54 @@ class InputController extends AbstractController
         $filters['tag_id'] = $request->query->getInt('filters_tag_id');
 
         $page = $request->query->getInt('page', 1);
-        $pagination = $this->inputService->createPaginatedList($page, $this->getUser(), $filters);
+
+        $form = $this->createForm(DateRangeType::class);
+        $form->handleRequest($request);
+
+        $fromDate = new \DateTime('1997-01-01');
+        $to = new \DateTime('now');
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $fromDate = $form['fromDate']->getData();
+            $to = $form['to']->getData();
+
+            $pagination = $this->inputService->filterByDate($fromDate, $to, $page, $this->getUser(), $filters);
+
+            $balance = 0;
+
+            foreach ($pagination as $input) {
+                $amount = $input->getAmount();
+                $category = $input->getCategory();
+                $categoryName = $category->getName();
+
+                if ('Income' === $categoryName) {
+                    $balance += $amount;
+                } elseif ('Expense' === $categoryName) {
+                    $balance -= $amount;
+                }
+            }
+
+            $cache = new FilesystemAdapter();
+            $balanceCache = $cache->getItem('balance.balanceAmount');
+            $balanceCache->set($balance);
+            $cache->save($balanceCache);
+        } else {
+            $pagination = $this->inputService->createPaginatedList($page, $this->getUser(), $filters);
+        }
+
+//        $balanceCache = new Balance();
+//        $this->getEntityManager()->getReference($balanceCache->getId);
+
+//        $loader = new \Twig\Loader\FilesystemLoader('templates');
+//        $twig = new \Twig\Environment($loader);
+//        $twig->addGlobal('balance', $balance);
 
         return $this->render(
             'input/index.html.twig',
-            ['pagination' => $pagination]
+            [
+                'pagination' => $pagination,
+                'form' => $form->createView(),
+            ]
         );
     }
 
@@ -122,36 +169,32 @@ class InputController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $input->setDate(new \DateTime());
+
             $wallet = $input->getWallet();
             $balance = $wallet->getBalance();
+            $balanceAmount = $balance->getBalanceAmount();
+
             $inputCategory = $input->getCategory();
             $category = $inputCategory->getName();
+
             $amount = $input->getAmount();
 
             if ('Income' === $category) {
-                $wallet->setBalance($balance += $amount);
+                $total = $balanceAmount + $amount;
+                $balance->setBalanceAmount($total);
                 $this->inputService->save($input);
                 $this->addFlash('success', 'message_created_successfully');
             } elseif ('Expense' === $category) {
-                if ($balance - $amount >= 0) {
-                    $wallet->setBalance($balance += $amount);
+                if ($balanceAmount - $amount >= 0) {
+                    $total = $balanceAmount - $amount;
+                    $balance->setBalanceAmount($total);
                     $this->inputService->save($input);
                     $this->addFlash('success', 'message_created_successfully');
                 } else {
-                    $this->addFlash('warning', 'balance_cannot_be_less_than_0');
+                    $this->addFlash('warning', 'message_balance_0');
                 }
             }
-//            if ($balance + $amount >= 0) {
-//                if ('Income' === $category) {
-//                    $wallet->setBalance($balance += $amount);
-//                } elseif ('Expense' === $category) {
-//                    $wallet->setBalance($balance -= $amount);
-//                }
-//                $this->inputService->save($input);
-//                $this->addFlash('success', 'message_created_successfully');
-//            } elseif ($balance + $amount < 0) {
-//                $this->addFlash('warning', 'balance_cannot_be_less_than_0');
-//            }
+
             return $this->redirectToRoute('input_index');
         }
 
@@ -190,9 +233,30 @@ class InputController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->inputService->save($input);
+            $wallet = $input->getWallet();
+            $balance = $wallet->getBalance();
+            $balanceAmount = $balance->getBalanceAmount();
 
-            $this->addFlash('success', 'message_updated_successfully');
+            $inputCategory = $input->getCategory();
+            $category = $inputCategory->getName();
+
+            $amount = $input->getAmount();
+
+            if ('Income' === $category) {
+                $total = $balanceAmount + $amount;
+                $balance->setBalanceAmount($total);
+                $this->inputService->save($input);
+                $this->addFlash('success', 'message_updated_successfully');
+            } elseif ('Expense' === $category) {
+                if ($balanceAmount - $amount >= 0) {
+                    $total = $balanceAmount - $amount;
+                    $balance->setBalanceAmount($total);
+                    $this->inputService->save($input);
+                    $this->addFlash('success', 'message_updated_successfully');
+                } else {
+                    $this->addFlash('warning', 'message_balance_0');
+                }
+            }
 
             return $this->redirectToRoute('input_index');
         }
@@ -239,9 +303,30 @@ class InputController extends AbstractController
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->inputService->delete($input);
+            $wallet = $input->getWallet();
+            $balance = $wallet->getBalance();
+            $balanceAmount = $balance->getBalanceAmount();
 
-            $this->addFlash('success', 'message_deleted_successfully');
+            $inputCategory = $input->getCategory();
+            $category = $inputCategory->getName();
+
+            $amount = $input->getAmount();
+
+            if ('Expense' === $category) {
+                $total = $balanceAmount + $amount;
+                $balance->setBalanceAmount($total);
+                $this->inputService->delete($input);
+                $this->addFlash('success', 'message_deleted_successfully');
+            } elseif ('Income' === $category) {
+                if ($balance - $amount >= 0) {
+                    $total = $balanceAmount - $amount;
+                    $balance->setBalanceAmount($total);
+                    $this->inputService->delete($input);
+                    $this->addFlash('success', 'message_deleted_successfully');
+                } else {
+                    $this->addFlash('warning', 'message_balance_0');
+                }
+            }
 
             return $this->redirectToRoute('input_index');
         }

@@ -118,6 +118,7 @@ class WalletController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $wallet->setOwner($this->getUser());
+
             $this->walletService->save($wallet);
 
             $this->addFlash('success', 'message_wallet_created_successfully');

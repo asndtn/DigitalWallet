@@ -17,16 +17,16 @@ class WalletFixtures extends AbstractBaseFixtures implements DependentFixtureInt
     /**
      * Load data.
      *
-     * @param \Doctrine\Persistence\ObjectManager $manager Persistence object manager
+     * @param ObjectManager $manager Persistence object manager
      */
     public function loadData(ObjectManager $manager): void
     {
-        $this->createMany(50, 'wallets', function ($i) {
+        $this->createMany(10, 'wallets', function ($i) {
             $wallet = new Wallet();
             $wallet->setType($this->getRandomReference('types'));
             $wallet->setCurrency($this->getRandomReference('currencies'));
             $wallet->setOwner($this->getRandomReference('users'));
-            
+
             return $wallet;
         });
 

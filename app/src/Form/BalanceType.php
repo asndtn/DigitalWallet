@@ -1,20 +1,31 @@
 <?php
 /**
- * Currency type.
+ * Balance type.
  */
 
 namespace App\Form;
 
-use App\Entity\Currency;
+use App\Entity\Category;
+use App\Entity\Balance;
+use App\Entity\Wallet;
+use App\Entity\Type;
+use App\Form\DataTransformer\TagsDataTransformer;
+use App\Repository\WalletRepository;
+use Faker\Core\Number;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Security;
 
 /**
- * Class CurrencyType.
+ * Class BalanceType.
  */
-class CurrencyType extends AbstractType
+class BalanceType extends AbstractType
 {
     /**
      * Builds the form.
@@ -22,20 +33,21 @@ class CurrencyType extends AbstractType
      * This method is called for each type in the hierarchy starting from the
      * top most type. Type extensions can further modify the form.
      *
+     * @param FormBuilderInterface $builder The form builder
+     * @param array $options The options
+     *
      * @see FormTypeExtensionInterface::buildForm()
      *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array                $options The options
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
-            'name',
-            TextType::class,
+            'balanceAmount',
+            NumberType::class,
             [
-                'label' => 'label_name',
+                'label' => 'label_balance',
                 'required' => true,
-                'attr' => ['max_length' => 3],
+                'attr' => ['max_length' => 64],
             ]
         );
     }
@@ -47,7 +59,7 @@ class CurrencyType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['data_class' => Currency::class]);
+        $resolver->setDefaults(['data_class' => Balance::class]);
     }
 
     /**
@@ -60,6 +72,6 @@ class CurrencyType extends AbstractType
      */
     public function getBlockPrefix(): string
     {
-        return 'currency';
+        return 'balance';
     }
 }

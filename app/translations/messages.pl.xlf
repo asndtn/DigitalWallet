@@ -292,6 +292,74 @@
                 <source>title_homepage</source>
                 <target>Witaj w aplikacji DigitalWallet!</target>
             </trans-unit>
+            <trans-unit id="message_balance_0">
+                <source>message_balance_0</source>
+                <target>Saldo nie może spaść poniżej 0!</target>
+            </trans-unit>
+            <trans-unit id="message_wallet_deleted_successfully">
+                <source>message_wallet_deleted_successfully</source>
+                <target>Portfel usunięty</target>
+            </trans-unit>
+            <trans-unit id="label_from">
+                <source>label_from</source>
+                <target>Od:</target>
+            </trans-unit>
+            <trans-unit id="label_to">
+                <source>label_to</source>
+                <target>Do:</target>
+            </trans-unit>
+            <trans-unit id="wallet_index">
+                <source>wallet_index</source>
+                <target>Twoje portfele</target>
+            </trans-unit>
+            <trans-unit id="input_index">
+                <source>input_index</source>
+                <target>Operacje</target>
+            </trans-unit>
+            <trans-unit id="title.app_login">
+                <source>title.app_login</source>
+                <target>Zaloguj się</target>
+            </trans-unit>
+            <trans-unit id="Year">
+                <source>Year</source>
+                <target>Rok</target>
+            </trans-unit>
+            <trans-unit id="Month">
+                <source>Month</source>
+                <target>Miesiąc</target>
+            </trans-unit>
+            <trans-unit id="Day">
+                <source>Day</source>
+                <target>Dzień</target>
+            </trans-unit>
+            <trans-unit id="type_index">
+                <source>type_index</source>
+                <target>Typy</target>
+            </trans-unit>
+            <trans-unit id="currency_index">
+                <source>currency_index</source>
+                <target>Waluty</target>
+            </trans-unit>
+            <trans-unit id="tag_index">
+                <source>tag_index</source>
+                <target>Tagi</target>
+            </trans-unit>
+            <trans-unit id="category_index">
+                <source>category_index</source>
+                <target>Kategorie</target>
+            </trans-unit>
+            <trans-unit id="user_index">
+                <source>user_index</source>
+                <target>Użytkownicy</target>
+            </trans-unit>
+            <trans-unit id="title_tag_create">
+                <source>title_tag_create</source>
+                <target>Utwórz tag</target>
+            </trans-unit>
+            <trans-unit id="title_currency_create">
+                <source>title_currency_create</source>
+                <target>Utwórz walutę</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

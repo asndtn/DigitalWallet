@@ -8,11 +8,11 @@ namespace App\Service;
 use App\Entity\Input;
 use App\Entity\User;
 use App\Repository\InputRepository;
+use DateTimeInterface;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class InputService.
@@ -46,13 +46,6 @@ class InputService
      * @var TagService
      */
     private $tagService;
-
-    /**
-     * Wallet service.
-     *
-     * @var WalletService
-     */
-    private $walletService;
 
     /**
      * InputService constructor.
@@ -91,6 +84,28 @@ class InputService
     }
 
     /**
+     * Create paginated list.
+     *
+     * @param DateTimeInterface $fromDate From date
+     * @param DateTimeInterface $to       To date
+     * @param int               $page     Page number
+     * @param User              $user     User entity
+     * @param array             $filters  Filters array
+     *
+     * @return PaginationInterface Paginated list
+     */
+    public function filterByDate($fromDate, $to, int $page, User $user, array $filters = []): PaginationInterface
+    {
+        $filters = $this->prepareFilters($filters);
+
+        return $this->paginator->paginate(
+            $this->inputRepository->queryByDate($fromDate, $to, $user, $filters),
+            $page,
+            InputRepository::PAGINATOR_ITEMS_PER_PAGE
+        );
+    }
+
+    /**
      * Save input.
      *
      * @param Input $input Input entity
@@ -117,7 +132,7 @@ class InputService
     }
 
     /**
-     * Prepare filters for the tasks list.
+     * Prepare filters for the inputs list.
      *
      * @param array $filters Raw filters from request
      *

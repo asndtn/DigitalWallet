@@ -20,7 +20,7 @@ class CurrencyFixtures extends AbstractBaseFixtures
      */
     public function loadData(ObjectManager $manager): void
     {
-        $this->createMany(10, 'currencies', function ($i) {
+        $this->createMany(50, 'currencies', function ($i) {
             $currency = new Currency();
             $currency->setName($this->faker->currencyCode);
 

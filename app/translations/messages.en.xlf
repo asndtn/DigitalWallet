@@ -300,6 +300,58 @@
                 <source>title_homepage</source>
                 <target>Welcome to the DigitalWallet app!</target>
             </trans-unit>
+            <trans-unit id="message_balance_0">
+                <source>message_balance_0</source>
+                <target>Balance cannot be less than 0!</target>
+            </trans-unit>
+            <trans-unit id="label_from">
+                <source>label_from</source>
+                <target>From:</target>
+            </trans-unit>
+            <trans-unit id="label_to">
+                <source>label_to</source>
+                <target>To:</target>
+            </trans-unit>
+            <trans-unit id="wallet_index">
+                <source>wallet_index</source>
+                <target>Your wallets</target>
+            </trans-unit>
+            <trans-unit id="input_index">
+                <source>input_index</source>
+                <target>Inputs</target>
+            </trans-unit>
+            <trans-unit id="title.app_login">
+                <source>title.app_login</source>
+                <target>Log in</target>
+            </trans-unit>
+            <trans-unit id="type_index">
+                <source>type_index</source>
+                <target>Types list</target>
+            </trans-unit>
+            <trans-unit id="currency_index">
+                <source>currency_index</source>
+                <target>Currencies list</target>
+            </trans-unit>
+            <trans-unit id="tag_index">
+                <source>tag_index</source>
+                <target>Tags list</target>
+            </trans-unit>
+            <trans-unit id="category_index">
+                <source>category_index</source>
+                <target>Categories list</target>
+            </trans-unit>
+            <trans-unit id="user_index">
+                <source>user_index</source>
+                <target>Users list</target>
+            </trans-unit>
+            <trans-unit id="title_tag_create">
+                <source>title_tag_create</source>
+                <target>Create a tag</target>
+            </trans-unit>
+            <trans-unit id="title_currency_create">
+                <source>title_currency_create</source>
+                <target>Create a currency</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

@@ -21,7 +21,7 @@ class InputFixtures extends AbstractBaseFixtures implements DependentFixtureInte
      */
     public function loadData(ObjectManager $manager): void
     {
-        $this->createMany(10, 'inputs', function ($i) {
+        $this->createMany(50, 'inputs', function ($i) {
             $input = new Input();
             $input->setWallet($this->getRandomReference('wallets'));
             $input->setCategory($this->getRandomReference('categories'));

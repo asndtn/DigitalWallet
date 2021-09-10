@@ -5,6 +5,7 @@
 
 namespace App\Form;
 
+use App\Entity\Balance;
 use App\Entity\Currency;
 use App\Entity\Type;
 use App\Entity\Wallet;
@@ -63,11 +64,8 @@ class WalletType extends AbstractType
 
         $builder->add(
             'balance',
-            IntegerType::class,
-            [
-                'label' => 'label_balance',
-                'required' => true,
-            ]
+            BalanceType::class,
+            ['label' => ' ']
         );
     }
 

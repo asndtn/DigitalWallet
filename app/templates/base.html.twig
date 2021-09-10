@@ -16,41 +16,42 @@
             <nav>
                 <ul>
                     <li>
-                        <a href="{{ url('wallet_index') }}" title="{{ 'wallet_index'|trans }}">{{ 'wallet_index' }}</a>
+                        <a href="{{ url('wallet_index') }}" title="{{ 'wallet_index'|trans }}">{{ 'wallet_index'|trans }}</a>
                     </li>
                     <li>
-                        <a href="{{ url('input_index') }}" title="{{ 'input_index'|trans }}">{{ 'input_index' }}</a>
+                        <a href="{{ url('input_index') }}" title="{{ 'input_index'|trans }}">{{ 'input_index'|trans }}</a>
                     </li>
                 </ul>
             </nav>
+            {% else %}
+                <ul>
+                    <li>
+                        <a href="{{ url('app_login') }}" title="{{ 'title.app_login'|trans }}">{{ 'title.app_login'|trans }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ url('app_register') }}" title="{{ 'title.app_register'|trans }}">{{ 'title.app_register'|trans }}</a>
+                    </li>
+                </ul>
+        {% endif %}
             {% if is_granted('ROLE_ADMIN') %}
                 <ul>
                     <li>
-                        <a href="{{ url('type_index') }}" title="{{ 'type_index'|trans }}">{{ 'type_index' }}</a>
+                        <a href="{{ url('type_index') }}" title="{{ 'type_index'|trans }}">{{ 'type_index'|trans }}</a>
                     </li>
                     <li>
-                        <a href="{{ url('currency_index') }}" title="{{ 'currency_index'|trans }}">{{ 'currency_index' }}</a>
+                        <a href="{{ url('currency_index') }}" title="{{ 'currency_index'|trans }}">{{ 'currency_index'|trans }}</a>
                     </li>
                     <li>
-                        <a href="{{ url('tag_index') }}" title="{{ 'tag_index'|trans }}">{{ 'tag_index' }}</a>
+                        <a href="{{ url('tag_index') }}" title="{{ 'tag_index'|trans }}">{{ 'tag_index'|trans }}</a>
                     </li>
                     <li>
-                        <a href="{{ url('category_index') }}" title="{{ 'category_index'|trans }}">{{ 'category_index' }}</a>
+                        <a href="{{ url('category_index') }}" title="{{ 'category_index'|trans }}">{{ 'category_index'|trans }}</a>
                     </li>
                     <li>
-                        <a href="{{ url('user_index') }}" title="{{ 'user_index'|trans }}">{{ 'user_index' }}</a>
+                        <a href="{{ url('user_index') }}" title="{{ 'user_index'|trans }}">{{ 'user_index'|trans }}</a>
                     </li>
                 </ul>
             {% endif %}
-        {% endif %}
-        <ul>
-            <li>
-                <a href="{{ url('app_login') }}" title="{{ 'app_login'|trans }}">{{ 'app_login' }}</a>
-            </li>
-            <li>
-                <a href="{{ url('app_register') }}" title="{{ 'app_register'|trans }}">{{ 'app_register' }}</a>
-            </li>
-        </ul>
     </header>
 <div class="container-fluid">
     {% block body %}{% endblock %}
