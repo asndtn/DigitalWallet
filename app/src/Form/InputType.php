@@ -6,9 +6,10 @@
 namespace App\Form;
 
 use App\Entity\Category;
+use App\Entity\Currency;
 use App\Entity\Input;
-use App\Entity\Wallet;
 use App\Entity\Type;
+use App\Entity\Wallet;
 use App\Form\DataTransformer\TagsDataTransformer;
 use App\Repository\WalletRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -69,7 +70,9 @@ class InputType extends AbstractType
             [
                 'label' => 'label_amount',
                 'required' => true,
-                'attr' => ['max_length' => 64],
+                'attr' => [
+                    'max_length' => 64,
+                ],
             ]
         );
 

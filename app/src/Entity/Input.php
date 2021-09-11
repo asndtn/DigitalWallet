@@ -41,6 +41,8 @@ class Input
      *     inversedBy="inputs",
      * )
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\Type(type="App\Entity\Wallet")
      */
     private $wallet;
 
@@ -52,6 +54,8 @@ class Input
      * @ORM\Column(type="float")
      *
      * @Assert\NotBlank
+     * @Assert\NotNull
+     * @Assert\Type("float")
      */
     private $amount;
 
@@ -157,9 +161,9 @@ class Input
     /**
      * Getter for Amount.
      *
-     * @return string|null Amount
+     * @return float|null Amount
      */
-    public function getAmount(): ?string
+    public function getAmount(): ?float
     {
         return $this->amount;
     }
@@ -167,9 +171,9 @@ class Input
     /**
      * Setter for Amount.
      *
-     * @param string $amount Amount
+     * @param float $amount Amount
      */
-    public function setAmount(string $amount): void
+    public function setAmount(float $amount): void
     {
         $this->amount = $amount;
     }
@@ -177,7 +181,7 @@ class Input
     /**
      * Getter for Date.
      *
-     * @return \DateTimeInterface|null Date
+     * @return DateTimeInterface|null Date
      */
     public function getDate(): ?DateTimeInterface
     {
@@ -187,7 +191,7 @@ class Input
     /**
      * Setter for Date.
      *
-     * @param \DateTimeInterface $date Date
+     * @param DateTimeInterface $date Date
      */
     public function setDate(DateTimeInterface $date): void
     {

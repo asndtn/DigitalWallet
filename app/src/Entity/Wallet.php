@@ -36,6 +36,8 @@ class Wallet
      *
      * @ORM\ManyToOne(targetEntity=Type::class)
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\Type(type="App\Entity\Type")
      */
     private $type;
 
@@ -44,6 +46,8 @@ class Wallet
      *
      * @ORM\ManyToOne(targetEntity=Currency::class, inversedBy="wallets")
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\Type(type="App\Entity\Currency")
      */
     private $currency;
 
@@ -56,6 +60,8 @@ class Wallet
      *     targetEntity="\App\Entity\Input",
      *     mappedBy="wallet",
      * )
+     *
+     * @Assert\Type(type="App\Entity\Input")
      */
     private $inputs;
 
@@ -66,6 +72,8 @@ class Wallet
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\Type(type="App\Entity\User")
      */
     private $owner;
 
@@ -77,6 +85,8 @@ class Wallet
      *     mappedBy="wallet",
      *     cascade={"persist", "remove"},
      * )
+     *
+     * @Assert\Type(type="App\Entity\Balance")
      */
     private $balance;
 

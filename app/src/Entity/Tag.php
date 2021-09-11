@@ -5,7 +5,6 @@
 
 namespace App\Entity;
 
-use App\Repository\TagRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -80,6 +79,8 @@ class Tag
      * @var \Doctrine\Common\Collections\ArrayCollection|\App\Entity\Input[] Inputs
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Input", mappedBy="tags")
+     *
+     * @Assert\Type(type="App\Entity\Input")
      */
     private $inputs;
 

@@ -5,14 +5,18 @@
 
 namespace App\Entity;
 
-use App\Repository\TypeRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Type.
  *
  * @ORM\Entity(repositoryClass="App\Repository\TypeRepository")
  * @ORM\Table(name="types")
+ *
+ * @UniqueEntity(fields={"name"})
  */
 class Type
 {
@@ -35,6 +39,13 @@ class Type
      * @ORM\Column(
      *     type="string",
      *     length=45,
+     * )
+     *
+     * @Assert\Type(type="string")
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *     min="3",
+     *     max="45",
      * )
      */
     private $name;

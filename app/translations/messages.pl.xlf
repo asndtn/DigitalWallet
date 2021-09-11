@@ -368,6 +368,10 @@
                 <source>label_initial_balance</source>
                 <target>Saldo początkowe</target>
             </trans-unit>
+            <trans-unit id="action_create_input">
+                <source>action_create_input</source>
+                <target>Dodaj operację</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

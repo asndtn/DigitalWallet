@@ -5,16 +5,19 @@
 
 namespace App\Entity;
 
-use App\Repository\CurrencyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Currency.
  *
  * @ORM\Entity(repositoryClass="App\Repository\CurrencyRepository")
  * @ORM\Table(name="currencies")
+ *
+ * @UniqueEntity(fields={"name"})
  */
 class Currency
 {
@@ -36,14 +39,33 @@ class Currency
      *     type="string",
      *     length=3,
      * )
+     *
+     * @Assert\Type(type="string")
+     * @Assert\NotBlank
+     * @Assert\Currency
+     * @Assert\Length(
+     *     min="3",
+     *     max="3",
+     *     exactMessage = "This value should have exactly {{ limit }} characters.",
+     * )
      */
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=Wallet::class, mappedBy="currency")
+     * Wallets.
+     *
+     * @var ArrayCollection|Wallet[] Wallets
+     *
+     * @ORM\OneToMany(
+     *     targetEntity=Wallet::class,
+     *     mappedBy="currency"
+     * )
      */
     private $wallets;
 
+    /**
+     * Currency entity constructor.
+     */
     public function __construct()
     {
         $this->wallets = new ArrayCollection();
@@ -72,7 +94,7 @@ class Currency
     /**
      * Setter for Name.
      *
-     * @param string $name
+     * @param string $name Name
      */
     public function setName(string $name): void
     {
@@ -80,6 +102,8 @@ class Currency
     }
 
     /**
+     * Getter for Wallets.
+     *
      * @return Collection|Wallet[]
      */
     public function getWallets(): Collection
@@ -87,17 +111,25 @@ class Currency
         return $this->wallets;
     }
 
-    public function addWallet(Wallet $wallet): self
+    /**
+     * Add wallet.
+     *
+     * @param Wallet $wallet Wallet entity
+     */
+    public function addWallet(Wallet $wallet): void
     {
         if (!$this->wallets->contains($wallet)) {
             $this->wallets[] = $wallet;
             $wallet->setCurrency($this);
         }
-
-        return $this;
     }
 
-    public function removeWallet(Wallet $wallet): self
+    /**
+     * Remove wallet.
+     *
+     * @param Wallet $wallet Wallet entity
+     */
+    public function removeWallet(Wallet $wallet): void
     {
         if ($this->wallets->removeElement($wallet)) {
             // set the owning side to null (unless already changed)
@@ -105,7 +137,5 @@ class Currency
                 $wallet->setCurrency(null);
             }
         }
-
-        return $this;
     }
 }

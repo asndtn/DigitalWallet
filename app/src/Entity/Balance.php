@@ -7,6 +7,8 @@ namespace App\Entity;
 
 use App\Repository\BalanceRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Balance.
@@ -33,6 +35,11 @@ class Balance
      * @var float
      *
      * @ORM\Column(type="float")
+     *
+     * @Assert\NotBlank
+     * @Assert\NotNull
+     * @Assert\PositiveOrZero
+     * @Assert\Type(type="float")
      */
     private $balanceAmount = 0;
 
@@ -45,6 +52,8 @@ class Balance
      *     cascade={"persist", "remove"},
      * )
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\Type(type="App\Entity\Wallet")
      */
     private $wallet;
 

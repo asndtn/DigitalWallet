@@ -32,14 +32,14 @@ class User implements UserInterface
      *
      * @var string
      */
-    const ROLE_USER = 'ROLE_USER';
+    public const ROLE_USER = 'ROLE_USER';
 
     /**
      * Role admin.
      *
      * @var string
      */
-    const ROLE_ADMIN = 'ROLE_ADMIN';
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
 
     /**
      * Primary key.
@@ -89,6 +89,7 @@ class User implements UserInterface
      *
      * @Assert\NotBlank
      * @Assert\Type(type="string")
+     *
      * @SecurityAssert\UserPassword
      */
     private $password;
@@ -188,6 +189,8 @@ class User implements UserInterface
      * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
      *
      * @see UserInterface
+     *
+     * @return string|null Salt
      */
     public function getSalt(): ?string
     {

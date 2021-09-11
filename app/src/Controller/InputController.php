@@ -175,6 +175,7 @@ class InputController extends AbstractController
             $balanceAmount = $balance->getBalanceAmount();
 
             $amount = $input->getAmount();
+            var_dump($amount);
 
             if ($balanceAmount + $amount >= 0) {
                 $total = $balanceAmount + $amount;

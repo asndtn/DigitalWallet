@@ -27,7 +27,7 @@ class InputFixtures extends AbstractBaseFixtures implements DependentFixtureInte
             $input->setCategory($this->getRandomReference('categories'));
             $input->setAmount($this->faker->randomFloat(null, 0, null));
             $input->setDate($this->faker->dateTimeBetween('-100 days', '-1 days'));
-            $input->setDescription($this->faker->sentence);
+            $input->setDescription($this->faker->optional()->sentence);
 
             $tags = $this->getRandomReferences(
                 'tags',
