@@ -14,6 +14,8 @@ use Doctrine\Persistence\ObjectManager;
  */
 class WalletFixtures extends AbstractBaseFixtures implements DependentFixtureInterface
 {
+    public const BALANCE_WALLET = 'wallet-balance';
+
     /**
      * Load data.
      *
@@ -26,6 +28,8 @@ class WalletFixtures extends AbstractBaseFixtures implements DependentFixtureInt
             $wallet->setType($this->getRandomReference('types'));
             $wallet->setCurrency($this->getRandomReference('currencies'));
             $wallet->setOwner($this->getRandomReference('users'));
+
+            $this->setReference(self::BALANCE_WALLET, $wallet);
 
             return $wallet;
         });

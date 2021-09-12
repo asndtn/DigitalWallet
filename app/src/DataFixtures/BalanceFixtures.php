@@ -23,7 +23,8 @@ class BalanceFixtures extends AbstractBaseFixtures implements DependentFixtureIn
     {
         $this->createMany(10, 'balances', function ($i) {
             $balance = new Balance();
-            $balance->setWallet($this->getRandomReference('wallets'));
+            //$balance->setWallet($this->getRandomReference('wallets'));
+            $balance->setWallet($this->getReference(WalletFixtures::BALANCE_WALLET));
             $balance->setBalanceAmount($this->faker->randomFloat(2, 0, 1000000));
 
             return $balance;

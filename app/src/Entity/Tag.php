@@ -79,8 +79,6 @@ class Tag
      * @var \Doctrine\Common\Collections\ArrayCollection|\App\Entity\Input[] Inputs
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Input", mappedBy="tags")
-     *
-     * @Assert\Type(type="App\Entity\Input")
      */
     private $inputs;
 

@@ -79,6 +79,7 @@ class SecurityController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setPassword($passwordEncoder->encodePassword($user, $user->getPassword()));
+            $user->setRoles([User::ROLE_USER]);
             $userRepository->save($user);
 
             $this->addFlash('success', 'message_registered_successfully');

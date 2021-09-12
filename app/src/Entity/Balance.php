@@ -9,6 +9,7 @@ use App\Repository\BalanceRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Class Balance.
@@ -51,7 +52,7 @@ class Balance
      *     inversedBy="balance",
      *     cascade={"persist", "remove"},
      * )
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      *
      * @Assert\Type(type="App\Entity\Wallet")
      */

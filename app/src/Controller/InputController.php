@@ -4,6 +4,7 @@
  */
 
 namespace App\Controller;
+
 require_once __DIR__.'/../../vendor/autoload.php';
 
 use App\Entity\Balance;
@@ -184,6 +185,8 @@ class InputController extends AbstractController
                 $this->addFlash('success', 'message_created_successfully');
             } else {
                 $this->addFlash('warning', 'message_balance_0');
+
+                return $this->redirectToRoute('input_create');
             }
 
             return $this->redirectToRoute('input_index');

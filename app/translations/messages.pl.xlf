@@ -252,8 +252,8 @@
                 <target>Zmień swoje hasło</target>
             </trans-unit>
             <trans-unit id="label_repeated_password">
-                <source>Powtórz hasło</source>
-                <target>Repeat password</target>
+                <source>label_repeated_password</source>
+                <target>Powtórz hasło</target>
             </trans-unit>
 
             <trans-unit id="message_created_successfully">
@@ -371,6 +371,18 @@
             <trans-unit id="action_create_input">
                 <source>action_create_input</source>
                 <target>Dodaj operację</target>
+            </trans-unit>
+            <trans-unit id="wallet_id">
+                <source>wallet_id</source>
+                <target>Id portfela</target>
+            </trans-unit>
+            <trans-unit id="you_are_logged_in_as">
+                <source>you_are_logged_in_as</source>
+                <target>Jesteś zalogowany jako</target>
+            </trans-unit>
+            <trans-unit id="message_item_not_found">
+                <source>message_item_not_found</source>
+                <target>Nie znaleziono!</target>
             </trans-unit>
         </body>
     </file>

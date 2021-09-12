@@ -60,8 +60,6 @@ class Wallet
      *     targetEntity="\App\Entity\Input",
      *     mappedBy="wallet",
      * )
-     *
-     * @Assert\Type(type="App\Entity\Input")
      */
     private $inputs;
 
