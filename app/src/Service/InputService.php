@@ -7,6 +7,7 @@ namespace App\Service;
 
 use App\Entity\Input;
 use App\Entity\User;
+use App\Entity\Wallet;
 use App\Repository\InputRepository;
 use DateTimeInterface;
 use Doctrine\ORM\OptimisticLockException;
@@ -84,22 +85,41 @@ class InputService
     }
 
     /**
+     * Filter by wallet.
+     *
+     * @param $wallet
+     *
+     * @return PaginationInterface
+     */
+    public function filterByWallet(int $page, User $user, $wallet, array $filters = [])
+    {
+        $filters = $this->prepareFilters($filters);
+
+        return $this->paginator->paginate(
+            $this->inputRepository->queryByWallet($user, $wallet, $filters),
+            $page,
+            InputRepository::PAGINATOR_ITEMS_PER_PAGE
+        );
+    }
+
+    /**
      * Create paginated list.
      *
      * @param DateTimeInterface $fromDate From date
      * @param DateTimeInterface $to       To date
      * @param int               $page     Page number
      * @param User              $user     User entity
+     * @param Wallet            $wallet   Wallet Id
      * @param array             $filters  Filters array
      *
      * @return PaginationInterface Paginated list
      */
-    public function filterByDate($fromDate, $to, int $page, User $user, array $filters = []): PaginationInterface
+    public function filterByDate($fromDate, $to, int $page, User $user, Wallet $wallet, array $filters = []): PaginationInterface
     {
         $filters = $this->prepareFilters($filters);
 
         return $this->paginator->paginate(
-            $this->inputRepository->queryByDate($fromDate, $to, $user, $filters),
+            $this->inputRepository->queryByDate($fromDate, $to, $user, $wallet, $filters),
             $page,
             InputRepository::PAGINATOR_ITEMS_PER_PAGE
         );
@@ -129,6 +149,20 @@ class InputService
     public function delete(Input $input): void
     {
         $this->inputRepository->delete($input);
+    }
+
+    /**
+     * Getter for Input variables.
+     *
+     * @param Input $input Input entity
+     */
+    public function getVariables(Input $input): array
+    {
+        $wallet = $input->getWallet();
+        $balance = $wallet->getBalance();
+        $balanceAmount = $balance->getBalanceAmount();
+
+        return [$balance, $balanceAmount];
     }
 
     /**

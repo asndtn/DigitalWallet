@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Class WalletController.
@@ -86,8 +87,11 @@ class WalletController extends AbstractController
      *     subject="wallet",
      * )
      */
-    public function show(Wallet $wallet): Response
+    public function show(Wallet $wallet, SessionInterface $session): Response
     {
+        $id = $wallet->getId();
+        $session->set('wallet', $wallet);
+
         return $this->render(
             'wallet/show.html.twig',
             ['wallet' => $wallet]

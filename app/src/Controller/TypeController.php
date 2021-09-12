@@ -181,6 +181,12 @@ class TypeController extends AbstractController
      */
     public function delete(Request $request, Type $type): Response
     {
+        if ($type->getWallet()->count()) {
+            $this->addFlash('warning', 'message_type_contains_wallet');
+
+            return $this->redirectToRoute('type_index');
+        }
+
         $form = $this->createForm(FormType::class, $type, ['method' => 'DELETE']);
         $form->handleRequest($request);
 

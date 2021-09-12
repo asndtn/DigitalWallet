@@ -51,6 +51,7 @@ class Balance
      *     targetEntity="\App\Entity\Wallet",
      *     inversedBy="balance",
      *     cascade={"persist", "remove"},
+     *     fetch="EXTRA_LAZY",
      * )
      * @ORM\JoinColumn(nullable=true)
      *

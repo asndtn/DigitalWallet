@@ -18,9 +18,7 @@
                     <li>
                         <a href="{{ url('wallet_index') }}" title="{{ 'wallet_index'|trans }}">{{ 'wallet_index'|trans }}</a>
                     </li>
-                    <li>
-                        <a href="{{ url('input_index') }}" title="{{ 'input_index'|trans }}">{{ 'input_index'|trans }}</a>
-                    </li>
+                    <li><a href="{{ url('user_show', {id: app.user.id}) }}" title="{{ 'action_view'|trans }}">{{ 'label_account'|trans }}</a></li>
                 </ul>
             </nav>
             {% else %}

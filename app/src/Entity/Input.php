@@ -39,6 +39,7 @@ class Input
      * @ORM\ManyToOne(
      *     targetEntity="App\Entity\Wallet",
      *     inversedBy="inputs",
+     *     fetch="EXTRA_LAZY",
      * )
      * @ORM\JoinColumn(nullable=false)
      *
@@ -99,7 +100,9 @@ class Input
      * @var ArrayCollection|Category[] Categories
      *
      * @ORM\ManyToOne(
-     *     targetEntity="App\Entity\Category"
+     *     targetEntity="App\Entity\Category",
+     *     inversedBy="input",
+     *     fetch="EXTRA_LAZY"
      * )
      * @ORM\JoinColumn(nullable=false)
      *
@@ -115,6 +118,7 @@ class Input
      * @ORM\ManyToMany(
      *     targetEntity="\App\Entity\Tag",
      *     inversedBy="inputs",
+     *     fetch="EXTRA_LAZY",
      * )
      * @ORM\JoinTable(name="inputs_tags")
      */

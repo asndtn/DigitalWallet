@@ -58,7 +58,8 @@ class Currency
      *
      * @ORM\OneToMany(
      *     targetEntity=Wallet::class,
-     *     mappedBy="currency"
+     *     mappedBy="currency",
+     *     fetch="EXTRA_LAZY",
      * )
      */
     private $wallets;

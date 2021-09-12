@@ -8,8 +8,8 @@ namespace App\Repository;
 use App\Entity\Balance;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Class BalanceRepository.
@@ -30,7 +30,7 @@ class BalanceRepository extends ServiceEntityRepository
      *
      * @constant int
      */
-    const PAGINATOR_ITEMS_PER_PAGE = 10;
+    public const PAGINATOR_ITEMS_PER_PAGE = 10;
 
     /**
      * Balance repository constructor.
@@ -55,8 +55,6 @@ class BalanceRepository extends ServiceEntityRepository
 
     /**
      * Get or create new query builder.
-     *
-     * @param QueryBuilder|null $queryBuilder
      *
      * @return QueryBuilder QueryBuilder
      */

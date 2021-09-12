@@ -56,7 +56,7 @@ class Category
      *
      * @var ArrayCollection|Input[] Input
      *
-     * @ORM\OneToMany(targetEntity=Input::class, mappedBy="category")
+     * @ORM\OneToMany(targetEntity=Input::class, mappedBy="category", fetch="EXTRA_LAZY")
      *
      * @Assert\Type(type="Doctrine\Common\Collections\ArrayCollection")
      */

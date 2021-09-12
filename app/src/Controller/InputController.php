@@ -21,6 +21,7 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Class InputController.
@@ -61,8 +62,10 @@ class InputController extends AbstractController
      *     name="input_index",
      * )
      */
-    public function index(Request $request): Response
+    public function index(Request $request, SessionInterface $session): Response
     {
+        $wallet = $session->get('wallet');
+
         $filters = [];
         $filters['category_id'] = $request->query->getInt('filters_category_id');
         $filters['tag_id'] = $request->query->getInt('filters_tag_id');
@@ -79,7 +82,7 @@ class InputController extends AbstractController
             $fromDate = $form['fromDate']->getData();
             $to = $form['to']->getData();
 
-            $pagination = $this->inputService->filterByDate($fromDate, $to, $page, $this->getUser(), $filters);
+            $pagination = $this->inputService->filterByDate($fromDate, $to, $page, $this->getUser(), $wallet, $filters);
 
             $balance = 0;
 
@@ -100,7 +103,7 @@ class InputController extends AbstractController
             $balanceCache->set($balance);
             $cache->save($balanceCache);
         } else {
-            $pagination = $this->inputService->createPaginatedList($page, $this->getUser(), $filters);
+            $pagination = $this->inputService->filterByWallet($page, $this->getUser(), $wallet, $filters);
         }
 
 //        $balanceCache = new Balance();
@@ -171,16 +174,13 @@ class InputController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $input->setDate(new \DateTime());
 
-            $wallet = $input->getWallet();
-            $balance = $wallet->getBalance();
-            $balanceAmount = $balance->getBalanceAmount();
+            $variablesArray = $this->inputService->getVariables($input);
+            list($balance, $balanceAmount) = $variablesArray;
 
             $amount = $input->getAmount();
-            var_dump($amount);
 
             if ($balanceAmount + $amount >= 0) {
-                $total = $balanceAmount + $amount;
-                $balance->setBalanceAmount($total);
+                $balance->setBalanceAmount($balanceAmount + $amount);
                 $this->inputService->save($input);
                 $this->addFlash('success', 'message_created_successfully');
             } else {
@@ -229,19 +229,17 @@ class InputController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $wallet = $input->getWallet();
-            $balance = $wallet->getBalance();
-            $balanceAmount = $balance->getBalanceAmount();
+            $variablesArray = $this->inputService->getVariables($input);
+            list($balance, $balanceAmount) = $variablesArray;
 
             $newAmount = $input->getAmount();
             $diff = $newAmount - $ogAmount;
 
             if ($balanceAmount + $diff >= 0) {
-                $total = $balanceAmount + $diff;
-                $balance->setBalanceAmount($total);
+                $balance->setBalanceAmount($balanceAmount + $diff);
                 $this->inputService->save($input);
 
-                $this->addFlash('success', 'congrats');
+                $this->addFlash('success', 'message_updated_successfully');
             } else {
                 $this->addFlash('warning', 'message_balance_0');
             }
@@ -291,15 +289,14 @@ class InputController extends AbstractController
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $wallet = $input->getWallet();
-            $balance = $wallet->getBalance();
-            $balanceAmount = $balance->getBalanceAmount();
+
+            $variablesArray = $this->inputService->getVariables($input);
+            list($balance, $balanceAmount) = $variablesArray;
 
             $amount = $input->getAmount();
 
             if ($balanceAmount - $amount >= 0) {
-                $total = $balanceAmount - $amount;
-                $balance->setBalanceAmount($total);
+                $balance->setBalanceAmount($balanceAmount - $amount);
                 $this->inputService->delete($input);
                 $this->addFlash('success', 'message_deleted_successfully');
             } else {

@@ -34,7 +34,7 @@ class Wallet
     /**
      * Type.
      *
-     * @ORM\ManyToOne(targetEntity=Type::class)
+     * @ORM\ManyToOne(targetEntity=Type::class, inversedBy="wallet", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\Type(type="App\Entity\Type")
@@ -44,7 +44,7 @@ class Wallet
     /**
      * Currency.
      *
-     * @ORM\ManyToOne(targetEntity=Currency::class, inversedBy="wallets")
+     * @ORM\ManyToOne(targetEntity=Currency::class, inversedBy="wallets", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\Type(type="App\Entity\Currency")
@@ -59,6 +59,7 @@ class Wallet
      * @ORM\OneToMany(
      *     targetEntity="\App\Entity\Input",
      *     mappedBy="wallet",
+     *     fetch="EXTRA_LAZY"
      * )
      */
     private $inputs;
@@ -68,7 +69,7 @@ class Wallet
      *
      * @var \App\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\Type(type="App\Entity\User")
@@ -82,6 +83,7 @@ class Wallet
      *     targetEntity="\App\Entity\Balance",
      *     mappedBy="wallet",
      *     cascade={"persist", "remove"},
+     *     fetch="EXTRA_LAZY"
      * )
      *
      * @Assert\Type(type="App\Entity\Balance")

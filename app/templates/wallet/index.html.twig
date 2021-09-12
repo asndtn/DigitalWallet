@@ -26,7 +26,9 @@
         <table class="table table-striped">
             <thead>
             <tr>
+    {% if is_granted('ROLE_ADMIN') %}
                 <th>{{ knp_pagination_sortable(pagination, 'label_id'|trans, 'wallet.id') }}</th>
+        {% endif %}
                 <th>{{ 'label_type'|trans }}</th>
                 <th>{{ 'label_balance'|trans }}</th>
                 <th>{{ 'label_currency'|trans }}</th>
@@ -36,7 +38,9 @@
             <tbody>
             {% for wallet in pagination.items %}
                 <tr>
+                    {% if is_granted('ROLE_ADMIN') %}
                     <td>{{ wallet.id }}</td>
+                    {% endif %}
                     <td>{{ wallet.type.name }}</td>
                     <td>{{ wallet.balance.balanceAmount }}</td>
                     <td>{{ wallet.currency.name }}</td>

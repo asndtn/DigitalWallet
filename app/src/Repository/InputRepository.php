@@ -89,6 +89,26 @@ class InputRepository extends ServiceEntityRepository
     }
 
     /**
+     * Query by wallet.
+     *
+     * @param $fromDate
+     * @param $to
+     * @param User $user
+     * @param array $filters
+     *
+     * @return QueryBuilder
+     */
+    public function queryByWallet(User $user, $wallet, array $filters = []): QueryBuilder
+    {
+        $queryBuilder = $this->queryByOwner($user, $filters);
+        $queryBuilder
+            ->andWhere('input.wallet = :wallet')
+            ->setParameter('wallet', $wallet);
+
+        return $queryBuilder;
+    }
+
+    /**
      * Query by date.
      *
      * @param DateTimeInterface $fromDate from date
@@ -96,21 +116,15 @@ class InputRepository extends ServiceEntityRepository
      * @param User              $user     User entity
      * @param array             $filters  Filters array
      */
-    public function queryByDate($fromDate, $to, User $user, array $filters = []): QueryBuilder
+    public function queryByDate($fromDate, $to, User $user, $wallet, array $filters = []): QueryBuilder
     {
-        $queryBuilder = $this->queryByOwner($user, $filters);
+        $queryBuilder = $this->queryByWallet($user, $wallet, $filters);
         $queryBuilder
             ->andWhere('input.date BETWEEN :fromDate AND :to')
             ->setParameter('fromDate', $fromDate)
             ->setParameter('to', $to);
 
         return $queryBuilder;
-
-//        return $this->getOrCreateQueryBuilder()
-//                ->select('inputs')
-//                ->where('date BETWEEN :from AND :to')
-//                ->setParameter('from', $from->format('yyyy-MM-dd'))
-//                ->setParameter('to', $to);
     }
 
     /**

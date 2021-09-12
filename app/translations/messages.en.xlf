@@ -236,7 +236,7 @@
             </trans-unit>
             <trans-unit id="title_user_details">
                 <source>title_user_details</source>
-                <target>User details</target>
+                <target>User account details</target>
             </trans-unit>
             <trans-unit id="title_user_edit">
                 <source>title_user_edit</source>
@@ -375,6 +375,38 @@
             <trans-unit id="label_got_an_account">
                 <source>label_got_an_account</source>
                 <target>Got an account?</target>
+            </trans-unit>
+            <trans-unit id="message.deleted_successfully">
+                <source>message.deleted_successfully</source>
+                <target>Deleted successfully!</target>
+            </trans-unit>
+            <trans-unit id="message_type_contains_wallet">
+                <source>message_type_contains_wallet</source>
+                <target>This type contains wallet.</target>
+            </trans-unit>
+            <trans-unit id="label_wallet">
+                <source>label_wallet</source>
+                <target>Wallet</target>
+            </trans-unit>
+            <trans-unit id="action_back_to_wallet_list">
+                <source>action_back_to_wallet_list</source>
+                <target>Back to Your Wallets</target>
+            </trans-unit>
+            <trans-unit id="label_account">
+                <source>label_account</source>
+                <target>Your account</target>
+            </trans-unit>
+            <trans-unit id="label_owner">
+                <source>label_owner</source>
+                <target>Owner</target>
+            </trans-unit>
+            <trans-unit id="action_edit_account">
+                <source>action_edit_account</source>
+                <target>Edit your account</target>
+            </trans-unit>
+            <trans-unit id="action_change_password">
+                <source>action_change_password</source>
+                <target>Change your password</target>
             </trans-unit>
         </body>
     </file>

@@ -186,7 +186,7 @@ class CategoryController extends AbstractController
     public function delete(Request $request, Category $category): Response
     {
         if ($category->getInput()->count()) {
-            $this->addFlash('warning', 'message_cannot_delete_category');
+            $this->addFlash('warning', 'message_category_contains_input');
 
             return $this->redirectToRoute('category_index');
         }

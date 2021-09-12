@@ -224,7 +224,7 @@
             </trans-unit>
             <trans-unit id="title_user_details">
                 <source>title_user_details</source>
-                <target>Szczegóły użytkownika</target>
+                <target>Szczegóły konta</target>
             </trans-unit>
             <trans-unit id="title_user_edit">
                 <source>title_user_edit</source>
@@ -383,6 +383,38 @@
             <trans-unit id="message_item_not_found">
                 <source>message_item_not_found</source>
                 <target>Nie znaleziono!</target>
+            </trans-unit>
+            <trans-unit id="message.deleted_successfully">
+                <source>message.deleted_successfully</source>
+                <target>Usunięto</target>
+            </trans-unit>
+            <trans-unit id="message_type_contains_wallet">
+                <source>message_type_contains_wallet</source>
+                <target>Typ jest przypisany do portfela.</target>
+            </trans-unit>
+            <trans-unit id="label_wallet">
+                <source>label_wallet</source>
+                <target>Portfel</target>
+            </trans-unit>
+            <trans-unit id="action_back_to_wallet_list">
+                <source>action_back_to_wallet_list</source>
+                <target>Powrót do Twoich portfeli</target>
+            </trans-unit>
+            <trans-unit id="label_account">
+                <source>label_account</source>
+                <target>Twoje konto</target>
+            </trans-unit>
+            <trans-unit id="label_owner">
+                <source>label_owner</source>
+                <target>Właściciel</target>
+            </trans-unit>
+            <trans-unit id="action_edit_account">
+                <source>action_edit_account</source>
+                <target>Edytuj konto</target>
+            </trans-unit>
+            <trans-unit id="action_change_password">
+                <source>action_change_password</source>
+                <target>Zmień hasło</target>
             </trans-unit>
         </body>
     </file>
