@@ -52,6 +52,17 @@ class Category
     private $name;
 
     /**
+     * Input.
+     *
+     * @var ArrayCollection|Input[] Input
+     *
+     * @ORM\OneToMany(targetEntity=Input::class, mappedBy="category")
+     *
+     * @Assert\Type(type="Doctrine\Common\Collections\ArrayCollection")
+     */
+    private $input;
+
+    /**
      * Code.
      *
      * @var string
@@ -70,6 +81,14 @@ class Category
      * @Gedmo\Slug(fields={"name"})
      */
     private $code;
+
+    /**
+     * Category constructor.
+     */
+    public function __construct()
+    {
+        $this->input = new ArrayCollection();
+    }
 
     /**
      * Getter for Id.
@@ -119,5 +138,52 @@ class Category
     public function setCode(string $code): void
     {
         $this->code = $code;
+    }
+
+    /**
+     * Getter fo Input.
+     *
+     * @return Collection|Input[]
+     */
+    public function getInput(): Collection
+    {
+        return $this->input;
+    }
+
+    /**
+     * Add Input.
+     *
+     * @param Input $input
+     *
+     * @return $this
+     */
+    public function addInput(Input $input): self
+    {
+        if (!$this->input->contains($input)) {
+            $this->input[] = $input;
+            $input->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove Input.
+     *
+     * @param Input $input
+     *
+     * @return $this
+     */
+    public function removeInput(Input $input): self
+    {
+        if ($this->input->contains($input)) {
+            $this->input->removeElement($input);
+            // set the owning side to null (unless already changed)
+            if ($input->getCategory() === $this) {
+                $input->setCategory(null);
+            }
+        }
+
+        return $this;
     }
 }

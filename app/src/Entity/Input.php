@@ -221,9 +221,9 @@ class Input
     /**
      * Getter for Category.
      *
-     * @return \App\Entity\Category|null Category
+     * @return Category|Category[]|ArrayCollection|null
      */
-    public function getCategory(): ?Category
+    public function getCategory()
     {
         return $this->category;
     }

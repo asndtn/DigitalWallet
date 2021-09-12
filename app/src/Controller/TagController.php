@@ -185,7 +185,12 @@ class TagController extends AbstractController
      */
     public function delete(Request $request, Tag $tag): Response
     {
-        //TODO restraining from deleting a tag that relates to any input
+        if ($tag->getInputs()->count()) {
+            $this->addFlash('warning', 'message_tags_contains_inputs');
+
+            return $this->redirectToRoute('tag_index');
+        }
+
         $form = $this->createForm(FormType::class, $tag, ['method' => 'DELETE']);
         $form->handleRequest($request);
 
@@ -209,3 +214,4 @@ class TagController extends AbstractController
         );
     }
 }
+
