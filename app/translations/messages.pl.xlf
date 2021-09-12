@@ -41,6 +41,10 @@
                 <source>title_wallets_list</source>
                 <target>Twoje portfele</target>
             </trans-unit>
+            <trans-unit id="title_wallet_create">
+                <source>title_wallet_create</source>
+                <target>Stwórz nowy portfel</target>
+            </trans-unit>
             <trans-unit id="title_wallet_details">
                 <source>title_wallet_details</source>
                 <target>Szczegóły portfela #%id%</target>
@@ -282,7 +286,7 @@
             </trans-unit>
             <trans-unit id="action_logout">
                 <source>action_logout</source>
-                <target>wyloguj się</target>
+                <target>Wyloguj się</target>
             </trans-unit>
             <trans-unit id="label_got_an_account">
                 <source>label_got_an_account</source>
@@ -415,6 +419,10 @@
             <trans-unit id="action_change_password">
                 <source>action_change_password</source>
                 <target>Zmień hasło</target>
+            </trans-unit>
+            <trans-unit id="app_name">
+                <source>app_name</source>
+                <target>Digital Wallet</target>
             </trans-unit>
         </body>
     </file>

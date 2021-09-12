@@ -101,4 +101,12 @@
             {{ 'message_empty_list'|trans }}
         </p>
     {% endif %}
+    <script>
+        $(document).ready(function() {
+            // you may need to change this code if you are not using Bootstrap Datepicker
+            $('.js-datepicker').datepicker({
+                format: 'dd-mm-yyyy'
+            });
+        });
+    </script>
 {% endblock %}

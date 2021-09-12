@@ -183,6 +183,12 @@ class CurrencyController extends AbstractController
      */
     public function delete(Request $request, Currency $currency): Response
     {
+        if ($currency->getWallets()->count()) {
+            $this->addFlash('warning', 'currency_contains_input');
+
+            return $this->redirectToRoute('currency_index');
+        }
+
         $form = $this->createForm(FormType::class, $currency, ['method' => 'DELETE']);
         $form->handleRequest($request);
 

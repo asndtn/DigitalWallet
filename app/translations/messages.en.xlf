@@ -408,6 +408,10 @@
                 <source>action_change_password</source>
                 <target>Change your password</target>
             </trans-unit>
+            <trans-unit id="app_name">
+                <source>app_name</source>
+                <target>Digital Wallet</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

@@ -29,17 +29,15 @@ class DateRangeType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-//        $builder->add(
-//            'date', 'date', ['from' => \DateTime::class, 'to' => \DateTime::class]
-//        );
         $builder->add(
             'fromDate',
             DateType::class,
             [
+                'widget' => 'single_text',
                 'label' => 'label_from',
-                'format' => 'dd-MM-yyyy',
+                'html5' => 'false',
                 'attr' => [
-                    'class' => 'datepicker',
+                    'class' => 'js-datepicker',
                 ],
             ]
         );
@@ -48,10 +46,11 @@ class DateRangeType extends AbstractType
             'to',
             DateType::class,
             [
+                'widget' => 'single_text',
                 'label' => 'label_to',
-                'format' => 'dd-MM-yyyy',
+                'html5' => 'false',
                 'attr' => [
-                    'class' => 'datepicker',
+                    'class' => 'js-datepicker',
                 ],
             ]
         );

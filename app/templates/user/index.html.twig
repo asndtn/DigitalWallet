@@ -17,7 +17,6 @@
             <tr>
                 <th>{{ knp_pagination_sortable(pagination, 'label_id'|trans, 'user.id') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'label_email'|trans, 'user.email') }}</th>
-                <th>{{ 'label_password'|trans }}</th> {# XD #}
                 <th>{{ 'label_actions'|trans }}</th>
             </tr>
             </thead>
@@ -26,7 +25,6 @@
                 <tr>
                     <td>{{ user.id }}</td>
                     <td>{{ user.email }}</td>
-                    <td>{{ user.password }}</td> {# XD #}
                     <td>
                         <ul>
                             {% if is_granted('VIEW', user) %}

@@ -38,9 +38,11 @@
                             <li>
                                 <a href="{{ url('currency_edit', {id: currency.id}) }}" title="{{ 'action_edit'|trans }}">{{ 'action_edit'|trans }}</a>
                             </li>
+                            {% if not currency.wallets|length %}
                             <li>
                                 <a href="{{ url('currency_delete', {id: currency.id}) }}" title="{{ 'action_delete'|trans }}">{{ 'action_delete'|trans }}</a>
                             </li>
+                            {% endif %}
                         </ul>
                     </td>
                 </tr>

@@ -11,45 +11,56 @@
 </head>
 <body>
     <header>
-        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-            {{ 'label_logged'|trans }} {{ app.user.username }}, <a href="{{ path('app_logout') }}">{{ 'action_logout'|trans }}</a>
-            <nav>
-                <ul>
-                    <li>
-                        <a href="{{ url('wallet_index') }}" title="{{ 'wallet_index'|trans }}">{{ 'wallet_index'|trans }}</a>
-                    </li>
-                    <li><a href="{{ url('user_show', {id: app.user.id}) }}" title="{{ 'action_view'|trans }}">{{ 'label_account'|trans }}</a></li>
-                </ul>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="{{ url('app_index_index') }}" title="{{ 'app_name'|trans }}">{{ 'app_name'|trans }}</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="{{ url('wallet_index') }}" title="{{ 'wallet_index'|trans }}">{{ 'wallet_index'|trans }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="{{ url('user_show', {id: app.user.id}) }}" title="{{ 'action_view'|trans }}">{{ 'label_account'|trans }}</a>
+                            </li>
+                            {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="{{ url('app_login') }}" title="{{ 'title.app_login'|trans }}">{{ 'title.app_login'|trans }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="{{ url('app_register') }}" title="{{ 'title.app_register'|trans }}">{{ 'title.app_register'|trans }}</a>
+                            </li>
+                            {% endif %}
+                            {% if is_granted('ROLE_ADMIN') %}
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="{{ url('type_index') }}" title="{{ 'type_index'|trans }}">{{ 'type_index'|trans }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="{{ url('currency_index') }}" title="{{ 'currency_index'|trans }}">{{ 'currency_index'|trans }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="{{ url('tag_index') }}" title="{{ 'tag_index'|trans }}">{{ 'tag_index'|trans }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="{{ url('category_index') }}" title="{{ 'category_index'|trans }}">{{ 'category_index'|trans }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="{{ url('user_index') }}" title="{{ 'user_index'|trans }}">{{ 'user_index'|trans }}</a>
+                            </li>
+                            {% endif %}
+                            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                            {# {{ 'label_logged'|trans }} {{ app.user.username }}, #}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_logout') }}" title="{{ 'action_logout'|trans }}">{{ 'action_logout'|trans }}</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
             </nav>
-            {% else %}
-                <ul>
-                    <li>
-                        <a href="{{ url('app_login') }}" title="{{ 'title.app_login'|trans }}">{{ 'title.app_login'|trans }}</a>
-                    </li>
-                    <li>
-                        <a href="{{ url('app_register') }}" title="{{ 'title.app_register'|trans }}">{{ 'title.app_register'|trans }}</a>
-                    </li>
-                </ul>
-        {% endif %}
-            {% if is_granted('ROLE_ADMIN') %}
-                <ul>
-                    <li>
-                        <a href="{{ url('type_index') }}" title="{{ 'type_index'|trans }}">{{ 'type_index'|trans }}</a>
-                    </li>
-                    <li>
-                        <a href="{{ url('currency_index') }}" title="{{ 'currency_index'|trans }}">{{ 'currency_index'|trans }}</a>
-                    </li>
-                    <li>
-                        <a href="{{ url('tag_index') }}" title="{{ 'tag_index'|trans }}">{{ 'tag_index'|trans }}</a>
-                    </li>
-                    <li>
-                        <a href="{{ url('category_index') }}" title="{{ 'category_index'|trans }}">{{ 'category_index'|trans }}</a>
-                    </li>
-                    <li>
-                        <a href="{{ url('user_index') }}" title="{{ 'user_index'|trans }}">{{ 'user_index'|trans }}</a>
-                    </li>
-                </ul>
-            {% endif %}
     </header>
 <div class="container-fluid">
     {% block body %}{% endblock %}
