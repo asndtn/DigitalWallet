@@ -412,6 +412,10 @@
                 <source>app_name</source>
                 <target>Digital Wallet</target>
             </trans-unit>
+            <trans-unit id="message_wallet_contains_inputs">
+                <source>message_wallet_contains_inputs</source>
+                <target>Wallet contains inputs!</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

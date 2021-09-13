@@ -12,7 +12,8 @@ use App\Entity\User;
 use App\Entity\Wallet;
 use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -40,7 +41,7 @@ class InputRepository extends ServiceEntityRepository
     /**
      * Input repository constructor.
      *
-     * @param \Doctrine\Persistence\ManagerRegistry $registry Manager registry
+     * @param ManagerRegistry $registry Manager registry
      */
     public function __construct(ManagerRegistry $registry)
     {
@@ -52,6 +53,8 @@ class InputRepository extends ServiceEntityRepository
      *
      * @param User  $user    User entity
      * @param array $filters Filters array
+     *
+     * @return QueryBuilder Query builder
      */
     public function queryByOwner(User $user, array $filters = []): QueryBuilder
     {
@@ -72,33 +75,26 @@ class InputRepository extends ServiceEntityRepository
     public function queryAll(array $filters): QueryBuilder
     {
         $queryBuilder = $this->getOrCreateQueryBuilder()
-            ->select(
-                'partial input.{id, amount, date, category}',
-                'partial category.{id, name}',
-                'partial tags.{id, name}',
-                'wallet'
-            )
+            ->select('partial input.{id, amount, date}', 'partial category.{id, name}', 'partial tags.{id, name}', 'partial wallet.{id, type}')
             ->join('input.category', 'category')
             ->join('input.wallet', 'wallet')
+            ->join('wallet.type', 'type')
             ->leftJoin('input.tags', 'tags')
             ->orderBy('input.category', 'DESC');
 
-        $queryBuilder = $this->applyFiltersToList($queryBuilder, $filters);
-
-        return $queryBuilder;
+        return $this->applyFiltersToList($queryBuilder, $filters);
     }
 
     /**
      * Query by wallet.
      *
-     * @param $fromDate
-     * @param $to
-     * @param User $user
-     * @param array $filters
+     * @param User   $user    User entity
+     * @param Wallet $wallet  Wallet entity
+     * @param array  $filters Filters array
      *
      * @return QueryBuilder
      */
-    public function queryByWallet(User $user, $wallet, array $filters = []): QueryBuilder
+    public function queryByWallet(User $user, Wallet $wallet, array $filters = []): QueryBuilder
     {
         $queryBuilder = $this->queryByOwner($user, $filters);
         $queryBuilder
@@ -111,12 +107,15 @@ class InputRepository extends ServiceEntityRepository
     /**
      * Query by date.
      *
-     * @param DateTimeInterface $fromDate from date
-     * @param DateTimeInterface $to       to date
+     * @param DateTimeInterface $fromDate Start date
+     * @param DateTimeInterface $to       End date
      * @param User              $user     User entity
+     * @param Wallet            $wallet   Wallet entity
      * @param array             $filters  Filters array
+     *
+     * @return QueryBuilder Query builder
      */
-    public function queryByDate($fromDate, $to, User $user, $wallet, array $filters = []): QueryBuilder
+    public function queryByDate(DateTimeInterface $fromDate, DateTimeInterface $to, User $user, Wallet $wallet, array $filters = []): QueryBuilder
     {
         $queryBuilder = $this->queryByWallet($user, $wallet, $filters);
         $queryBuilder
@@ -128,22 +127,12 @@ class InputRepository extends ServiceEntityRepository
     }
 
     /**
-     * Get or create new query builder.
-     *
-     * @return QueryBuilder QueryBuilder
-     */
-    private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
-    {
-        return $queryBuilder ?? $this->createQueryBuilder('input');
-    }
-
-    /**
      * Save record.
      *
-     * @param \App\Entity\Input $input Input entity
+     * @param Input $input Input entity
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function save(Input $input): void
     {
@@ -154,10 +143,10 @@ class InputRepository extends ServiceEntityRepository
     /**
      * Delete record.
      *
-     * @param \App\Entity\Input $input Input entity
+     * @param Input $input Input entity
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function delete(Input $input): void
     {
@@ -166,12 +155,23 @@ class InputRepository extends ServiceEntityRepository
     }
 
     /**
+     * Get or create new query builder.
+     *
+     *
+     * @return QueryBuilder QueryBuilder
+     */
+    private function getOrCreateQueryBuilder(): QueryBuilder
+    {
+        return null ?? $this->createQueryBuilder('input');
+    }
+
+    /**
      * Apply filters to paginated list.
      *
-     * @param \Doctrine\ORM\QueryBuilder $queryBuilder Query builder
-     * @param array                      $filters      Filters array
+     * @param QueryBuilder $queryBuilder Query builder
+     * @param array        $filters      Filters array
      *
-     * @return \Doctrine\ORM\QueryBuilder Query builder
+     * @return QueryBuilder Query builder
      */
     private function applyFiltersToList(QueryBuilder $queryBuilder, array $filters = []): QueryBuilder
     {

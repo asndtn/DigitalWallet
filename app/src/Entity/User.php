@@ -55,7 +55,7 @@ class User implements UserInterface
      *     options={"unsigned"=true},
      * )
      */
-    private $id;
+    private int $id;
 
     /**
      * E-mail.
@@ -71,14 +71,14 @@ class User implements UserInterface
      * @Assert\NotBlank
      * @Assert\Email
      */
-    private $email;
+    private string $email;
 
     /**
      * Roles.
      *
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    private array $roles = [];
 
     /**
      * The hashed password.
@@ -92,7 +92,7 @@ class User implements UserInterface
      *
      * @SecurityAssert\UserPassword
      */
-    private $password;
+    private string $password;
 
     /**
      * Getter for Id.
@@ -133,7 +133,7 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return $this->email;
     }
 
     /**
@@ -171,7 +171,7 @@ class User implements UserInterface
      */
     public function getPassword(): string
     {
-        return (string) $this->password;
+        return $this->password;
     }
 
     /**

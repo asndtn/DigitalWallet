@@ -8,7 +8,6 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -31,7 +30,7 @@ class Type
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * Name.
@@ -50,7 +49,7 @@ class Type
      *     max="45",
      * )
      */
-    private $name;
+    private string $name;
 
     /**
      * Wallet.
@@ -100,7 +99,7 @@ class Type
     }
 
     /**
-     * Getter fo Wallet.
+     * Getter for Wallet.
      *
      * @return Collection|Wallet[]
      */
@@ -110,39 +109,26 @@ class Type
     }
 
     /**
-     * Add Wallet.
+     * Add wallet to collection.
      *
-     * @param Wallet $wallet
-     *
-     * @return $this
+     * @param Wallet $wallet Wallet
      */
-    public function addWallet(Wallet $wallet): self
+    public function addWallet(Wallet $wallet): void
     {
         if (!$this->wallet->contains($wallet)) {
             $this->wallet[] = $wallet;
-            $wallet->setCategory($this);
         }
-
-        return $this;
     }
 
     /**
-     * Remove Wallet.
+     * Remove wallet from collection.
      *
-     * @param Wallet $wallet
-     *
-     * @return $this
+     * @param Wallet $wallet Wallet
      */
-    public function removeWallet(Wallet $wallet): self
+    public function removeWallet(Wallet $wallet): void
     {
         if ($this->wallet->contains($wallet)) {
             $this->wallet->removeElement($wallet);
-            // set the owning side to null (unless already changed)
-            if ($wallet->getCategory() === $this) {
-                $wallet->setCategory(null);
-            }
         }
-
-        return $this;
     }
 }

@@ -9,22 +9,21 @@ use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Test\FormBuilderInterface;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class PasswordChangeType.
  */
-
 class PasswordChangeType extends AbstractType
 {
     /**
      * Builds the form.
      *
-     * @param \Symfony\Component\Form\FormBuilderInterface $builder The form builder.
-     * @param array $options The options.
+     * @param FormBuilderInterface $builder the form builder
+     * @param array                $options the options
      */
-    public function buildForm(\Symfony\Component\Form\FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add(
             'password',
@@ -45,7 +44,7 @@ class PasswordChangeType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['data_class' => User::class, 'validation_groups'  => ['registration']]);
+        $resolver->setDefaults(['data_class' => User::class, 'validation_groups' => ['registration']]);
     }
 
     /**

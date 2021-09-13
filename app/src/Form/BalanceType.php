@@ -5,22 +5,11 @@
 
 namespace App\Form;
 
-use App\Entity\Category;
 use App\Entity\Balance;
-use App\Entity\Wallet;
-use App\Entity\Type;
-use App\Form\DataTransformer\TagsDataTransformer;
-use App\Repository\WalletRepository;
-use Faker\Core\Number;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Security;
 
 /**
  * Class BalanceType.
@@ -34,10 +23,9 @@ class BalanceType extends AbstractType
      * top most type. Type extensions can further modify the form.
      *
      * @param FormBuilderInterface $builder The form builder
-     * @param array $options The options
+     * @param array                $options The options
      *
      * @see FormTypeExtensionInterface::buildForm()
-     *
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

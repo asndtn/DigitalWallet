@@ -9,7 +9,6 @@ use App\Entity\Currency;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
-use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -52,16 +51,16 @@ class CurrencyRepository extends ServiceEntityRepository
     public function queryAll(): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
-            ->orderBy('currency.name', 'DESC');
+            ->orderBy('currency.id', 'DESC');
     }
 
     /**
      * Save record.
      *
-     * @param \App\Entity\Currency $currency Currency entity
+     * @param Currency $currency Currency entity
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function save(Currency $currency): void
     {
@@ -86,12 +85,11 @@ class CurrencyRepository extends ServiceEntityRepository
     /**
      * Get or create new query builder.
      *
-     * @param QueryBuilder|null $queryBuilder
      *
      * @return QueryBuilder QueryBuilder
      */
-    private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
+    private function getOrCreateQueryBuilder(): QueryBuilder
     {
-        return $queryBuilder ?? $this->createQueryBuilder('currency');
+        return null ?? $this->createQueryBuilder('currency');
     }
 }

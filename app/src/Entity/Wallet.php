@@ -5,11 +5,9 @@
 
 namespace App\Entity;
 
-use App\Repository\WalletRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -29,7 +27,7 @@ class Wallet
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * Type.
@@ -67,14 +65,14 @@ class Wallet
     /**
      * Owner.
      *
-     * @var \App\Entity\User
+     * @var User
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\User", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\Type(type="App\Entity\User")
      */
-    private $owner;
+    private User $owner;
 
     /**
      * Balance.
@@ -88,7 +86,7 @@ class Wallet
      *
      * @Assert\Type(type="App\Entity\Balance")
      */
-    private $balance;
+    private ?Balance $balance;
 
     /**
      * Wallet constructor.
@@ -185,7 +183,7 @@ class Wallet
     /**
      * Getter for Owner.
      *
-     * @return User|null
+     * @return Collection|User[] User collection
      */
     public function getOwner(): ?User
     {

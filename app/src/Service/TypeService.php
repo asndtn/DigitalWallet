@@ -7,7 +7,9 @@ namespace App\Service;
 
 use App\Entity\Type;
 use App\Repository\TypeRepository;
-use \Knp\Component\Pager\Pagination\PaginationInterface;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 
 /**
@@ -17,23 +19,19 @@ class TypeService
 {
     /**
      * Type repository.
-     *
-     * @var \App\Repository\TypeRepository
      */
-    private $typeRepository;
+    private TypeRepository $typeRepository;
 
     /**
      * Paginator.
-     *
-     * @var \Knp\Component\Pager\PaginatorInterface
      */
-    private $paginator;
+    private PaginatorInterface $paginator;
 
     /**
      * TypeService constructor.
      *
-     * @param \App\Repository\TypeRepository      $typeRepository Type repository
-     * @param \Knp\Component\Pager\PaginatorInterface $paginator          Paginator
+     * @param TypeRepository     $typeRepository Type repository
+     * @param PaginatorInterface $paginator      Paginator
      */
     public function __construct(TypeRepository $typeRepository, PaginatorInterface $paginator)
     {
@@ -46,7 +44,7 @@ class TypeService
      *
      * @param int $page Page number
      *
-     * @return \Knp\Component\Pager\Pagination\PaginationInterface Paginated list
+     * @return PaginationInterface Paginated list
      */
     public function createPaginatedList(int $page): PaginationInterface
     {
@@ -62,8 +60,8 @@ class TypeService
      *
      * @param Type $type Type entity
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function save(Type $type): void
     {
@@ -75,8 +73,8 @@ class TypeService
      *
      * @param Type $type Type entity
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function delete(Type $type): void
     {

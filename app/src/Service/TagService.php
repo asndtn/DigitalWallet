@@ -7,33 +7,35 @@ namespace App\Service;
 
 use App\Entity\Tag;
 use App\Repository\TagRepository;
-use \Knp\Component\Pager\Pagination\PaginationInterface;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 
 /**
- * Class TagService
+ * Class TagService.
  */
 class TagService
 {
     /**
      * Tag repository.
      *
-     * @var \App\Repository\TagRepository
+     * @var TagRepository
      */
-    private $tagRepository;
+    private TagRepository $tagRepository;
 
     /**
      * Paginator.
      *
-     * @var \Knp\Component\Pager\PaginatorInterface
+     * @var PaginatorInterface
      */
-    private $paginator;
+    private PaginatorInterface $paginator;
 
     /**
      * Tag service constructor.
      *
-     * @param TagRepository $tagRepository Tag repository
-     * @param PaginatorInterface $paginator Paginator
+     * @param TagRepository      $tagRepository Tag repository
+     * @param PaginatorInterface $paginator     Paginator
      */
     public function __construct(TagRepository $tagRepository, PaginatorInterface $paginator)
     {
@@ -42,9 +44,10 @@ class TagService
     }
 
     /**
-     * Create paginated list
+     * Create paginated list.
      *
      * @param int $page Page number
+     *
      * @return PaginationInterface Paginated list
      */
     public function createPaginatedList(int $page): PaginationInterface
@@ -61,8 +64,8 @@ class TagService
      *
      * @param Tag $tag Tag entity
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function save(Tag $tag): void
     {
@@ -74,8 +77,8 @@ class TagService
      *
      * @param Tag $tag Tag entity
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function delete(Tag $tag): void
     {
@@ -86,6 +89,7 @@ class TagService
      * Find by name.
      *
      * @param string $name Tag name
+     *
      * @return Tag|null Tag entity
      */
     public function findOneByName(string $name): ?Tag
@@ -98,7 +102,7 @@ class TagService
      *
      * @param int $id Tag Id
      *
-     * @return \App\Entity\Tag|null Tag entity
+     * @return Tag|null Tag entity
      */
     public function findOneById(int $id): ?Tag
     {

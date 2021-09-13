@@ -7,7 +7,9 @@ namespace App\Service;
 
 use App\Entity\Currency;
 use App\Repository\CurrencyRepository;
-use \Knp\Component\Pager\Pagination\PaginationInterface;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 
 /**
@@ -18,22 +20,22 @@ class CurrencyService
     /**
      * Currency repository.
      *
-     * @var \App\Repository\CurrencyRepository
+     * @var CurrencyRepository
      */
-    private $currencyRepository;
+    private CurrencyRepository $currencyRepository;
 
     /**
      * Paginator.
      *
-     * @var \Knp\Component\Pager\PaginatorInterface
+     * @var PaginatorInterface
      */
-    private $paginator;
+    private PaginatorInterface $paginator;
 
     /**
      * CurrencyService constructor.
      *
-     * @param \App\Repository\CurrencyRepository      $currencyRepository Currency repository
-     * @param \Knp\Component\Pager\PaginatorInterface $paginator          Paginator
+     * @param CurrencyRepository $currencyRepository Currency repository
+     * @param PaginatorInterface $paginator          Paginator
      */
     public function __construct(CurrencyRepository $currencyRepository, PaginatorInterface $paginator)
     {
@@ -46,7 +48,7 @@ class CurrencyService
      *
      * @param int $page Page number
      *
-     * @return \Knp\Component\Pager\Pagination\PaginationInterface Paginated list
+     * @return PaginationInterface Paginated list
      */
     public function createPaginatedList(int $page): PaginationInterface
     {
@@ -62,8 +64,8 @@ class CurrencyService
      *
      * @param Currency $currency Currency entity
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function save(Currency $currency): void
     {
@@ -75,8 +77,8 @@ class CurrencyService
      *
      * @param Currency $currency Currency entity
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function delete(Currency $currency): void
     {

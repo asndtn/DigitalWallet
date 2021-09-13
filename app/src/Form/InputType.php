@@ -6,9 +6,7 @@
 namespace App\Form;
 
 use App\Entity\Category;
-use App\Entity\Currency;
 use App\Entity\Input;
-use App\Entity\Type;
 use App\Entity\Wallet;
 use App\Form\DataTransformer\TagsDataTransformer;
 use App\Repository\WalletRepository;

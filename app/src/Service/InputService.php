@@ -14,6 +14,7 @@ use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class InputService.
@@ -25,28 +26,28 @@ class InputService
      *
      * @var InputRepository
      */
-    private $inputRepository;
+    private InputRepository $inputRepository;
 
     /**
      * Paginator.
      *
      * @var PaginatorInterface
      */
-    private $paginator;
+    private PaginatorInterface $paginator;
 
     /**
      * Category service.
      *
      * @var CategoryService
      */
-    private $categoryService;
+    private CategoryService $categoryService;
 
     /**
      * Tag service.
      *
      * @var TagService
      */
-    private $tagService;
+    private TagService $tagService;
 
     /**
      * InputService constructor.
@@ -87,11 +88,14 @@ class InputService
     /**
      * Filter by wallet.
      *
-     * @param $wallet
+     * @param int           $page
+     * @param UserInterface $user    User entity
+     * @param Wallet        $wallet  Wallet entity
+     * @param array         $filters Filters array
      *
      * @return PaginationInterface
      */
-    public function filterByWallet(int $page, User $user, $wallet, array $filters = [])
+    public function filterByWallet(int $page, UserInterface $user, Wallet $wallet, array $filters = []): PaginationInterface
     {
         $filters = $this->prepareFilters($filters);
 
@@ -108,13 +112,13 @@ class InputService
      * @param DateTimeInterface $fromDate From date
      * @param DateTimeInterface $to       To date
      * @param int               $page     Page number
-     * @param User              $user     User entity
+     * @param UserInterface     $user     User entity
      * @param Wallet            $wallet   Wallet Id
      * @param array             $filters  Filters array
      *
      * @return PaginationInterface Paginated list
      */
-    public function filterByDate($fromDate, $to, int $page, User $user, Wallet $wallet, array $filters = []): PaginationInterface
+    public function filterByDate(DateTimeInterface $fromDate, DateTimeInterface $to, int $page, UserInterface $user, Wallet $wallet, array $filters = []): PaginationInterface
     {
         $filters = $this->prepareFilters($filters);
 
@@ -155,6 +159,8 @@ class InputService
      * Getter for Input variables.
      *
      * @param Input $input Input entity
+     *
+     * @return array
      */
     public function getVariables(Input $input): array
     {

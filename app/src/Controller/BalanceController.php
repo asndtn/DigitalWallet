@@ -27,7 +27,7 @@ class BalanceController extends AbstractController
      *
      * @var BalanceService
      */
-    private $balanceService;
+    private BalanceService $balanceService;
 
     /**
      * BalanceController constructor.

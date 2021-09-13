@@ -31,7 +31,7 @@ class CurrencyController extends AbstractController
      *
      * @var CurrencyService
      */
-    private $currencyService;
+    private CurrencyService $currencyService;
 
     /**
      * Currency controller constructor.

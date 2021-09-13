@@ -24,14 +24,14 @@ class WalletService
      *
      * @var WalletRepository
      */
-    private $walletRepository;
+    private WalletRepository $walletRepository;
 
     /**
      * Paginator.
      *
      * @var PaginatorInterface
      */
-    private $paginator;
+    private PaginatorInterface $paginator;
 
     /**
      * WalletService constructor.
@@ -53,7 +53,7 @@ class WalletService
      *
      * @return PaginationInterface Paginated list
      */
-    public function createPaginatedList(int $page, User $user): PaginationInterface
+    public function createPaginatedList(int $page, UserInterface $user): PaginationInterface
     {
         return $this->paginator->paginate(
             $this->walletRepository->queryByOwner($user),

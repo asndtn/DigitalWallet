@@ -19,14 +19,14 @@ class BalanceService
      *
      * @var BalanceRepository
      */
-    private $balanceRepository;
+    private BalanceRepository $balanceRepository;
 
     /**
      * Paginator.
      *
      * @var PaginatorInterface
      */
-    private $paginator;
+    private PaginatorInterface $paginator;
 
     /**
      * BalanceService constructor.

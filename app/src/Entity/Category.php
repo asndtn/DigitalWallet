@@ -5,13 +5,12 @@
 
 namespace App\Entity;
 
-use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Category.
@@ -32,7 +31,7 @@ class Category
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * Name.
@@ -49,7 +48,7 @@ class Category
      *     max="45",
      * )
      */
-    private $name;
+    private ?string $name;
 
     /**
      * Input.
@@ -80,7 +79,7 @@ class Category
      *
      * @Gedmo\Slug(fields={"name"})
      */
-    private $code;
+    private string $code;
 
     /**
      * Category constructor.
@@ -113,7 +112,7 @@ class Category
     /**
      * Setter for Name.
      *
-     * @param string $name
+     * @param string $name Name
      */
     public function setName(string $name): void
     {
@@ -141,9 +140,9 @@ class Category
     }
 
     /**
-     * Getter fo Input.
+     * Getter for Input.
      *
-     * @return Collection|Input[]
+     * @return Collection|Input[] Input collection
      */
     public function getInput(): Collection
     {
@@ -151,39 +150,26 @@ class Category
     }
 
     /**
-     * Add Input.
+     * Add input to collection.
      *
-     * @param Input $input
-     *
-     * @return $this
+     * @param Input $input Input entity
      */
-    public function addInput(Input $input): self
+    public function addInput(Input $input): void
     {
         if (!$this->input->contains($input)) {
             $this->input[] = $input;
-            $input->setCategory($this);
         }
-
-        return $this;
     }
 
     /**
-     * Remove Input.
+     * Remove input from collection.
      *
-     * @param Input $input
-     *
-     * @return $this
+     * @param Input $input Input entity
      */
-    public function removeInput(Input $input): self
+    public function removeInput(Input $input): void
     {
         if ($this->input->contains($input)) {
             $this->input->removeElement($input);
-            // set the owning side to null (unless already changed)
-            if ($input->getCategory() === $this) {
-                $input->setCategory(null);
-            }
         }
-
-        return $this;
     }
 }

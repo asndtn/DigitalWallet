@@ -53,6 +53,9 @@
                             {% endif %}
                             {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                             {# {{ 'label_logged'|trans }} {{ app.user.username }}, #}
+                                <span class="navbar-text">
+                                    {{ 'label_logged'|trans }} {{ app.user.username }}
+                                </span>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ path('app_logout') }}" title="{{ 'action_logout'|trans }}">{{ 'action_logout'|trans }}</a>
                             </li>

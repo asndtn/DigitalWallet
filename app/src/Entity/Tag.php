@@ -31,7 +31,7 @@ class Tag
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * Name.
@@ -51,7 +51,7 @@ class Tag
      *     max="45",
      * )
      */
-    private $name;
+    private string $name;
 
     /**
      * Code.
@@ -71,12 +71,12 @@ class Tag
      *
      * @Gedmo\Slug(fields={"name"})
      */
-    private $code;
+    private string $code;
 
     /**
      * Inputs.
      *
-     * @var \Doctrine\Common\Collections\ArrayCollection|\App\Entity\Input[] Inputs
+     * @var ArrayCollection|Input[] Inputs
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Input", mappedBy="tags", fetch="EXTRA_LAZY")
      */
@@ -143,7 +143,7 @@ class Tag
     /**
      * Getter for inputs.
      *
-     * @return \Doctrine\Common\Collections\Collection|\App\Entity\Input[] Inputs collection
+     * @return Collection|Input[] Inputs collection
      */
     public function getInputs(): Collection
     {
@@ -153,7 +153,7 @@ class Tag
     /**
      * Add input to collection.
      *
-     * @param \App\Entity\Input $input Input entity
+     * @param Input $input Input entity
      */
     public function addInput(Input $input): void
     {
@@ -166,7 +166,7 @@ class Tag
     /**
      * Remove input from collection.
      *
-     * @param \App\Entity\Input $input Input entity
+     * @param Input $input Input entity
      */
     public function removeInput(Input $input): void
     {

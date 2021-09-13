@@ -7,18 +7,11 @@
 {% block body %}
     <h1>{{ 'title_wallets_list'|trans }}</h1>
 
-{#     {% if app.user %}
-        <div class="mb-3">
-            {{ 'label_logged'|trans }} {{ app.user.username }}, <a href="{{ path('app_logout') }}">{{ 'action_logout'|trans }}</a>
-        </div>
-    {% endif %} #}
-
     <p>
         <a href="{{ url('wallet_create') }}" title="{{ 'action_create'|trans}}">{{ 'action_create'|trans }}</a>
     </p>
 
     {% if pagination is defined and pagination.items|length %}
-
         <div class="navigation text-center">
             {{ knp_pagination_render(pagination) }}
         </div>
@@ -26,12 +19,12 @@
         <table class="table table-striped">
             <thead>
             <tr>
-    {% if is_granted('ROLE_ADMIN') %}
-                <th>{{ knp_pagination_sortable(pagination, 'label_id'|trans, 'wallet.id') }}</th>
-        {% endif %}
-                <th>{{ 'label_type'|trans }}</th>
-                <th>{{ 'label_balance'|trans }}</th>
-                <th>{{ 'label_currency'|trans }}</th>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <th>{{ knp_pagination_sortable(pagination, 'label_id'|trans, 'wallet.id') }}</th>
+                {% endif %}
+                <th>{{ knp_pagination_sortable(pagination, 'label_type'|trans, 'type.name') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_balance'|trans, 'balance.balanceAmount') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_currency'|trans, 'currency.name') }}</th>
                 <th>{{ 'label_actions'|trans }}</th>
             </tr>
             </thead>
@@ -39,7 +32,7 @@
             {% for wallet in pagination.items %}
                 <tr>
                     {% if is_granted('ROLE_ADMIN') %}
-                    <td>{{ wallet.id }}</td>
+                        <td>{{ wallet.id }}</td>
                     {% endif %}
                     <td>{{ wallet.type.name }}</td>
                     <td>{{ wallet.balance.balanceAmount }}</td>

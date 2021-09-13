@@ -8,9 +8,9 @@ namespace App\Controller;
 use App\Entity\Tag;
 use App\Form\TagType;
 use App\Service\TagService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,7 +31,7 @@ class TagController extends AbstractController
      *
      * @var TagService
      */
-    private $tagService;
+    private TagService $tagService;
 
     /**
      * Tag Controller constructor.
@@ -214,4 +214,3 @@ class TagController extends AbstractController
         );
     }
 }
-

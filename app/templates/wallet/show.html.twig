@@ -8,8 +8,6 @@
     <h1>{{ 'title_wallet_details'|trans({'%id%': wallet.id|default('')}) }}</h1>
     {% if wallet is defined and wallet|length %}
         <dl class="dl-horizontal">
-            <dt>{{ 'label_owner'|trans }}</dt>
-            <dd>{{ wallet.owner.email }}</dd>
             <dt>{{ 'label_type'|trans }}</dt>
             <dd>{{ wallet.type.name }}</dd>
             <dt>{{ 'label_currency'|trans }}</dt>
@@ -17,14 +15,14 @@
             <dt>{{ 'label_balance'|trans }}</dt>
             <dd>{{ wallet.balance.balanceAmount }}</dd>
             <dd>
-                {% if wallet.inputs is defined and wallet.inputs|length %}
+                {# {% if wallet.inputs is defined and wallet.inputs|length %}  #}
                         {# {% for input in wallet.inputs %}
                             <li><a href="{{ url('input_show', {id: input.id}) }}" title="{{ 'action_view'|trans }}">{{ input.amount }}</a></li>
                         {% endfor %} #}
                         <a href="{{ url('input_index') }}" title="{{ 'action_view'|trans }}">{{ 'label_inputs'|trans }}</a>
-                {% else %}
+                {# {% else %}
                     &nbsp
-                {% endif %}
+                {% endif %}  #}
             </dd>
         </dl>
         <p>

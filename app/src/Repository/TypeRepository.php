@@ -7,9 +7,10 @@ namespace App\Repository;
 
 use App\Entity\Type;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query;
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Class TypeRepository.
@@ -35,7 +36,7 @@ class TypeRepository extends ServiceEntityRepository
     /**
      * TypeRepository constructor.
      *
-     * @param \Doctrine\Persistence\ManagerRegistry $registry Manager registry
+     * @param ManagerRegistry $registry Manager registry
      */
     public function __construct(ManagerRegistry $registry)
     {
@@ -44,7 +45,7 @@ class TypeRepository extends ServiceEntityRepository
 
     /** Query all records.
      *
-     * @return \Doctrine\ORM\QueryBuilder QueryBuilder
+     * @return QueryBuilder QueryBuilder
      */
     public function queryAll(): QueryBuilder
     {
@@ -53,24 +54,12 @@ class TypeRepository extends ServiceEntityRepository
     }
 
     /**
-     * Get or create new query builder.
-     *
-     * @param QueryBuilder|null $queryBuilder
-     *
-     * @return QueryBuilder QueryBuilder
-     */
-    private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
-    {
-        return $queryBuilder ?? $this->createQueryBuilder('type');
-    }
-
-    /**
      * Save type.
      *
      * @param Type $type Type entity
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function save(Type $type): void
     {
@@ -81,14 +70,24 @@ class TypeRepository extends ServiceEntityRepository
     /**
      * Delete record.
      *
-     * @param \App\Entity\Type $type Type entity
+     * @param Type $type Type entity
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function delete(Type $type): void
     {
         $this->_em->remove($type);
         $this->_em->flush();
+    }
+
+    /**
+     * Get or create new query builder.
+     *
+     * @return QueryBuilder QueryBuilder
+     */
+    private function getOrCreateQueryBuilder(): QueryBuilder
+    {
+        return null ?? $this->createQueryBuilder('type');
     }
 }

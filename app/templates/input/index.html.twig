@@ -30,14 +30,10 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                {% if is_granted('ROLE_ADMIN') %}
-                <th>{{ knp_pagination_sortable(pagination, 'label_id'|trans, 'input.id') }}</th>
-                {% endif %}
                 <th>{{ knp_pagination_sortable(pagination, 'label_amount'|trans, 'input.amount') }}</th>
-                <th>{{ 'label_wallet'|trans }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'label_category'|trans, 'input.category.name') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_wallet'|trans, 'type.name') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label_category'|trans, 'category.name') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'label_date'|trans, 'input.date') }}</th>
-                <th>{{ 'label_description'|trans }}</th>
                 <th>{{ 'label_tags'|trans }}</th>
                 <th>{{ 'label_actions'|trans }}</th>
             </tr>
@@ -49,14 +45,10 @@
                 {% endif %}
             {# {{ input.wallet.balance.balanceAmount }}  #}
                 <tr>
-                    {% if is_granted('ROLE_ADMIN') %}
-                    <td>{{ input.id }}</td>
-                    {% endif %}
                     <td>{{ input.amount }}</td>
                     <td>{{ input.wallet.type.name }}</td>
                     <td><a href="{{ url('input_index', {'filters.category_id' : input.category.id}) }}" title="{{ input.category.id }}">{{ input.category.name }}</a></td>
                     <td>{{ input.date|format_date('long') }}</td>
-                    <td>{{ input.description }}</td>
                     <td>
                         {% if input.tags is defined and input.tags|length %}
                             {% for tag in input.tags %}

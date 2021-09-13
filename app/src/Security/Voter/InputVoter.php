@@ -22,7 +22,7 @@ class InputVoter extends Voter
      *
      * @var Security
      */
-    private $security;
+    private Security $security;
 
     /**
      * OrderVoter constructor.

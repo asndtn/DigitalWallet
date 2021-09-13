@@ -21,7 +21,7 @@ class WalletVoter extends Voter
      *
      * @var Security
      */
-    private $security;
+    private Security $security;
 
     /**
      * OrderVoter constructor.
@@ -57,7 +57,7 @@ class WalletVoter extends Voter
      *
      * @return bool Result
      */
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
         // if the user is anonymous, do not grant access

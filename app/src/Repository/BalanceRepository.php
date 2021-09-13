@@ -7,7 +7,6 @@ namespace App\Repository;
 
 use App\Entity\Balance;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -35,7 +34,7 @@ class BalanceRepository extends ServiceEntityRepository
     /**
      * Balance repository constructor.
      *
-     * @param \Doctrine\Persistence\ManagerRegistry $registry Manager registry
+     * @param ManagerRegistry $registry Manager registry
      */
     public function __construct(ManagerRegistry $registry)
     {
@@ -45,7 +44,7 @@ class BalanceRepository extends ServiceEntityRepository
     /**
      * Query all records.
      *
-     * @return \Doctrine\ORM\QueryBuilder QueryBuilder
+     * @return QueryBuilder QueryBuilder
      */
     public function queryAll(): QueryBuilder
     {
@@ -58,8 +57,8 @@ class BalanceRepository extends ServiceEntityRepository
      *
      * @return QueryBuilder QueryBuilder
      */
-    private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
+    private function getOrCreateQueryBuilder(): QueryBuilder
     {
-        return $queryBuilder ?? $this->createQueryBuilder('balance');
+        return null ?? $this->createQueryBuilder('balance');
     }
 }

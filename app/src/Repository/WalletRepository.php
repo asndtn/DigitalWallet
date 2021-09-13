@@ -10,7 +10,6 @@ use App\Entity\Wallet;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
-use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -53,7 +52,11 @@ class WalletRepository extends ServiceEntityRepository
     public function queryAll(): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
-            ->orderBy('wallet.id', 'DESC');
+            ->select('partial wallet.{id}', 'partial type.{id, name}', 'partial currency.{id, name}', 'partial balance.{id, balanceAmount}')
+            ->join('wallet.type', 'type')
+            ->join('wallet.currency', 'currency')
+            ->join('wallet.balance', 'balance')
+            ->orderBy('wallet.type', 'DESC');
     }
 
     /**
@@ -104,13 +107,10 @@ class WalletRepository extends ServiceEntityRepository
     /**
      * Get or create new query builder.
      *
-     * @param QueryBuilder|null $queryBuilder
-     *
      * @return QueryBuilder QueryBuilder
      */
-    private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
+    private function getOrCreateQueryBuilder(): QueryBuilder
     {
-        return $queryBuilder ?? $this->createQueryBuilder('wallet');
+        return null ?? $this->createQueryBuilder('wallet');
     }
 }
-

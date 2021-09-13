@@ -29,7 +29,7 @@ class Input
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * Wallet.
@@ -45,7 +45,7 @@ class Input
      *
      * @Assert\Type(type="App\Entity\Wallet")
      */
-    private $wallet;
+    private Wallet $wallet;
 
     /**
      * Amount.
@@ -58,7 +58,7 @@ class Input
      * @Assert\NotNull
      * @Assert\Type("float")
      */
-    private $amount;
+    private float $amount;
 
     /**
      * Date.
@@ -71,7 +71,7 @@ class Input
      *
      * @Gedmo\Timestampable(on="create")
      */
-    private $date;
+    private DateTimeInterface $date;
 
     /**
      * Description.
@@ -92,7 +92,7 @@ class Input
      *     allowEmptyString = false
      * )
      */
-    private $description;
+    private string $description;
 
     /**
      * Category.
@@ -225,7 +225,7 @@ class Input
     /**
      * Getter for Category.
      *
-     * @return Category|Category[]|ArrayCollection|null
+     * @return ArrayCollection|Category[]
      */
     public function getCategory()
     {
@@ -235,7 +235,7 @@ class Input
     /**
      * Setter for Category.
      *
-     * @param \App\Entity\Category|null $category Category
+     * @param Category|null $category Category
      */
     public function setCategory(?Category $category): void
     {
@@ -245,7 +245,7 @@ class Input
     /**
      * Getter for tags.
      *
-     * @return \Doctrine\Common\Collections\Collection|\App\Entity\Tag[] Tags collection
+     * @return Collection|Tag[] Tags collection
      */
     public function getTags(): Collection
     {
@@ -255,7 +255,7 @@ class Input
     /**
      * Add tag to collection.
      *
-     * @param \App\Entity\Tag $tag Tag entity
+     * @param Tag $tag Tag entity
      */
     public function addTag(Tag $tag): void
     {
@@ -267,7 +267,7 @@ class Input
     /**
      * Remove tag from collection.
      *
-     * @param \App\Entity\Tag $tag Tag entity
+     * @param Tag $tag Tag entity
      */
     public function removeTag(Tag $tag): void
     {

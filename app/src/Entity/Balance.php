@@ -7,9 +7,7 @@ namespace App\Entity;
 
 use App\Repository\BalanceRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Class Balance.
@@ -28,7 +26,7 @@ class Balance
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * balanceAmount.
@@ -57,7 +55,7 @@ class Balance
      *
      * @Assert\Type(type="App\Entity\Wallet")
      */
-    private $wallet;
+    private ?Wallet $wallet;
 
     /**
      * Getter for Id.

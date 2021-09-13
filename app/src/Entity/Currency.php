@@ -30,7 +30,7 @@ class Currency
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * Name.
@@ -49,7 +49,7 @@ class Currency
      *     exactMessage = "This value should have exactly {{ limit }} characters.",
      * )
      */
-    private $name;
+    private ?string $name;
 
     /**
      * Wallets.
@@ -113,7 +113,7 @@ class Currency
     }
 
     /**
-     * Add wallet.
+     * Add wallet to collection.
      *
      * @param Wallet $wallet Wallet entity
      */
@@ -121,7 +121,6 @@ class Currency
     {
         if (!$this->wallets->contains($wallet)) {
             $this->wallets[] = $wallet;
-            $wallet->setCurrency($this);
         }
     }
 
@@ -132,11 +131,8 @@ class Currency
      */
     public function removeWallet(Wallet $wallet): void
     {
-        if ($this->wallets->removeElement($wallet)) {
-            // set the owning side to null (unless already changed)
-            if ($wallet->getCurrency() === $this) {
-                $wallet->setCurrency(null);
-            }
+        if ($this->wallets->contains($wallet)) {
+            $this->wallets->removeElement($wallet);
         }
     }
 }

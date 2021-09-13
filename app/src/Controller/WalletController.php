@@ -15,8 +15,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class WalletController.
@@ -32,7 +32,7 @@ class WalletController extends AbstractController
      *
      * @var WalletService
      */
-    private $walletService;
+    private WalletService $walletService;
 
     /**
      * WalletController constructor.
@@ -71,7 +71,8 @@ class WalletController extends AbstractController
     /**
      * Show wallet.
      *
-     * @param Wallet $wallet Wallet entity
+     * @param Wallet           $wallet  Wallet entity
+     * @param SessionInterface $session Session interface
      *
      * @return Response HTTP response
      *
@@ -212,6 +213,12 @@ class WalletController extends AbstractController
      */
     public function delete(Request $request, Wallet $wallet): Response
     {
+        if ($wallet->getInputs()->count()) {
+            $this->addFlash('warning', 'message_wallet_contains_inputs');
+
+            return $this->redirectToRoute('wallet_index');
+        }
+
         if ($wallet->getOwner() !== $this->getUser()) {
             $this->addFlash('warning', 'message.item_not_found');
 
