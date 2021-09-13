@@ -416,6 +416,10 @@
                 <source>message_wallet_contains_inputs</source>
                 <target>Wallet contains inputs!</target>
             </trans-unit>
+            <trans-unit id="title_category_create">
+                <source>title_category_create</source>
+                <target>Create a category</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

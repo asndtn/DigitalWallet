@@ -51,8 +51,6 @@ class TagRepository extends ServiceEntityRepository
     public function queryAll(): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
-            ->select('tag', 'partial inputs.{id}')
-            ->join('tag.inputs', 'inputs')
             ->orderBy('tag.name', 'DESC');
     }
 

@@ -428,6 +428,10 @@
                 <source>message_wallet_contains_inputs</source>
                 <target>Portfel zawiera operacje!</target>
             </trans-unit>
+            <trans-unit id="title_category_create">
+                <source>title_category_create</source>
+                <target>Stwórz kategorię</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

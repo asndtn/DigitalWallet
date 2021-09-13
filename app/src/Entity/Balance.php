@@ -55,7 +55,7 @@ class Balance
      *
      * @Assert\Type(type="App\Entity\Wallet")
      */
-    private ?Wallet $wallet;
+    private $wallet;
 
     /**
      * Getter for Id.
