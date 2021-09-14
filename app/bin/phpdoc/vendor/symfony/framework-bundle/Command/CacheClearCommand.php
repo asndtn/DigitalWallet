@@ -61,7 +61,7 @@ class CacheClearCommand extends Command
             ])
             ->setDescription(self::$defaultDescription)
             ->setHelp(<<<'EOF'
-The <info>%command.name%</info> command clears the application cache for a given environment
+The <info>%command.name%</info> command clears and warms up the application cache for a given environment
 and debug mode:
 
   <info>php %command.full_name% --env=dev</info>
@@ -84,7 +84,7 @@ EOF
         $realBuildDir = $kernel->getContainer()->hasParameter('kernel.build_dir') ? $kernel->getContainer()->getParameter('kernel.build_dir') : $realCacheDir;
         // the old cache dir name must not be longer than the real one to avoid exceeding
         // the maximum length of a directory or file path within it (esp. Windows MAX_PATH)
-        $oldCacheDir = substr($realCacheDir, 0, -1).('~' === substr($realCacheDir, -1) ? '+' : '~');
+        $oldCacheDir = substr($realCacheDir, 0, -1).(str_ends_with($realCacheDir, '~') ? '+' : '~');
         $fs->remove($oldCacheDir);
 
         if (!is_writable($realCacheDir)) {

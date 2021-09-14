@@ -19,7 +19,9 @@ use Countable;
 use InvalidArgumentException;
 use IteratorAggregate;
 use OutOfRangeException;
+use ReturnTypeWillChange;
 use Webmozart\Assert\Assert;
+
 use function array_filter;
 use function array_merge;
 use function count;
@@ -54,7 +56,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      *
      * @param T $item
      */
-    public function add($item) : void
+    public function add($item): void
     {
         $this->items[] = $item;
     }
@@ -65,7 +67,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      * @param string|int $index An index value to recognize this item with.
      * @param T          $item  The item to store, generally a Descriptor but may be something else.
      */
-    public function set($index, $item) : void
+    public function set($index, $item): void
     {
         $this->offsetSet($index, $item);
     }
@@ -98,7 +100,6 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      *
      * @return TChild The contents of the element with the given index and the provided default if the key
      *                doesn't exist.
-     *
      * @psalm-return ($valueIfEmpty is null ? ?TChild: TChild)
      * @phpstan-return T|TChild
      *
@@ -119,7 +120,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      *
      * @return array<T>
      */
-    public function getAll() : array
+    public function getAll(): array
     {
         return $this->items;
     }
@@ -129,7 +130,8 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      *
      * @return ArrayIterator<string|int, T>
      */
-    public function getIterator() : ArrayIterator
+    #[ReturnTypeWillChange]
+    public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->items);
     }
@@ -137,7 +139,8 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * Returns a count of the number of elements in this collection.
      */
-    public function count() : int
+    #[ReturnTypeWillChange]
+    public function count(): int
     {
         return count($this->items);
     }
@@ -145,7 +148,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
     /**
      * Empties the collection.
      */
-    public function clear() : void
+    public function clear(): void
     {
         $this->items = [];
     }
@@ -154,7 +157,6 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      * Retrieves an item as if it were a property of the collection.
      *
      * @return mixed
-     *
      * @phpstan-return ?T
      */
     public function __get(string $name)
@@ -167,7 +169,8 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      *
      * @param string|int $offset The index to check on.
      */
-    public function offsetExists($offset) : bool
+    #[ReturnTypeWillChange]
+    public function offsetExists($offset): bool
     {
         return isset($this->items[$offset]);
     }
@@ -179,6 +182,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      *
      * @return ?T
      */
+    #[ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->offsetExists($offset) ? $this->items[$offset] : null;
@@ -192,7 +196,8 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      *
      * @throws InvalidArgumentException If the key is null or an empty string.
      */
-    public function offsetSet($offset, $value) : void
+    #[ReturnTypeWillChange]
+    public function offsetSet($offset, $value): void
     {
         if ($offset === '' || $offset === null) {
             throw new InvalidArgumentException('The key of a collection must always be set');
@@ -208,7 +213,8 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      *
      * @param string|int $offset The offset to unset.
      */
-    public function offsetUnset($offset) : void
+    #[ReturnTypeWillChange]
+    public function offsetUnset($offset): void
     {
         unset($this->items[$offset]);
     }
@@ -220,7 +226,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      *
      * @return Collection<T>
      */
-    public function merge(self $collection) : Collection
+    public function merge(self $collection): Collection
     {
         return new self(array_merge($this->items, $collection->getAll()));
     }
@@ -232,7 +238,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      *
      * @template F of object
      */
-    public function filter(string $className) : Collection
+    public function filter(string $className): Collection
     {
         /** @var Collection<F> $collection */
         $collection = new self(
@@ -255,7 +261,7 @@ class Collection implements Countable, IteratorAggregate, ArrayAccess
      *
      * @template C
      */
-    public static function fromClassString(string $classString, array $elements = []) : Collection
+    public static function fromClassString(string $classString, array $elements = []): Collection
     {
         Assert::classExists($classString);
 

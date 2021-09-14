@@ -18,6 +18,8 @@ use BadMethodCallException;
 use OutOfBoundsException;
 use phpDocumentor\Dsn;
 use phpDocumentor\Path;
+use ReturnTypeWillChange;
+
 use function array_map;
 use function in_array;
 use function ltrim;
@@ -42,7 +44,7 @@ final class Source implements ArrayAccess
         $this->paths = $paths;
     }
 
-    public function withDsn(Dsn $dsn) : Source
+    public function withDsn(Dsn $dsn): Source
     {
         $self = clone $this;
         $self->dsn = $dsn;
@@ -51,7 +53,7 @@ final class Source implements ArrayAccess
     }
 
     /** @param Path[] $paths */
-    public function withPaths(array $paths) : Source
+    public function withPaths(array $paths): Source
     {
         $self = clone $this;
         $self->paths = $paths;
@@ -59,29 +61,29 @@ final class Source implements ArrayAccess
         return $self;
     }
 
-    public function dsn() : Dsn
+    public function dsn(): Dsn
     {
         return $this->dsn;
     }
 
     /** @return Path[] */
-    public function paths() : array
+    public function paths(): array
     {
         return $this->paths;
     }
 
     /** @return string[] */
-    public function globPatterns() : array
+    public function globPatterns(): array
     {
         return array_map(
-            function (Path $path) : string {
+            function (Path $path): string {
                 return $this->pathToGlobPattern((string) $path);
             },
             $this->paths
         );
     }
 
-    private function normalizePath(string $path) : string
+    private function normalizePath(string $path): string
     {
         if (strpos($path, '.') === 0) {
             $path = ltrim($path, '.');
@@ -94,7 +96,7 @@ final class Source implements ArrayAccess
         return rtrim($path, '/');
     }
 
-    private function pathToGlobPattern(string $path) : string
+    private function pathToGlobPattern(string $path): string
     {
         $path = $this->normalizePath($path);
 
@@ -106,7 +108,8 @@ final class Source implements ArrayAccess
     }
 
     /** @param string $offset */
-    public function offsetExists($offset) : bool
+    #[ReturnTypeWillChange]
+    public function offsetExists($offset): bool
     {
         return in_array($offset, ['dsn', 'paths']);
     }
@@ -116,13 +119,16 @@ final class Source implements ArrayAccess
      *
      * @return Path[]|Dsn
      */
+    #[ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         switch ($offset) {
             case 'dsn':
                 return $this->dsn;
+
             case 'paths':
                 return $this->paths;
+
             default:
                 throw new OutOfBoundsException(sprintf('Offset %s does not exist', $offset));
         }
@@ -132,13 +138,15 @@ final class Source implements ArrayAccess
      * @param string $offset
      * @param mixed $value
      */
-    public function offsetSet($offset, $value) : void
+    #[ReturnTypeWillChange]
+    public function offsetSet($offset, $value): void
     {
         throw new BadMethodCallException('Cannot set offset of ' . self::class);
     }
 
     /** @param string $offset */
-    public function offsetUnset($offset) : void
+    #[ReturnTypeWillChange]
+    public function offsetUnset($offset): void
     {
         throw new BadMethodCallException('Cannot unset offset of ' . self::class);
     }

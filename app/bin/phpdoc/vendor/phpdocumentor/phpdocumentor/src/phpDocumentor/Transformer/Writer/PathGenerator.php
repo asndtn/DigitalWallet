@@ -20,6 +20,7 @@ use phpDocumentor\Transformer\Transformation;
 use RuntimeException;
 use Symfony\Component\String\UnicodeString;
 use UnexpectedValueException;
+
 use function array_map;
 use function current;
 use function explode;
@@ -69,14 +70,14 @@ class PathGenerator
      * @throws InvalidArgumentException If no artifact is provided and no routing rule matches.
      * @throws UnexpectedValueException If the provided node does not contain anything.
      */
-    public function generate(Descriptor $descriptor, Transformation $transformation) : string
+    public function generate(Descriptor $descriptor, Transformation $transformation): string
     {
         $path = $this->determinePath($descriptor, $transformation);
 
         return $this->replaceVariablesInPath($path, $descriptor);
     }
 
-    private function determinePath(Descriptor $descriptor, Transformation $transformation) : string
+    private function determinePath(Descriptor $descriptor, Transformation $transformation): string
     {
         $path = '/' . $transformation->getArtifact();
         if (!$transformation->getArtifact()) {
@@ -92,7 +93,7 @@ class PathGenerator
         return $path;
     }
 
-    private function replaceVariablesInPath(string $path, Descriptor $descriptor) : string
+    private function replaceVariablesInPath(string $path, Descriptor $descriptor): string
     {
         $destination = preg_replace_callback(
             '/{{([^}]*)}}/', // explicitly do not use the unicode modifier; this breaks windows
@@ -110,13 +111,7 @@ class PathGenerator
                 // strip any special characters and surrounding \ or /
                 $filepart = trim(trim($value), '\\/');
 
-                // make it windows proof by transliterating to ASCII and by url encoding
-                $filepart = (new UnicodeString($filepart))->ascii()->toString();
-                $value = strpos($filepart, '/') !== false
-                    ? implode('/', array_map('urlencode', explode('/', $filepart)))
-                    : implode('\\', array_map('urlencode', explode('\\', $filepart)));
-
-                if (!$value) {
+                if ($filepart === '') {
                     throw new RuntimeException(
                         sprintf(
                             'Variable substitution in path %s failed, variable "%s" did not return a value',
@@ -126,7 +121,12 @@ class PathGenerator
                     );
                 }
 
-                return $value;
+                // make it windows proof by transliterating to ASCII and by url encoding
+                $filepart = (new UnicodeString($filepart))->ascii()->toString();
+
+                return strpos($filepart, '/') !== false
+                    ? implode('/', array_map('urlencode', explode('/', $filepart)))
+                    : implode('\\', array_map('urlencode', explode('\\', $filepart)));
             },
             $path
         );

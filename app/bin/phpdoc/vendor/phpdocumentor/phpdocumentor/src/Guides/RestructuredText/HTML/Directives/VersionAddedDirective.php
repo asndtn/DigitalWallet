@@ -14,31 +14,25 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
 
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\Nodes\RawNode;
+use phpDocumentor\Guides\Nodes\TemplatedNode;
 use phpDocumentor\Guides\RestructuredText\Directives\SubDirective;
 use phpDocumentor\Guides\RestructuredText\Parser;
 
 class VersionAddedDirective extends SubDirective
 {
-    public function getName() : string
+    public function getName(): string
     {
         return 'versionadded';
     }
 
-    public function processSub(Parser $parser, ?Node $document, string $variable, string $data, array $options) : ?Node
+    public function processSub(Parser $parser, ?Node $document, string $variable, string $data, array $options): ?Node
     {
-        $environment = $parser->getEnvironment();
-
-        return new RawNode(
-            static function () use ($environment, $document, $data) {
-                return $environment->getRenderer()->render(
-                    'directives/version-added.html.twig',
-                    [
-                        'version' => $data,
-                        'node' => $document,
-                    ]
-                );
-            }
+        return new TemplatedNode(
+            'directives/version-added.html.twig',
+            [
+                'version' => $data,
+                'node' => $document,
+            ]
         );
     }
 }

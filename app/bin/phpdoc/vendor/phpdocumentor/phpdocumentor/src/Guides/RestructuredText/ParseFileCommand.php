@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText;
 
 use League\Flysystem\FilesystemInterface;
+use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Guides\Configuration;
 
 final class ParseFileCommand
@@ -21,7 +22,11 @@ final class ParseFileCommand
     /** @var FilesystemInterface */
     private $origin;
 
+    /** @var GuideSetDescriptor */
+    private $documentationSet;
+
     public function __construct(
+        GuideSetDescriptor $documentationSet,
         Configuration $configuration,
         FilesystemInterface $origin,
         string $directory,
@@ -31,24 +36,30 @@ final class ParseFileCommand
         $this->origin = $origin;
         $this->directory = $directory;
         $this->file = $file;
+        $this->documentationSet = $documentationSet;
     }
 
-    public function getConfiguration() : Configuration
+    public function getDocumentationSet(): GuideSetDescriptor
+    {
+        return $this->documentationSet;
+    }
+
+    public function getConfiguration(): Configuration
     {
         return $this->configuration;
     }
 
-    public function getOrigin() : FilesystemInterface
+    public function getOrigin(): FilesystemInterface
     {
         return $this->origin;
     }
 
-    public function getDirectory() : string
+    public function getDirectory(): string
     {
         return $this->directory;
     }
 
-    public function getFile() : string
+    public function getFile(): string
     {
         return $this->file;
     }

@@ -25,7 +25,9 @@ use phpDocumentor\Transformer\Writer\Initializable;
 use phpDocumentor\Transformer\Writer\WriterAbstract;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\Assert;
+
 use function in_array;
 use function sprintf;
 
@@ -64,20 +66,25 @@ class Transformer
     /** @var FlySystemFactory */
     private $flySystemFactory;
 
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+
     /**
      * Wires the template collection and writer collection to this transformer.
      */
     public function __construct(
         Writer\Collection $writerCollection,
         LoggerInterface $logger,
-        FlySystemFactory $flySystemFactory
+        FlySystemFactory $flySystemFactory,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->writers = $writerCollection;
         $this->logger = $logger;
         $this->flySystemFactory = $flySystemFactory;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function getDescription() : string
+    public function getDescription(): string
     {
         return 'Transform analyzed project into artifacts';
     }
@@ -87,7 +94,7 @@ class Transformer
      *
      * @param string $target The target location where to output the artifacts.
      */
-    public function setTarget(string $target) : void
+    public function setTarget(string $target): void
     {
         $this->target = $target;
         $this->destination = $this->flySystemFactory->create(Dsn::createFromString($target));
@@ -96,17 +103,17 @@ class Transformer
     /**
      * Returns the location where to store the artifacts.
      */
-    public function getTarget() : ?string
+    public function getTarget(): ?string
     {
         return $this->target;
     }
 
-    public function setDestination(FilesystemInterface $filesystem) : void
+    public function setDestination(FilesystemInterface $filesystem): void
     {
         $this->destination = $filesystem;
     }
 
-    public function destination() : FilesystemInterface
+    public function destination(): FilesystemInterface
     {
         $destination = $this->destination;
 
@@ -120,7 +127,7 @@ class Transformer
      *
      * @param Transformation[] $transformations
      */
-    public function execute(ProjectDescriptor $project, array $transformations) : void
+    public function execute(ProjectDescriptor $project, array $transformations): void
     {
         $this->initializeWriters($project, $transformations);
         $this->transformProject($project, $transformations);
@@ -133,7 +140,7 @@ class Transformer
      *
      * @param Transformation[] $transformations
      */
-    private function initializeWriters(ProjectDescriptor $project, array $transformations) : void
+    private function initializeWriters(ProjectDescriptor $project, array $transformations): void
     {
         $isInitialized = [];
         foreach ($transformations as $transformation) {
@@ -165,18 +172,18 @@ class Transformer
      *
      * @uses Dispatcher to emit the events surrounding an initialization.
      */
-    private function initializeWriter(WriterAbstract $writer, ProjectDescriptor $project, Template $template) : void
+    private function initializeWriter(WriterAbstract $writer, ProjectDescriptor $project, Template $template): void
     {
         /** @var WriterInitializationEvent $instance */
         $instance = WriterInitializationEvent::createInstance($this);
         $event = $instance->setWriter($writer);
-        Dispatcher::getInstance()->dispatch($event, self::EVENT_PRE_INITIALIZATION);
+        $this->eventDispatcher->dispatch($event, self::EVENT_PRE_INITIALIZATION);
 
         if ($writer instanceof Initializable) {
             $writer->initialize($project, $template);
         }
 
-        Dispatcher::getInstance()->dispatch($event, self::EVENT_POST_INITIALIZATION);
+        $this->eventDispatcher->dispatch($event, self::EVENT_POST_INITIALIZATION);
     }
 
     /**
@@ -184,7 +191,7 @@ class Transformer
      *
      * @param Transformation[] $transformations
      */
-    private function transformProject(ProjectDescriptor $project, array $transformations) : void
+    private function transformProject(ProjectDescriptor $project, array $transformations): void
     {
         foreach ($transformations as $transformation) {
             $transformation->setTransformer($this);
@@ -205,7 +212,7 @@ class Transformer
      *
      * @uses Dispatcher to emit the events surrounding a transformation.
      */
-    private function applyTransformationToProject(Transformation $transformation, ProjectDescriptor $project) : void
+    private function applyTransformationToProject(Transformation $transformation, ProjectDescriptor $project): void
     {
         $this->logger->log(
             LogLevel::NOTICE,
@@ -218,12 +225,12 @@ class Transformer
         );
 
         $preTransformationEvent = PreTransformationEvent::create($this, $transformation);
-        Dispatcher::getInstance()->dispatch($preTransformationEvent, self::EVENT_PRE_TRANSFORMATION);
+        $this->eventDispatcher->dispatch($preTransformationEvent, self::EVENT_PRE_TRANSFORMATION);
 
         $writer = $this->writers[$transformation->getWriter()];
         $writer->transform($project, $transformation);
 
         $postTransformationEvent = PostTransformationEvent::createInstance($this);
-        Dispatcher::getInstance()->dispatch($postTransformationEvent, self::EVENT_POST_TRANSFORMATION);
+        $this->eventDispatcher->dispatch($postTransformationEvent, self::EVENT_POST_TRANSFORMATION);
     }
 }

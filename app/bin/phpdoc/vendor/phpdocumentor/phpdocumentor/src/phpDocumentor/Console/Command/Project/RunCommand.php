@@ -25,8 +25,10 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\Stopwatch\StopwatchEvent;
+
 use function count;
 use function file_put_contents;
 use function floor;
@@ -65,21 +67,26 @@ class RunCommand extends Command
     /** @var ProgressBar */
     private $transformerProgressBar;
 
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+
     public function __construct(
         ProjectDescriptorBuilder $projectDescriptorBuilder,
-        PipelineInterface $pipeline
+        PipelineInterface $pipeline,
+        EventDispatcherInterface $eventDispatcher
     ) {
         parent::__construct('project:run');
 
         $this->projectDescriptorBuilder = $projectDescriptorBuilder;
         $this->pipeline = $pipeline;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
      * Initializes this command and sets the name, description, options and
      * arguments.
      */
-    protected function configure() : void
+    protected function configure(): void
     {
         $this->setName('project:run')
             ->setAliases(['run'])
@@ -264,7 +271,7 @@ HELP
     /**
      * Executes the business logic involved with this command.
      */
-    protected function execute(InputInterface $input, OutputInterface $output) : int
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $stopwatch = new Stopwatch();
         $event = $stopwatch->start('all');
@@ -298,7 +305,7 @@ HELP
         return 0;
     }
 
-    private function observeProgressToShowProgressBars(OutputInterface $output) : void
+    private function observeProgressToShowProgressBars(OutputInterface $output): void
     {
         // Code that is poorly testable and not worth the effort
         // @codeCoverageIgnoreStart
@@ -309,20 +316,21 @@ HELP
         $dispatcherInstance = Dispatcher::getInstance();
         $dispatcherInstance->addListener(
             'parser.pre',
-            function (PreParsingEvent $event) use ($output) : void {
+            function (PreParsingEvent $event) use ($output): void {
                 $output->writeln('Parsing files');
                 $this->progressBar = new ProgressBar($output, $event->getFileCount());
             }
         );
         $dispatcherInstance->addListener(
             'parser.file.pre',
-            function () : void {
+            function (): void {
                 $this->progressBar->advance();
             }
         );
+
         $dispatcherInstance->addListener(
             Transformer::EVENT_PRE_TRANSFORM,
-            function (PreTransformEvent $event) use ($output) : void {
+            function (PreTransformEvent $event) use ($output): void {
                 $output->writeln('');
                 $output->writeln('Applying transformations (can take a while)');
                 $this->transformerProgressBar = new ProgressBar(
@@ -331,16 +339,17 @@ HELP
                 );
             }
         );
-        $dispatcherInstance->addListener(
+
+        $this->eventDispatcher->addListener(
             Transformer::EVENT_POST_TRANSFORMATION,
-            function () : void {
+            function (): void {
                 $this->transformerProgressBar->advance();
             }
         );
         // @codeCoverageIgnoreEnd
     }
 
-    private function durationInText(StopwatchEvent $event) : string
+    private function durationInText(StopwatchEvent $event): string
     {
         $durationText = '';
         $duration = round($event->getDuration() / 1000);

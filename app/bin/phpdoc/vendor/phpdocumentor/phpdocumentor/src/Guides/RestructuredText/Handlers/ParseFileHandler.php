@@ -7,8 +7,8 @@ namespace phpDocumentor\Guides\RestructuredText\Handlers;
 use Doctrine\Common\EventManager;
 use InvalidArgumentException;
 use IteratorAggregate;
+use phpDocumentor\Descriptor\DocumentDescriptor;
 use phpDocumentor\Guides\Configuration;
-use phpDocumentor\Guides\Documents;
 use phpDocumentor\Guides\Environment;
 use phpDocumentor\Guides\Markdown\Parser as MarkdownParser;
 use phpDocumentor\Guides\Metas;
@@ -21,6 +21,7 @@ use phpDocumentor\Guides\RestructuredText\ParseFileCommand;
 use phpDocumentor\Guides\RestructuredText\Parser;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
+
 use function filemtime;
 use function iterator_to_array;
 use function ltrim;
@@ -31,9 +32,6 @@ final class ParseFileHandler
 {
     /** @var Metas */
     private $metas;
-
-    /** @var Documents */
-    private $documents;
 
     /** @var LoggerInterface */
     private $logger;
@@ -56,7 +54,6 @@ final class ParseFileHandler
      */
     public function __construct(
         Metas $metas,
-        Documents $documents,
         Renderer $renderer,
         LoggerInterface $logger,
         EventManager $eventManager,
@@ -64,7 +61,6 @@ final class ParseFileHandler
         IteratorAggregate $references
     ) {
         $this->metas = $metas;
-        $this->documents = $documents;
         $this->logger = $logger;
         $this->directives = $directives;
         $this->references = $references;
@@ -72,7 +68,7 @@ final class ParseFileHandler
         $this->renderer = $renderer;
     }
 
-    public function handle(ParseFileCommand $command) : void
+    public function handle(ParseFileCommand $command): void
     {
         $configuration = $command->getConfiguration();
         $directory = $command->getDirectory();
@@ -111,29 +107,53 @@ final class ParseFileHandler
             return;
         }
 
-        $this->documents->addDocument($file, $document);
+        $command->getDocumentationSet()->addDocument(
+            $file,
+            new DocumentDescriptor(
+                $document,
+                $document->getHash(),
+                $file,
+                $document->getTitle()->getValueString(),
+                $document->getTitles(),
+                $document->getTocs(),
+                $environment->getDependencies(),
+                $environment->getLinks()
+            )
+        );
 
         $outputFolder = $configuration->getOutputFolder() ? $configuration->getOutputFolder() . '/' : '';
         $url = $outputFolder . $this->buildDocumentUrl($environment, $configuration->getFileExtension());
 
+        $tocs = [];
+        $nodes = $document->getTocs();
+        foreach ($nodes as $toc) {
+            $files = $toc->getFiles();
+
+            foreach ($files as &$filea) {
+                $filea = $environment->canonicalUrl($filea);
+            }
+
+            $tocs[] = $files;
+        }
+
         $this->metas->set(
             $file,
             $url,
-            (string) $document->getTitle(),
+            $document->getTitle()->getValueString(),
             $document->getTitles(),
-            $document->getTocs(),
+            $tocs,
             (int) filemtime($fileAbsolutePath),
             $environment->getDependencies(),
             $environment->getLinks()
         );
     }
 
-    private function buildPathOnFileSystem(string $file, string $currentDirectory, string $extension) : string
+    private function buildPathOnFileSystem(string $file, string $currentDirectory, string $extension): string
     {
         return ltrim(trim($currentDirectory, '/') . '/' . $file . '.' . $extension, '/');
     }
 
-    private function buildDocumentUrl(Environment $environment, string $extension) : string
+    private function buildDocumentUrl(Environment $environment, string $extension): string
     {
         return $environment->getUrl() . '.' . $extension;
     }
@@ -142,7 +162,7 @@ final class ParseFileHandler
         Configuration $configuration,
         Environment $environment,
         string $fileAbsolutePath
-    ) : DocumentNode {
+    ): DocumentNode {
         $format = $configuration->getFormat();
         if ($format instanceof Format === false) {
             throw new RuntimeException('This handler only support RestructuredText input formats');
@@ -166,7 +186,7 @@ final class ParseFileHandler
         Configuration $configuration,
         Environment $environment,
         string $fileAbsolutePath
-    ) : DocumentNode {
+    ): DocumentNode {
         $nodeRendererFactory = $configuration->getFormat()->getNodeRendererFactory($environment);
         $environment->setNodeRendererFactory($nodeRendererFactory);
 
@@ -175,7 +195,7 @@ final class ParseFileHandler
         return $parser->parse($this->getFileContents($environment, $fileAbsolutePath));
     }
 
-    private function getFileContents(Environment $environment, string $file) : string
+    private function getFileContents(Environment $environment, string $file): string
     {
         $origin = $environment->getOrigin();
         if (!$origin->has($file)) {

@@ -92,7 +92,7 @@ class Input
      *     allowEmptyString = false
      * )
      */
-    private string $description;
+    private $description;
 
     /**
      * Category.

@@ -1278,7 +1278,9 @@ class FrameworkExtension extends Extension
             $container->getDefinition('console.command.translation_update')->replaceArgument(6, $transPaths);
         }
 
-        if ($container->fileExists($defaultDir)) {
+        if (null === $defaultDir) {
+            // allow null
+        } elseif ($container->fileExists($defaultDir)) {
             $dirs[] = $defaultDir;
         } else {
             $nonExistingDirs[] = $defaultDir;
@@ -1318,7 +1320,7 @@ class FrameworkExtension extends Extension
                     'scanned_directories' => $scannedDirectories = array_merge($dirs, $nonExistingDirs),
                     'cache_vary' => [
                         'scanned_directories' => array_map(static function (string $dir) use ($projectDir): string {
-                            return 0 === strpos($dir, $projectDir.'/') ? substr($dir, 1 + \strlen($projectDir)) : $dir;
+                            return str_starts_with($dir, $projectDir.'/') ? substr($dir, 1 + \strlen($projectDir)) : $dir;
                         }, $scannedDirectories),
                     ],
                 ]
@@ -1360,24 +1362,28 @@ class FrameworkExtension extends Extension
             return;
         }
 
-        foreach ($config['providers'] as $name => $provider) {
-            if (!$config['enabled_locales'] && !$provider['locales']) {
-                throw new LogicException(sprintf('You must specify one of "framework.translator.enabled_locales" or "framework.translator.providers.%s.locales" in order to use translation providers.', $name));
+        $locales = $config['enabled_locales'] ?? [];
+
+        foreach ($config['providers'] as $provider) {
+            if ($provider['locales']) {
+                $locales += $provider['locales'];
             }
         }
 
+        $locales = array_unique($locales);
+
         $container->getDefinition('console.command.translation_pull')
             ->replaceArgument(4, array_merge($transPaths, [$config['default_path']]))
-            ->replaceArgument(5, $config['enabled_locales'])
+            ->replaceArgument(5, $locales)
         ;
 
         $container->getDefinition('console.command.translation_push')
             ->replaceArgument(2, array_merge($transPaths, [$config['default_path']]))
-            ->replaceArgument(3, $config['enabled_locales'])
+            ->replaceArgument(3, $locales)
         ;
 
         $container->getDefinition('translation.provider_collection_factory')
-            ->replaceArgument(1, $config['enabled_locales'])
+            ->replaceArgument(1, $locales)
         ;
 
         $container->getDefinition('translation.provider_collection')->setArgument(0, $config['providers']);
@@ -1705,6 +1711,9 @@ class FrameworkExtension extends Extension
     private function registerSerializerConfiguration(array $config, ContainerBuilder $container, PhpFileLoader $loader)
     {
         $loader->load('serializer.php');
+        if ($container->getParameter('kernel.debug')) {
+            $container->removeDefinition('serializer.mapping.cache_class_metadata_factory');
+        }
 
         $chainLoader = $container->getDefinition('serializer.mapping.chain_loader');
 

@@ -12,7 +12,7 @@ use phpDocumentor\Guides\RestructuredText\Formats\Format;
 
 class LaTeXFormat extends Format
 {
-    public function getNodeRendererFactory(Environment $environment) : NodeRendererFactory
+    public function getNodeRendererFactory(Environment $environment): NodeRendererFactory
     {
         $renderer = $environment->getRenderer();
 
@@ -34,10 +34,7 @@ class LaTeXFormat extends Format
                 ),
                 Nodes\TitleNode::class => new NodeRenderers\LaTeX\TitleNodeRenderer($renderer),
                 Nodes\TocNode::class => new NodeRenderers\LaTeX\TocNodeRenderer($environment),
-                Nodes\DocumentNode::class => new NodeRenderers\LaTeX\DocumentNodeRenderer(
-                    $environment,
-                    $renderer
-                ),
+                Nodes\DocumentNode::class => new NodeRenderers\LaTeX\DocumentNodeRenderer($environment),
                 Nodes\SpanNode::class => new NodeRenderers\LaTeX\SpanNodeRenderer($environment),
             ],
             new NodeRenderers\DefaultNodeRenderer($environment)

@@ -420,6 +420,18 @@
                 <source>title_category_create</source>
                 <target>Create a category</target>
             </trans-unit>
+            <trans-unit id=" ">
+                <source> </source>
+                <target> </target>
+            </trans-unit>
+            <trans-unit id="message_wallet_created_successfully">
+                <source>message_wallet_created_successfully</source>
+                <target>Wallet created successfully!</target>
+            </trans-unit>
+            <trans-unit id="message_wallet_updated_successfully">
+                <source>message_wallet_updated_successfully</source>
+                <target>Wallet updated successfully!</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace phpDocumentor\Transformer\Writer\Graph;
 
+use Phar;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Process\Process;
+
 use function file_get_contents;
 use function file_put_contents;
 use function tempnam;
@@ -24,7 +26,7 @@ class PlantumlRenderer
         $this->plantUmlBinaryPath = $plantUmlBinaryPath;
     }
 
-    public function render(string $diagram) : ?string
+    public function render(string $diagram): ?string
     {
         $pumlFileLocation = tempnam('phpdocumentor', 'pu_');
 
@@ -41,6 +43,10 @@ $diagram
 @enduml
 PUML;
         file_put_contents($pumlFileLocation, $output);
+
+        if (Phar::running() !== '') {
+            $this->plantUmlBinaryPath = 'plantuml';
+        }
 
         $process = new Process([$this->plantUmlBinaryPath, '-tsvg', $pumlFileLocation], __DIR__, null, null, 600.0);
         $process->run();

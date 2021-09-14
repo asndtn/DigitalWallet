@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
 
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\Nodes\RawNode;
+use phpDocumentor\Guides\Nodes\TemplatedNode;
 use phpDocumentor\Guides\RestructuredText\Directives\SubDirective;
 use phpDocumentor\Guides\RestructuredText\Parser;
 
@@ -38,25 +38,19 @@ abstract class AbstractAdmonitionDirective extends SubDirective
         string $variable,
         string $data,
         array $options
-    ) : ?Node {
-        $environment = $parser->getEnvironment();
-
-        return new RawNode(
-            function () use ($environment, $document, $options) {
-                return $environment->getRenderer()->render(
-                    'directives/admonition.html.twig',
-                    [
-                        'name' => $this->name,
-                        'text' => $this->text,
-                        'class' => $options['class'] ?? null,
-                        'node' => $document,
-                    ]
-                );
-            }
+    ): ?Node {
+        return new TemplatedNode(
+            'directives/admonition.html.twig',
+            [
+                'name' => $this->name,
+                'text' => $this->text,
+                'class' => $options['class'] ?? null,
+                'node' => $document,
+            ]
         );
     }
 
-    final public function getName() : string
+    final public function getName(): string
     {
         return $this->name;
     }

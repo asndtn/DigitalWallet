@@ -14,16 +14,18 @@ declare(strict_types=1);
 namespace phpDocumentor\Transformer\Writer;
 
 use League\Tactician\CommandBus;
-use phpDocumentor\Descriptor\DocumentationSetDescriptor;
 use phpDocumentor\Descriptor\GuideSetDescriptor;
 use phpDocumentor\Descriptor\ProjectDescriptor;
 use phpDocumentor\Descriptor\VersionDescriptor;
 use phpDocumentor\Dsn;
+use phpDocumentor\Guides\Configuration;
+use phpDocumentor\Guides\Formats\Format;
 use phpDocumentor\Guides\RenderCommand;
 use phpDocumentor\Guides\Renderer;
 use phpDocumentor\Transformer\Transformation;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
+
 use function sprintf;
 
 /**
@@ -42,14 +44,23 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
     /** @var Renderer */
     private $renderer;
 
-    public function __construct(Renderer $renderer, LoggerInterface $logger, CommandBus $commandBus)
-    {
+    /** @var iterable<Format> */
+    private $outputFormats;
+
+    /** @param iterable<Format> $outputFormats */
+    public function __construct(
+        Renderer $renderer,
+        LoggerInterface $logger,
+        CommandBus $commandBus,
+        iterable $outputFormats
+    ) {
         $this->logger = $logger;
         $this->commandBus = $commandBus;
         $this->renderer = $renderer;
+        $this->outputFormats = $outputFormats;
     }
 
-    public function transform(ProjectDescriptor $project, Transformation $transformation) : void
+    public function transform(ProjectDescriptor $project, Transformation $transformation): void
     {
         // Feature flag: Guides are disabled by default since this is an experimental feature
         if (!($project->getSettings()->getCustom()[self::FEATURE_FLAG])) {
@@ -72,29 +83,39 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
         }
     }
 
-    public function getDefaultSettings() : array
+    public function getDefaultSettings(): array
     {
         return [self::FEATURE_FLAG => false];
     }
 
     private function renderDocumentationSet(
-        DocumentationSetDescriptor $documentationSet,
+        GuideSetDescriptor $documentationSet,
         ProjectDescriptor $project,
         Transformation $transformation
-    ) : void {
+    ): void {
         $dsn = $documentationSet->getSource()->dsn();
         $stopwatch = $this->startRenderingSetMessage($dsn);
 
         $this->renderer->initialize($project, $documentationSet, $transformation);
 
+        $configuration = new Configuration(
+            $documentationSet->getInputFormat(),
+            $this->outputFormats
+        );
+        $configuration->setOutputFolder($documentationSet->getOutput());
+
         $this->commandBus->handle(
-            new RenderCommand($transformation->getTransformer()->destination())
+            new RenderCommand(
+                $documentationSet,
+                $configuration,
+                $transformation->getTransformer()->destination()
+            )
         );
 
         $this->completedRenderingSetMessage($stopwatch, $dsn);
     }
 
-    private function startRenderingSetMessage(Dsn $dsn) : Stopwatch
+    private function startRenderingSetMessage(Dsn $dsn): Stopwatch
     {
         $stopwatch = new Stopwatch();
         $stopwatch->start('guide');
@@ -103,7 +124,7 @@ final class RenderGuide extends WriterAbstract implements ProjectDescriptor\With
         return $stopwatch;
     }
 
-    private function completedRenderingSetMessage(Stopwatch $stopwatch, Dsn $dsn) : void
+    private function completedRenderingSetMessage(Stopwatch $stopwatch, Dsn $dsn): void
     {
         $stopwatchEvent = $stopwatch->stop('guide');
         $this->logger->info(

@@ -75,7 +75,7 @@ class InputRepository extends ServiceEntityRepository
     public function queryAll(array $filters): QueryBuilder
     {
         $queryBuilder = $this->getOrCreateQueryBuilder()
-            ->select('partial input.{id, amount, date}', 'partial category.{id, name}', 'partial tags.{id, name}', 'partial wallet.{id, type}')
+            ->select('partial input.{id, amount, date, description}', 'partial category.{id, name}', 'partial tags.{id, name}', 'partial wallet.{id, type}')
             ->join('input.category', 'category')
             ->join('input.wallet', 'wallet')
             ->join('wallet.type', 'type')

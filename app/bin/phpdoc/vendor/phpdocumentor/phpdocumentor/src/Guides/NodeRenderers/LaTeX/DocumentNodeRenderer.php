@@ -21,24 +21,20 @@ use phpDocumentor\Guides\NodeRenderers\NodeRenderer;
 use phpDocumentor\Guides\Nodes\DocumentNode;
 use phpDocumentor\Guides\Nodes\MainNode;
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\Renderer;
+
 use function count;
 
 class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
 {
-    /** @var Renderer */
-    private $renderer;
-
     /** @var Environment */
     private $environment;
 
-    public function __construct(Environment $environment, Renderer $renderer)
+    public function __construct(Environment $environment)
     {
-        $this->renderer = $renderer;
         $this->environment = $environment;
     }
 
-    public function render(Node $node) : string
+    public function render(Node $node): string
     {
         if ($node instanceof DocumentNode === false) {
             throw new InvalidArgumentException('Invalid node presented');
@@ -47,9 +43,11 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
         return (new BaseDocumentRender($this->environment->getNodeRendererFactory()))->render($node);
     }
 
-    public function renderDocument(DocumentNode $node) : string
+    public function renderDocument(DocumentNode $node, Environment $environment): string
     {
-        return $this->renderer->render(
+        $renderer = $environment->getRenderer();
+
+        return $renderer->render(
             'document.tex.twig',
             [
                 'isMain' => $this->isMain($node),
@@ -59,7 +57,7 @@ class DocumentNodeRenderer implements NodeRenderer, FullDocumentNodeRenderer
         );
     }
 
-    private function isMain(DocumentNode $node) : bool
+    private function isMain(DocumentNode $node): bool
     {
         $nodes = $node->getNodes(
             static function ($node) {

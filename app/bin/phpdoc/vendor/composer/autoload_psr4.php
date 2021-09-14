@@ -6,11 +6,11 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'phpDocumentor\\Reflection\\' => array($vendorDir . '/phpdocumentor/reflection-common/src', $vendorDir . '/phpdocumentor/type-resolver/src', $vendorDir . '/phpdocumentor/reflection-docblock/src'),
+    'phpDocumentor\\Reflection\\' => array($vendorDir . '/phpdocumentor/reflection-common/src', $vendorDir . '/phpdocumentor/reflection-docblock/src', $vendorDir . '/phpdocumentor/type-resolver/src'),
     'phpDocumentor\\Guides\\' => array($vendorDir . '/phpdocumentor/phpdocumentor/src/Guides'),
     'phpDocumentor\\GraphViz\\PHPStan\\' => array($vendorDir . '/phpdocumentor/graphviz/src/phpDocumentor/PHPStan'),
     'phpDocumentor\\GraphViz\\' => array($vendorDir . '/phpdocumentor/graphviz/src/phpDocumentor/GraphViz'),
-    'phpDocumentor\\' => array($vendorDir . '/phpdocumentor/reflection/src/phpDocumentor', $vendorDir . '/phpdocumentor/phpdocumentor/src/phpDocumentor'),
+    'phpDocumentor\\' => array($vendorDir . '/phpdocumentor/phpdocumentor/src/phpDocumentor', $vendorDir . '/phpdocumentor/reflection/src/phpDocumentor'),
     'Webmozart\\Assert\\' => array($vendorDir . '/webmozart/assert/src'),
     'Twig\\' => array($vendorDir . '/twig/twig/src'),
     'Symfony\\Polyfill\\Php81\\' => array($vendorDir . '/symfony/polyfill-php81'),
@@ -53,7 +53,7 @@ return array(
     'Psr\\Cache\\' => array($vendorDir . '/psr/cache/src'),
     'PhpParser\\' => array($vendorDir . '/nikic/php-parser/lib/PhpParser'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
-    'League\\Uri\\' => array($vendorDir . '/league/uri-interfaces/src', $vendorDir . '/league/uri/src'),
+    'League\\Uri\\' => array($vendorDir . '/league/uri/src', $vendorDir . '/league/uri-interfaces/src'),
     'League\\Tactician\\Logger\\' => array($vendorDir . '/league/tactician-logger/src'),
     'League\\Tactician\\Container\\' => array($vendorDir . '/league/tactician-container/src'),
     'League\\Tactician\\Bundle\\' => array($vendorDir . '/league/tactician-bundle/src'),
@@ -64,5 +64,6 @@ return array(
     'League\\CommonMark\\' => array($vendorDir . '/league/commonmark/src'),
     'Jean85\\' => array($vendorDir . '/jean85/pretty-package-versions/src'),
     'Flyfinder\\' => array($vendorDir . '/phpdocumentor/flyfinder/src'),
+    'Doctrine\\Common\\Lexer\\' => array($vendorDir . '/doctrine/lexer/lib/Doctrine/Common/Lexer'),
     'Doctrine\\Common\\' => array($vendorDir . '/doctrine/event-manager/lib/Doctrine/Common'),
 );

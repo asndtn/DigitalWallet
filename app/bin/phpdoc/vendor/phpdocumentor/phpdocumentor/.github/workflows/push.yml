@@ -3,6 +3,8 @@ on:
     branches:
       - master
   pull_request:
+  # Allow manually triggering the workflow.
+  workflow_dispatch:
 name: Qa workflow
 env:
   extensions: mbstring, intl, iconv, libxml, dom, json, simplexml, zlib, fileinfo
@@ -32,30 +34,20 @@ jobs:
           restore-keys: ${{ steps.cache-env.outputs.key }}
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@master
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ env.defaultPHPVersion }}
           extensions: ${{ env.extensions }}
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
           tools: composer-require-checker:2.1.0
 
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - name: Cache composer dependencies
-        uses: actions/cache@v2.1.6
+      - name: Install Composer dependencies & cache dependencies
+        uses: "ramsey/composer-install@v1"
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: composer-
+          composer-options: --optimize-autoloader
 
-      - name: Install Composer dependencies
-        run: |
-          composer install --no-progress --prefer-dist --optimize-autoloader
-
-      - name: composer-require-checker
-        run: composer-require-checker check --config-file $GITHUB_WORKSPACE/composer-require-config.json composer.json
+#      - name: composer-require-checker
+#        run: composer-require-checker check --config-file $GITHUB_WORKSPACE/composer-require-config.json composer.json
 
   phpunit-with-coverage:
     runs-on: ubuntu-latest
@@ -80,27 +72,17 @@ jobs:
         restore-keys: ${{ steps.cache-env.outputs.key }}
 
     - name: Setup PHP
-      uses: shivammathur/setup-php@master
+      uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ env.defaultPHPVersion }}
         extensions: ${{ env.extensions }}
         ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
         tools: pecl, phive
 
-    - name: Get composer cache directory
-      id: composer-cache
-      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-    - name: Cache composer dependencies
-      uses: actions/cache@v2.1.6
+    - name: Install Composer dependencies & cache dependencies
+      uses: "ramsey/composer-install@v1"
       with:
-        path: ${{ steps.composer-cache.outputs.dir }}
-        key: composer-${{ hashFiles('**/composer.lock') }}
-        restore-keys: composer-
-
-    - name: Install Composer dependencies
-      run: |
-        composer install --no-progress --prefer-dist --optimize-autoloader
+        composer-options: --optimize-autoloader
 
     - name: Install PHAR dependencies
       env:
@@ -158,27 +140,17 @@ jobs:
           restore-keys: ${{ steps.cache-env.outputs.key }}
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@master
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ env.defaultPHPVersion }}
           extensions: ${{ env.extensions }}
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
           tools: pecl
 
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - name: Cache composer dependencies
-        uses: actions/cache@v2.1.6
+      - name: Install Composer dependencies & cache dependencies
+        uses: "ramsey/composer-install@v1"
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: composer-
-
-      - name: Install Composer dependencies
-        run: |
-          composer install --no-progress --prefer-dist --optimize-autoloader
+          composer-options: --optimize-autoloader
 
       - name: PHPStan
         uses: phpDocumentor/phpstan-ga@master
@@ -209,27 +181,17 @@ jobs:
           restore-keys: ${{ steps.cache-env.outputs.key }}
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@master
+        uses: shivammathur/setup-php@v2
         with:
           php-version: 7.3
           extensions: ${{ env.extensions }}
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
           tools: pecl, psalm
 
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - name: Cache composer dependencies
-        uses: actions/cache@v2.1.6
+      - name: Install Composer dependencies & cache dependencies
+        uses: "ramsey/composer-install@v1"
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: composer-
-
-      - name: Install Composer dependencies
-        run: |
-          composer install --no-progress --prefer-dist --optimize-autoloader
+          composer-options: --optimize-autoloader
 
       - name: Psalm
         run: psalm --output-format=github
@@ -258,27 +220,17 @@ jobs:
           restore-keys: ${{ steps.cache-env.outputs.key }}
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@master
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ env.defaultPHPVersion }}
           extensions: ${{ env.extensions }}
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
           tools: pecl
 
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - name: Cache composer dependencies
-        uses: actions/cache@v2.1.6
+      - name: Install Composer dependencies & cache dependencies
+        uses: "ramsey/composer-install@v1"
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: composer-
-
-      - name: Install Composer dependencies
-        run: |
-          composer install --no-progress --prefer-dist --optimize-autoloader
+          composer-options: --optimize-autoloader
 
       - name: warm cache
         uses: phpDocumentor/phar-ga@latest
@@ -312,8 +264,9 @@ jobs:
           path: build/phpDocumentor.phar
 
   e2e:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-latest
     name: E2E tests [ubuntu-latest]
+    if: github.repository == 'phpDocumentor/phpDocumentor'
     needs:
       - setup
     steps:
@@ -335,27 +288,17 @@ jobs:
           restore-keys: ${{ steps.cache-env.outputs.key }}
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@master
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ env.defaultPHPVersion }}
           extensions: ${{ env.extensions }}
           ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
           tools: pecl
 
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - name: Cache composer dependencies
-        uses: actions/cache@v2.1.6
+      - name: Install Composer dependencies & cache dependencies
+        uses: "ramsey/composer-install@v1"
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: composer-
-
-      - name: Install Composer dependencies
-        run: |
-          composer install --no-progress --prefer-dist --optimize-autoloader
+          composer-options: --optimize-autoloader
 
       - name: Build example project using Clean template
         run: ./bin/phpdoc --template=clean -vvv --config=data/examples/MariosPizzeria/phpdoc.xml --target=build/clean
@@ -422,27 +365,17 @@ jobs:
         restore-keys: ${{ steps.cache-env.outputs.key }}
 
     - name: Setup PHP
-      uses: shivammathur/setup-php@master
+      uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php-versions }}
         extensions: ${{ env.extensions }}
         ini-values: memory_limit=2G, display_errors=On, error_reporting=-1
         tools: pecl, phive
 
-    - name: Get composer cache directory
-      id: composer-cache
-      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-    - name: Cache composer dependencies
-      uses: actions/cache@v2.1.6
+    - name: Install Composer dependencies & cache dependencies
+      uses: "ramsey/composer-install@v1"
       with:
-        path: ${{ steps.composer-cache.outputs.dir }}
-        key: composer-${{ hashFiles('**/composer.lock') }}
-        restore-keys: composer-
-
-    - name: Install Composer dependencies
-      run: |
-        composer install --no-progress --prefer-dist --optimize-autoloader
+        composer-options: --optimize-autoloader
 
     - name: Install PHAR dependencies
       env:
@@ -460,6 +393,7 @@ jobs:
 
   e2e-matrix:
     runs-on: ${{ matrix.operating-system }}
+    if: github.repository == 'phpDocumentor/phpDocumentor'
     strategy:
       matrix:
         php-versions:
@@ -468,7 +402,7 @@ jobs:
           - '7.4'
           - '8.0'
         operating-system:
-          - ubuntu-16.04
+          - ubuntu-latest
           - windows-latest
           - macOS-latest
     name: E2E tests on PHAR [${{ matrix.php-versions }} | ${{ matrix.operating-system }}]
@@ -495,7 +429,7 @@ jobs:
           restore-keys: ${{ steps.cache-env.outputs.key }}
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@master
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: ${{ env.extensions }}
@@ -543,6 +477,7 @@ jobs:
   website:
     runs-on: ubuntu-latest
     name: Trigger website build
+    if: github.repository == 'phpDocumentor/phpDocumentor' && github.ref == 'refs/heads/master'
     needs:
       - e2e
       - phpunit
@@ -551,4 +486,18 @@ jobs:
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: Website
+          token: ${{ secrets.BOT_TOKEN }}
+
+  docker-build:
+    runs-on: ubuntu-latest
+    name: Trigger docker build
+    if: github.repository == 'phpDocumentor/phpDocumentor' && github.ref == 'refs/heads/master'
+    needs:
+      - e2e
+      - phpunit
+    steps:
+      - name: Trigger
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: Docker build
           token: ${{ secrets.BOT_TOKEN }}

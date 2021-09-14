@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace phpDocumentor\Guides\RestructuredText\HTML\Directives;
 
 use phpDocumentor\Guides\Nodes\Node;
-use phpDocumentor\Guides\Nodes\RawNode;
+use phpDocumentor\Guides\Nodes\TemplatedNode;
 use phpDocumentor\Guides\RestructuredText\Directives\SubDirective;
 use phpDocumentor\Guides\RestructuredText\Parser;
+
 use function uniqid;
 
 /**
@@ -15,7 +16,7 @@ use function uniqid;
  */
 class Wrap extends SubDirective
 {
-    public function getName() : string
+    public function getName(): string
     {
         return 'wrap';
     }
@@ -29,22 +30,16 @@ class Wrap extends SubDirective
         string $variable,
         string $data,
         array $options
-    ) : ?Node {
+    ): ?Node {
         $id = uniqid('note', true);
 
-        $environment = $parser->getEnvironment();
-
-        return new RawNode(
-            static function () use ($id, $environment, $document) {
-                return $environment->getRenderer()->render(
-                    'div.html.twig',
-                    [
-                        'id' => $id,
-                        'class' => 'note',
-                        'node' => $document,
-                    ]
-                );
-            }
+        return new TemplatedNode(
+            'div.html.twig',
+            [
+                'id' => $id,
+                'class' => 'note',
+                'node' => $document,
+            ]
         );
     }
 }

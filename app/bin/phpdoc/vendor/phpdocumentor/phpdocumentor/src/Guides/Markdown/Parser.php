@@ -25,7 +25,9 @@ use phpDocumentor\Guides\Nodes\RawNode;
 use phpDocumentor\Guides\Nodes\SpanNode;
 use phpDocumentor\Guides\Nodes\TitleNode;
 use phpDocumentor\Guides\Parser as ParserInterface;
+
 use function get_class;
+use function md5;
 
 final class Parser implements ParserInterface
 {
@@ -56,16 +58,16 @@ final class Parser implements ParserInterface
         ];
     }
 
-    public function parse(string $contents) : DocumentNode
+    public function parse(string $contents): DocumentNode
     {
         $ast = $this->markdownParser->parse($contents);
 
-        return $this->parseDocument($ast->walker());
+        return $this->parseDocument($ast->walker(), md5($contents));
     }
 
-    public function parseDocument(NodeWalker $walker) : DocumentNode
+    public function parseDocument(NodeWalker $walker, string $hash): DocumentNode
     {
-        $document = new DocumentNode($this->environment);
+        $document = new DocumentNode($hash);
         $this->document = $document;
 
         while ($event = $walker->next()) {
@@ -125,11 +127,7 @@ final class Parser implements ParserInterface
             }
 
             if ($node instanceof HtmlBlock) {
-                $spanNode = new RawNode(
-                    static function () use ($node) {
-                        return $node->getStringContent();
-                    }
-                );
+                $spanNode = new RawNode($node->getStringContent());
                 $document->addNode($spanNode);
                 continue;
             }
@@ -145,26 +143,26 @@ final class Parser implements ParserInterface
         return $document;
     }
 
-    public function parseParagraph(NodeWalker $walker) : ParagraphNode
+    public function parseParagraph(NodeWalker $walker): ParagraphNode
     {
         $parser = new Parsers\Paragraph();
 
         return $parser->parse($this, $walker);
     }
 
-    public function parseListBlock(NodeWalker $walker) : ListNode
+    public function parseListBlock(NodeWalker $walker): ListNode
     {
         $parser = new Parsers\ListBlock();
 
         return $parser->parse($this, $walker);
     }
 
-    public function getEnvironment() : Environment
+    public function getEnvironment(): Environment
     {
         return $this->environment;
     }
 
-    public function getDocument() : DocumentNode
+    public function getDocument(): DocumentNode
     {
         return $this->document;
     }

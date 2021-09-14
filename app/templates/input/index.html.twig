@@ -7,10 +7,6 @@
 {% block body %}
     <h1>{{ 'title_input_list'|trans }}</h1>
 
-    {% if balance is defined %}
-    {{ balance }}
-    {% endif %}
-
     {{ form_start(form, { method: 'POST', action: url('input_index') }) }}
     {{ form_widget(form) }}
     <div class="form-group row float-sm-right">
@@ -40,10 +36,6 @@
             </thead>
             <tbody>
             {% for input in pagination.items %}
-                {% if wallet.balance.balanceAmount is defined and wallet.balance.balanceAmount|length %}
-                    {{ wallet.balance.balanceAmount }}
-                {% endif %}
-            {# {{ input.wallet.balance.balanceAmount }}  #}
                 <tr>
                     <td>{{ input.amount }}</td>
                     <td>{{ input.wallet.type.name }}</td>

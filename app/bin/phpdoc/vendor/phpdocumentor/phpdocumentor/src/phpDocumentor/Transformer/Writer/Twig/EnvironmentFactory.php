@@ -15,7 +15,6 @@ namespace phpDocumentor\Transformer\Writer\Twig;
 
 use League\CommonMark\MarkdownConverterInterface;
 use phpDocumentor\Descriptor\ProjectDescriptor;
-use phpDocumentor\Guides\Twig\TocExtension;
 use phpDocumentor\Path;
 use phpDocumentor\Transformer\Template;
 use Twig\Environment;
@@ -31,23 +30,18 @@ class EnvironmentFactory
     /** @var ?Path */
     private $templateOverridesAt;
 
-    /** @var TocExtension */
-    private $tocExtension;
-
     /** @var MarkdownConverterInterface */
     private $markDownConverter;
 
     public function __construct(
         LinkRenderer $renderer,
-        TocExtension $tocExtension,
         MarkdownConverterInterface $markDownConverter
     ) {
         $this->renderer = $renderer;
-        $this->tocExtension = $tocExtension;
         $this->markDownConverter = $markDownConverter;
     }
 
-    public function withTemplateOverridesAt(Path $path) : void
+    public function withTemplateOverridesAt(Path $path): void
     {
         $this->templateOverridesAt = $path;
     }
@@ -55,7 +49,7 @@ class EnvironmentFactory
     public function create(
         ProjectDescriptor $project,
         Template $template
-    ) : Environment {
+    ): Environment {
         $mountManager = $template->files();
 
         $loaders = [];
@@ -69,7 +63,6 @@ class EnvironmentFactory
         $env = new Environment(new ChainLoader($loaders));
 
         $this->addPhpDocumentorExtension($project, $env);
-        $env->addExtension($this->tocExtension);
         $this->enableDebug($env);
 
         return $env;
@@ -81,12 +74,12 @@ class EnvironmentFactory
     private function addPhpDocumentorExtension(
         ProjectDescriptor $project,
         Environment $twigEnvironment
-    ) : void {
+    ): void {
         $extension = new Extension($project, $this->markDownConverter, $this->renderer);
         $twigEnvironment->addExtension($extension);
     }
 
-    private function enableDebug(Environment $twigEnvironment) : void
+    private function enableDebug(Environment $twigEnvironment): void
     {
         $twigEnvironment->setCache(false);
         $twigEnvironment->enableDebug();
